@@ -1,35 +1,37 @@
 import React from "react";
 import "./Home.css";
 // import homepageImage from "./assets/Homepage.png";
-import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
-import SideBar from "../../components/layout/SideBar";
+import NavBar from "../../components/layout/NavBar";
+import homepageImage from "../../assets/Homepage_image.png"
+import {Link} from 'react-router-dom';
 
 const Home = () => {
     return (
-        <div className="">
-            <Header />
+        <div>
+            <header>
+                <NavBar />
+            </header>
+            
 
-            {/* Main Section */}
-            <div className="mainContainer">
-                {/* <img
-                    src={homepageImage}
-                    alt="Homepage Illustration"
-                    className="w-full md:w-1/2 rounded-xl shadow-lg mb-8 md:mb-0"
-                /> */}
-                <div className="">
-                    <h2 className="">
+            <main className="main-section">
+                <img src={homepageImage} alt="Homepage illustration" className="homePageImage"/>
+                <div className="main-text">
+                    <h2 className="main-heading">
                         Take Control of your Finances
                     </h2>
-                    <p className="">
-                        Manage Your Expenses, Track Your Savings, and Reach Your Financial Goals With Ease!
+                    <p className="main-subtext">
+                        Manage your expenses, track your savings, and reach your financial goals with ease!
                     </p>
-                    <button className="">
-                        Get Started
-                    </button>
+                    <Link to="/signup">
+                        <button className="getStartedBtn">Get Started</button>
+                    </Link>
                 </div>
-            </div>
-            <Footer />
+            </main>
+            <footer>
+                <Footer />
+            </footer>
+            
         </div>
     );
 };

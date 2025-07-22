@@ -1,8 +1,6 @@
 // src/components/PlaidLinkButton.js
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import React, { useState, useEffect, useCallback } from 'react';
-import { usePlaidLink } from 'react-plaid-link';
 import Home from "./pages/Home/Home";
 import Plaid from "./components/layout/PlaidLinkButton.jsx";
 
