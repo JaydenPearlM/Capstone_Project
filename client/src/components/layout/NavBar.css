@@ -1,58 +1,103 @@
-.navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    padding: 10px 20px;
-}
-
-.navbar-container .logo {
-    filter: drop-shadow(#D6CEC3, 1px 1px 2px);
-    max-height:50px;
-}
-
-.top-nav .nav-items {
-    list-style-type: none;
-    display: flex;
-    gap: 10px;
-}
-
-.top-nav .nav-items .nav-link {
-    display: block;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    color: black;
-}
-
-.top-nav li a:hover {
+.active {
   background-color: #A7E8BD;
-  box-shadow: inset 0px 0px 2px 0px #D6CEC3;
 }
 
-.top-nav li .active {
-  background: #dbc5e8;
-  box-shadow: inset 0px 0px 3px 0px #D6CEC3;
+nav {
+  display: flex;
+  align-items: center;
+  background-color: #e7eced;
+  justify-content: space-between;
+  position:sticky;
+  top: 0;
+  width: 100%;
+  height: auto;
 }
 
-.navbar-container .auth-btn {
-  display: block;
-  text-align: center;
-  padding: 10px 30px;
-  background-color: #A7E8BD;
-  outline: none;
-  border-radius: 10px;
-  border: none;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.menu {
+  padding: 15px;
+  align-items: center;
+}
+
+nav img{
+  filter: drop-shadow(#D6CEC3, 1px 1px 2px);
+  max-height: 50px;
+  width: auto;
   text-decoration: none;
-  font-family: inherit;
-  font-size: 16px;
+  align-items: center;
+  display: block;
+  width: 50%;
+  height: auto;
+  padding: 15px;
 }
 
-.navbar-container .auth-btn:hover {
-  background-color: #D6CEC3;
+nav ul {
+  display: flex;
+  justify-content: space-between;
 }
+
+nav ul li {
+  display:flex;
+  list-style:none;
+}
+
+nav ul li a {
+  display: block;
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  margin: 0 0.5rem;
+  border-radius: 0.5rem;
+
+}
+
+nav ul li a:not(.active):hover {
+  background-color: #FFF9C4;
+}
+
+nav .menu{
+  display: none;
+  position: absolute;
+  top: 0.75rem;
+  right: 0.5rem;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 2.25rem;
+  max-height: 100px;
+  align-items: center;
+}
+
+@media (max-width: 480px) {
+
+  nav .menu {
+    display:flex;
+    max-height: 50px;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  nav ul {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 0.25rem;
+  }
+
+  nav ul.open {
+    display:flex;
+  }
+
+  nav ul li {
+    width: 100%;
+    text-align: center;
+  }
+
+  nav ul li a {
+    margin: 0.2rem 0.5rem;
+  }
+}
+
+
+
