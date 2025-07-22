@@ -1,5 +1,11 @@
 const router = require('express').Router();
 const ctrl   = require('../controllers/transactionController');
+const { fetchFromPlaid } = require('../controllers/transactionController');
+const logger = require('../config/logger');
+
+
+router.get('/fetch', fetchFromPlaid);
+
 // optional: add validation/auth middleware here later
 /**
  * @swagger
