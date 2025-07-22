@@ -1,5 +1,7 @@
 // server/controllers/categoryController.js
 const Category = require('../models/Category');
+const logger = require('../config/logger');
+
 
 exports.getAll = async (req, res) => {
   const cats = await Category.find();

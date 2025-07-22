@@ -4,11 +4,14 @@ const mongoose = require('mongoose');
 const cors     = require('cors');
 const helmet  = require('helmet');
 const rateLimit = require('express-rate-limit');
+const logger  = require('./config/logger');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const options = require('./swaggerOptions');
 const specs = swaggerJsDoc(options);
 const app = express();
+const transactionRoutes = require('./routes/transactionRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 const plaidRoutes = require('./routes/Plaidroutes');
 const apiRoutes   = require('./routes/index');  // transactions, categories, etc.
 
@@ -26,6 +29,11 @@ app.use(rateLimit({
   windowMs: 15*60*1000,
   max: 100,
 }));
+
+app.get('/', (req, res) => {
+  res.send(' Cache Budget API is running! ');
+})
+
 
 // Swagger
 app.use(
@@ -53,7 +61,28 @@ app.post('/api/items', async (req, res) => {
 });
 
 app.use('/api/v1/plaid', plaidRoutes);
+app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1', apiRoutes);
+app.use('/api/v1/transactions', transactionRoutes);
+
+app.get('/api/v1', (req, res) => {
+  res.json({
+    message: 'Welcome to Cache Budget API v1',
+    endpoints: {
+      categories: '/api/v1/categories',
+      transactions: '/api/v1/transactions',
+      docs: '/api/v1/docs'
+    }
+  })
+})
+
+// centralized error handler
+app.use((er, req, res, next) => {
+  logger.error(err.stack);
+  res.status(err.status || 500).json({
+    error: { message: err.message || 'Internal Server Error'}
+  })
+})
 
 // --- Start server ---
 const PORT = process.env.PORT || 5000;
