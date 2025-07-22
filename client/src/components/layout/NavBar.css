@@ -1,0 +1,58 @@
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 10px 20px;
+}
+
+.navbar-container .logo {
+    filter: drop-shadow(#D6CEC3, 1px 1px 2px);
+    max-height:50px;
+}
+
+.top-nav .nav-items {
+    list-style-type: none;
+    display: flex;
+    gap: 10px;
+}
+
+.top-nav .nav-items .nav-link {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: black;
+}
+
+.top-nav li a:hover {
+  background-color: #A7E8BD;
+  box-shadow: inset 0px 0px 2px 0px #D6CEC3;
+}
+
+.top-nav li .active {
+  background: #dbc5e8;
+  box-shadow: inset 0px 0px 3px 0px #D6CEC3;
+}
+
+.navbar-container .auth-btn {
+  display: block;
+  text-align: center;
+  padding: 10px 30px;
+  background-color: #A7E8BD;
+  outline: none;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.navbar-container .auth-btn:hover {
+  background-color: #D6CEC3;
+}

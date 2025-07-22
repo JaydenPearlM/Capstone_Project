@@ -1,0 +1,15 @@
+.sidebar {
+    box-shadow: 0 4px 8px #D6CEC3;
+}
+
+.sidebar .toggle-button {
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.sidebar .menu-item {
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}

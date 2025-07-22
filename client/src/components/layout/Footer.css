@@ -1,0 +1,17 @@
+.footerContainer {
+  padding: 15px 15px 25px;
+}
+
+.footerContent {
+  text-align: center;
+}
+
+.footerContent a {
+  text-decoration: none;
+  color: black;
+  transition: all 0.3s ease;
+}
+
+.footerContent a:hover {
+  text-decoration: underline;
+}
