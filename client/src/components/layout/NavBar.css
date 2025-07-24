@@ -2,7 +2,7 @@
   background-color: #A7E8BD;
 }
 
-nav {
+header .navBar {
   display: flex;
   align-items: center;
   background-color: #e7eced;
@@ -18,7 +18,7 @@ nav {
   align-items: center;
 }
 
-nav img{
+.navBar img{
   filter: drop-shadow(#D6CEC3, 1px 1px 2px);
   max-height: 50px;
   width: auto;
@@ -30,17 +30,17 @@ nav img{
   padding: 15px;
 }
 
-nav ul {
+.navBar ul {
   display: flex;
   justify-content: space-between;
 }
 
-nav ul li {
+.navBar ul li {
   display:flex;
   list-style:none;
 }
 
-nav ul li a {
+.navBar ul li a {
   display: block;
   text-decoration: none;
   color: black;
@@ -50,11 +50,11 @@ nav ul li a {
 
 }
 
-nav ul li a:not(.active):hover {
+.navBar ul li a:not(.active):hover {
   background-color: #FFF9C4;
 }
 
-nav .menu{
+.navBar .menu{
   display: none;
   position: absolute;
   top: 0.75rem;
@@ -68,33 +68,33 @@ nav .menu{
 
 @media (max-width: 480px) {
 
-  nav .menu {
+  .navBar .menu {
     display:flex;
     max-height: 50px;
   }
 
-  nav {
+  .navBar {
     flex-direction: column;
     align-items: start;
   }
 
-  nav ul {
+  .navBar ul {
     display: none;
     flex-direction: column;
     width: 100%;
     margin-bottom: 0.25rem;
   }
 
-  nav ul.open {
+  .navBar ul.open {
     display:flex;
   }
 
-  nav ul li {
+  .navBar ul li {
     width: 100%;
     text-align: center;
   }
 
-  nav ul li a {
+  .navBar ul li a {
     margin: 0.2rem 0.5rem;
   }
 }
