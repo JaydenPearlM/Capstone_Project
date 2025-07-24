@@ -10,7 +10,7 @@ const NavBar = () => {
   //logout
 
   return (
-    <nav>
+    <div className="navBar">
       <Link to={"/"} className="logo">
         <img src={CacheBudgetingLogo}  alt="cache budgeting logo"/>
       </Link>
@@ -39,7 +39,7 @@ const NavBar = () => {
           </NavLink>
         </li>
       </ul>
-    </nav>
+    </div >
   );
 };
 
