@@ -2,7 +2,7 @@ import NavBar from "../../components/layout/NavBar";
 import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
 
-export default function Savings(){
+export default function Budgeting(){
     return(
         <div>
             <header>
@@ -11,7 +11,7 @@ export default function Savings(){
             
             <div>
                 <SideBar />
-                <p>savings page</p>
+                <p>budgeting page</p>
             </div>
 
             <footer>

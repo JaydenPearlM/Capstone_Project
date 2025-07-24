@@ -1,5 +1,7 @@
 .sidebar {
+    display:flex;
     box-shadow: 0 4px 8px #D6CEC3;
+    flex: 1;
 }
 
 .sidebar .toggle-button {
@@ -12,4 +14,5 @@
     margin-bottom: 15px;
     text-decoration: none;
     transition: all 0.3s ease;
+    
 }
