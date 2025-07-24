@@ -12,7 +12,6 @@ const Home = () => {
             <header>
                 <NavBar />
             </header>
-            
 
             <main className="main-section">
                 <img src={homepageImage} alt="Homepage illustration" className="homePageImage"/>

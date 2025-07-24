@@ -1,0 +1,51 @@
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* max-width: 1200px; */
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #dbc5e8;
+}
+
+.dashboard-container a {
+    text-decoration: none;
+    color:black;
+}
+
+.content {
+  display:grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 30px;
+  padding: 20px;
+  flex: 3;
+}
+
+.card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow:
+    0 0 0 2px #f0f0f0, /* soft outer border */
+    0 8px 20px rgba(0, 0, 0, 0.1); /* subtle glow */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 250px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Optional: Add a hover effect for interactivity */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 2px #e0e0e0,
+    0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 600px) {
+    .content {
+        grid-template-columns: 1fr;
+    }
+}

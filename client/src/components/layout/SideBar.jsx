@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Home, 
+         AttachMoney,
          Logout, 
          Dashboard, 
          Savings, 
@@ -59,10 +60,13 @@ const SideBar = () => {
         <MenuItem className="menu-item" icon={<AccountBalanceWallet />} href="/dashboard/transactions">
           Transactions
         </MenuItem>
+        <MenuItem className="menu-item" icon={<AttachMoney />} href="/dashboard/budgeting">
+          Budgeting
+        </MenuItem>
         <MenuItem className="menu-item" icon={<Adjust />} href="/dashboard/goals">
           Goals
         </MenuItem>
-        <MenuItem className="menu-item" icon={<Settings />} href="/dashboard/savings">
+        <MenuItem className="menu-item" icon={<Settings />} href="/dashboard/settings">
           Settings
         </MenuItem>
         <MenuItem className="menu-item" icon={<Logout />} onClick={handleLogout}>
