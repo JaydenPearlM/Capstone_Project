@@ -1,0 +1,51 @@
+/* Layout */
+.budget-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.budget-content {
+  flex: 1 1 0%;
+  min-width: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pieChart {
+    display: flex;
+    justify-content: center;
+  width: 100%;
+  min-height: 250px;
+  max-height: 500px;
+  
+}
+
+.budgeting-summary-container,
+.categories-container,
+.transactions-container {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 2px #f0f0f0,
+    0 8px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin: 15px 0;
+}
+
+@media (max-width: 600px) {
+    .budget-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+

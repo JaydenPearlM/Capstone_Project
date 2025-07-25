@@ -1,0 +1,123 @@
+.transactions-section {
+  margin-top: 20px;
+  padding: 1rem;
+}
+
+.transaction-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.transaction-headers,
+.transaction-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr; /* match categories */
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+}
+
+.transaction-headers {
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 8px;
+}
+
+.transaction-row {
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.col-amount {
+  text-align: right;
+}
+
+.transaction-headers .col-actions,
+.col-actions {
+  text-align: right;
+}
+
+.col-actions button {
+  background-color: #FFF9C4;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 4px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.col-actions button:hover {
+  background-color: #f7f2a9;
+  transform: scale(1.03);
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .transaction-headers {
+    display: none;
+  }
+
+  .transaction-row {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+  }
+
+  .transaction-row > div {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.95rem;
+  }
+
+  .col-amount::before {
+    content: "Amount:";
+    font-weight: 600;
+    margin-right: 8px;
+  }
+
+  .col-description::before {
+    content: "Description:";
+    font-weight: 600;
+    margin-right: 8px;
+  }
+
+  .col-category::before {
+    content: "Category:";
+    font-weight: 600;
+    margin-right: 8px;
+  }
+
+  .col-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 4px;
+    overflow-x: auto;
+    width: 100%;
+    margin-top: 4px;
+    justify-content: flex-end; /* aligns buttons to the right */
+  }
+
+  .col-actions::before {
+    content: "Actions:";
+    font-weight: 600;
+    margin-right: 8px;
+    flex-grow: 1;
+    text-align: left;
+  }
+
+  .col-actions button {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+}

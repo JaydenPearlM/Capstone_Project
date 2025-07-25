@@ -1,0 +1,113 @@
+.categories-section {
+  margin-top: 20px;
+  padding: 1rem;
+}
+
+.category-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.category-headers,
+.category-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+}
+
+.category-headers {
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 8px;
+}
+
+.category-row {
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  padding: 8px;
+}
+
+.col-name,
+.col-budget,
+.col-spent,
+.col-actions {
+  text-align: left;
+}
+
+.col-budget,
+.col-spent {
+  text-align: right;
+}
+
+.col-actions button {
+  background-color: #FFF9C4;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 4px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.col-actions button:hover {
+  background-color: #f7f2a9;
+  transform: scale(1.03);
+}
+
+
+@media (max-width: 600px) {
+  .category-headers {
+    display: none;
+  }
+
+  .category-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .category-row > div {
+    margin: 4px 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .col-name {
+    font-weight: bold;
+  }
+
+  .col-name::before {
+    content: "";
+  }
+
+  .col-budget::before {
+    content: "Budget:";
+    font-weight: bold;
+    margin-right: 8px;
+  }
+
+  .col-spent::before {
+    content: "Spent:";
+    font-weight: bold;
+    margin-right: 8px;
+  }
+
+  .col-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 4px;  /* smaller gap between buttons */
+    overflow-x: auto;
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .col-actions button {
+    flex-shrink: 0;
+  }
+}

@@ -1,0 +1,82 @@
+.category-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.total-budget-summary{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.budget-item {
+  background-color: #f9f9f9;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.budget-item.over-budget {
+  background-color: #ffe5e5;
+  color: #b30000;
+}
+
+.budget-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.category-name {
+  font-weight: bold;
+}
+
+.category-budget,
+.category-spent,
+.category-remaining {
+  text-align: right;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+
+  .budget-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .budget-row > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .category-budget::before {
+    content: "Budget: ";
+    font-weight: bold;
+  }
+
+  .category-spent::before {
+    content: "Spent: ";
+    font-weight: bold;
+  }
+
+  .category-remaining::before {
+    content: "Remaining: ";
+    font-weight: bold;
+  }
+
+  .category-name {
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  #budget-header {
+    display:none !important;
+  }
+}
