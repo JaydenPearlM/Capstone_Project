@@ -18,8 +18,8 @@ const Categories = ({ categories, transactions, setCatForm, setCatEditing, delet
         {categories.map((cat) => {
           const spent = getSpending(cat.id);
           return (
-            <li key={cat.id} className="category-row">
-              <div className="col-name">{cat.name}</div>
+            <li key={cat.id} className={`category-row ${spent > cat.budget ? 'over-budget' : ''}`}>
+              <div className={`col-name ${spent > cat.budget ? 'over-budget-name' : ''}`}>{cat.name}</div>
               <div className="col-budget">${Number(cat.budget).toFixed(2)}</div>
               <div className="col-spent">${spent.toFixed(2)}</div>
               <div className="col-actions">

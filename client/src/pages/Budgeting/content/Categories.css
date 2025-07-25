@@ -59,6 +59,15 @@
   transform: scale(1.03);
 }
 
+.category-row.over-budget {
+  background-color: #ffe5e5;
+  color: #b30000;
+}
+
+.over-budget-name {
+  font-weight: 700;
+}
+
 
 @media (max-width: 600px) {
   .category-headers {

@@ -96,6 +96,27 @@ export default function Budgeting() {
                         <BudgetSummary categories={categories} transactions={transactions} />
                     </div>
 
+                    <div className="transactions-container">
+                        <Transactions
+                            transactions={transactions}
+                            categories={categories}
+                            setTxForm={setTxForm}
+                            setTxEditing={setTxEditing}
+                            deleteTransaction={(id) => deleteTransaction(id, setTransactions)}
+                        />
+
+                        <TransactionForm
+                            txForm={txForm}
+                            setTxForm={setTxForm}
+                            txEditing={txEditing}
+                            setTxEditing={setTxEditing}
+                            categories={categories}
+                            transactions={transactions}
+                            setTransactions={setTransactions}
+                            handleSubmit={handleTransactionSubmit}
+                        />
+                    </div>
+
                     <div className="categories-container">
                         <Categories
                             categories={categories}
@@ -117,26 +138,7 @@ export default function Budgeting() {
                     </div>
 
 
-                    <div className="transactions-container">
-                        <Transactions
-                            transactions={transactions}
-                            categories={categories}
-                            setTxForm={setTxForm}
-                            setTxEditing={setTxEditing}
-                            deleteTransaction={(id) => deleteTransaction(id, setTransactions)}
-                        />
-
-                        <TransactionForm
-                            txForm={txForm}
-                            setTxForm={setTxForm}
-                            txEditing={txEditing}
-                            setTxEditing={setTxEditing}
-                            categories={categories}
-                            transactions={transactions}
-                            setTransactions={setTransactions}
-                            handleSubmit={handleTransactionSubmit}
-                        />
-                    </div>
+                    
                 </div>
 
             </div>
