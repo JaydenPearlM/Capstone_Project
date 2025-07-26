@@ -9,6 +9,9 @@ yarn.lock
 # MongoDB memory server cache
 **/node_modules/.cache/
 **/node_modules/.cache/mongodb-memory-server/
+**/mongodb-memory-server/
+**/*mongod-*
+**/.mongodb-binaries/
 
 # Environment variables
 .env

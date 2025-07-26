@@ -1,12 +1,18 @@
 // server/tests/setup.js
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const path = require('path');
 
 let mongoServer;
 
 // Setup before all tests
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
+  // Configure custom binary download path that's in our .gitignore
+  mongoServer = await MongoMemoryServer.create({
+    binary: {
+      downloadDir: path.join(__dirname, '../.mongodb-binaries')
+    }
+  });
   const mongoUri = mongoServer.getUri();
   
   await mongoose.connect(mongoUri, {});
