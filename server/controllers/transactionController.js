@@ -21,7 +21,7 @@ exports.fetchFromPlaid = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-}
+};
 
 // GET /api/v1/transactions/:id
 exports.getById = async (req, res, next) => {
