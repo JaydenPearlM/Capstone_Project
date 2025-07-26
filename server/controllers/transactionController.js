@@ -15,7 +15,7 @@ exports.getAll = async (req, res, next) => {
 
 exports.fetchFromPlaid = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.is);
+    const user = await User.findById(req.user.id);
     const txns = await plaidClient.getTransactions(user.plaidAccessToken);
     res.json(txns);    
   } catch (err) {
