@@ -11,7 +11,7 @@ export default function Debt(){
             
             <div>
                 <SideBar />
-                <p>debt pages</p>
+                <p>Debt page</p>
             </div>
 
             <footer>
