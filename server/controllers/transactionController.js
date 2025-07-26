@@ -11,7 +11,7 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
-//fetching data
+// Fetching transaction data from the Plaid API for the authenticated user
 
 exports.fetchFromPlaid = async (req, res, next) => {
   try {
