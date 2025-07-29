@@ -10,10 +10,9 @@ const swaggerUi = require('swagger-ui-express');
 const options = require('./swaggerOptions');
 const specs = swaggerJsDoc(options);
 const app = express();
-const transactionRoutes = require('./routes/transactionRoutes');
-const categoryRoutes = require('./routes/categoryRoutes');
 const plaidRoutes = require('./routes/Plaidroutes');
 const apiRoutes   = require('./routes/index');  // transactions, categories, etc.
+const budgetRoutes = require('./routes/budget');
 
 app.use(cors({ origin: 'http://localhost:3000' }));
 
@@ -27,12 +26,14 @@ app.use(cors({ origin: process.env.FRONTEND_URL }));
 // Basic rate limiter - only allow your frontend
 app.use(rateLimit({
   windowMs: 15*60*1000,
-  max: 100,
-}));
+  max: 250,
+  message: "Too many requests from this IP, please try again later."
+}))
 
 app.get('/', (req, res) => {
   res.send(' Cache Budget API is running! ');
 })
+
 
 
 // Swagger
@@ -61,9 +62,9 @@ app.post('/api/items', async (req, res) => {
 });
 
 app.use('/api/v1/plaid', plaidRoutes);
-app.use('/api/v1/categories', categoryRoutes);
+// app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1', apiRoutes);
-app.use('/api/v1/transactions', transactionRoutes);
+// app.use('/api/v1/transactions', transactionRoutes);
 
 app.get('/api/v1', (req, res) => {
   res.json({
@@ -76,13 +77,23 @@ app.get('/api/v1', (req, res) => {
   })
 })
 
+
+// Category routes:
+const categoryRoutes = require('./routes/categoryRoutes');
+app.use('/api/categories', categoryRoutes);
+const transactionRoutes = require('./routes/transactionRoutes');
+app.use('/api/transactions', transactionRoutes);
+
+//budget route
+app.use('/api/budget', budgetRoutes);
+
+
 // centralized error handler
-app.use((er, req, res, next) => {
-  logger.error(err.stack);
-  res.status(err.status || 500).json({
-    error: { message: err.message || 'Internal Server Error'}
-  })
-})
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: err.message || "Something went wrong." });
+});
+
 
 // --- Start server ---
 const PORT = process.env.PORT || 5000;
