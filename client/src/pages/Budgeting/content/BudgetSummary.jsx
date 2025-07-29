@@ -1,51 +1,62 @@
+import { useEffect, useState } from "react";
 import "./BudgetSummary.css";
 
-const BudgetSummary = ({ categories, transactions }) => {
-    const getSpending = (catId) =>
-        transactions
-            .filter((tx) => tx.categoryId === catId)
-            .reduce((sum, tx) => sum + tx.amount, 0);
+const BudgetSummary = ({categories, transactions}) => {
+  const [summary, setSummary] = useState(null);
 
-    const totalBudget = categories.reduce((sum, cat) => sum + Number(cat.budget), 0);
-    const totalSpent = categories.reduce((sum, cat) => sum + getSpending(cat.id), 0);
-    const remaining = totalBudget - totalSpent;
-    return (
-        <div className="budgeting-section">
-            <div className="total-budget-summary" >
-                <p><strong>Total Budget:</strong> ${totalBudget.toFixed(2)}</p>
-                <p><strong>Total Spent:</strong> ${totalSpent.toFixed(2)}</p>
-                <p><strong>Remaining:</strong> ${remaining.toFixed(2)}</p>
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const res = await fetch("/api/budget");
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+        const data = await res.json();
+        setSummary(data);
+      } catch (err) {
+        console.error("Failed to fetch budget summary:", err);
+      }
+    };
+    if (categories.length && transactions.length) {
+      fetchSummary();
+    }
+  }, [categories, transactions]);
+
+  if (!summary) return <p>Loading budget summary...</p>;
+
+  return (
+    <div className="budgeting-section">
+      <div className="total-budget-summary">
+        <p><strong>Total Budget:</strong> ${summary.totalBudget.toFixed(2)}</p>
+        <p><strong>Total Spent:</strong> ${summary.totalSpent.toFixed(2)}</p>
+        <p><strong>Remaining:</strong> ${summary.remaining.toFixed(2)}</p>
+      </div>
+
+      <div className="budget-header budget-row" id="budget-header">
+        <div className="category-name">Category</div>
+        <div className="category-budget">Budget</div>
+        <div className="category-spent">Spent</div>
+        <div className="category-remaining">Remaining</div>
+      </div>
+
+      <ul className="category-list">
+        {summary.categorySummaries.map((cat) => {
+          const remaining = cat.budget - cat.spent;
+          return (
+            <div
+              key={cat._id}
+              className={`budget-item ${remaining < 0 ? "over-budget" : ""}`}
+            >
+              <div className="budget-row">
+                <div className="category-name">{cat.name}</div>
+                <div className="category-budget">${Number(cat.budget).toFixed(2)}</div>
+                <div className="category-spent">${cat.spent.toFixed(2)}</div>
+                <div className="category-remaining">${remaining.toFixed(2)}</div>
+              </div>
             </div>
-
-            <div className="budget-header budget-row" id="budget-header">
-                <div className="category-name">Category</div>
-                <div className="category-budget">Budget</div>
-                <div className="category-spent">Spent</div>
-                <div className="category-remaining">Remaining</div>
-            </div>
-            <ul className="category-list">
-                {categories.map((cat) => {
-                    const spent = getSpending(cat.id);
-                    const remaining = cat.budget - spent;
-                    return (
-
-                        <div
-                            key={cat.id}
-                            className={`budget-item ${remaining < 0 ? 'over-budget' : ''}`}
-                        >
-                            <div className="budget-row">
-                                <div className="category-name">{cat.name}</div>
-                                <div className="category-budget">${Number(cat.budget).toFixed(2)}</div>
-                                <div className="category-spent">${spent.toFixed(2)}</div>
-                                <div className="category-remaining">${remaining.toFixed(2)}</div>
-                            </div>
-                        </div>
-                    );
-                })}
-            </ul>
-
-        </div>
-    );
+          );
+        })}
+      </ul>
+    </div>
+  );
 };
 
 export default BudgetSummary;

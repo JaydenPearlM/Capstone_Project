@@ -16,9 +16,9 @@ const Categories = ({ categories, transactions, setCatForm, setCatEditing, delet
       </div>
       <ul className="category-list">
         {categories.map((cat) => {
-          const spent = getSpending(cat.id);
+          const spent = getSpending(cat._id);
           return (
-            <li key={cat.id} className={`category-row ${spent > cat.budget ? 'over-budget' : ''}`}>
+            <li key={cat._id} className={`category-row ${spent > cat.budget ? 'over-budget' : ''}`}>
               <div className={`col-name ${spent > cat.budget ? 'over-budget-name' : ''}`}>{cat.name}</div>
               <div className="col-budget">${Number(cat.budget).toFixed(2)}</div>
               <div className="col-spent">${spent.toFixed(2)}</div>
@@ -27,7 +27,7 @@ const Categories = ({ categories, transactions, setCatForm, setCatEditing, delet
                   setCatForm(cat);
                   setCatEditing(true);
                 }}>Edit</button>
-                <button onClick={() => deleteCategory(cat.id)}>Delete</button>
+                <button onClick={() => deleteCategory(cat._id)}>Delete</button>
               </div>
             </li>
           );

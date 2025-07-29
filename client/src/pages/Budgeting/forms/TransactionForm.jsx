@@ -62,11 +62,35 @@ const TransactionForm = ({
         >
           <option value="">Select Category</option>
           {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
+            <option key={cat._id} value={cat._id}>
               {cat.name}
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="form-row">
+        <label htmlFor="txType">Type:</label>
+        <select
+          id="txType"
+          value={txForm.type}
+          onChange={(e) => setTxForm({ ...txForm, type: e.target.value })}
+          required
+        >
+          <option value="expense">Expense</option>
+          <option value="income">Income</option>
+        </select>
+      </div>
+
+      <div className="form-row">
+        <label htmlFor="txDate">Date:</label>
+        <input
+          id="txDate"
+          type="date"
+          value={txForm.date}
+          onChange={(e) => setTxForm({ ...txForm, date: e.target.value })}
+          required
+        />
       </div>
 
       <button className="submit-btn" type="submit">

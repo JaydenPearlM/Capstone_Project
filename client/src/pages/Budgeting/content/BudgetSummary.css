@@ -4,10 +4,11 @@
   margin-top: 1rem;
 }
 
-.total-budget-summary{
+.total-budget-summary {
   display: flex;
   flex-direction: column;
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 .budget-item {
@@ -40,9 +41,8 @@
   text-align: right;
 }
 
-/* Mobile Responsive */
+/* Mobile Friendly */
 @media (max-width: 600px) {
-
   .budget-row {
     display: flex;
     flex-direction: column;
@@ -56,27 +56,27 @@
     justify-content: space-between;
   }
 
-  .category-budget::before {
-    content: "Budget: ";
+  .category-name {
     font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .category-budget::before {
+    content: "Budget:";
+    font-weight: 600;
   }
 
   .category-spent::before {
-    content: "Spent: ";
-    font-weight: bold;
+    content: "Spent:";
+    font-weight: 600;
   }
 
   .category-remaining::before {
-    content: "Remaining: ";
-    font-weight: bold;
-  }
-
-  .category-name {
-    font-weight: bold;
-    margin-bottom: 6px;
+    content: "Remaining:";
+    font-weight: 600;
   }
 
   #budget-header {
-    display:none !important;
+    display: none !important;
   }
 }

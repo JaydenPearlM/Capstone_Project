@@ -12,7 +12,7 @@
 .transaction-headers,
 .transaction-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 2fr; /* match categories */
+  grid-template-columns: 1fr 1.5fr 1fr 2fr 2fr 1.5fr;
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
@@ -55,7 +55,7 @@
   transform: scale(1.03);
 }
 
-/* MOBILE */
+/* Mobile */
 @media (max-width: 600px) {
   .transaction-headers {
     display: none;
@@ -81,19 +81,26 @@
   .col-amount::before {
     content: "Amount:";
     font-weight: 600;
-    margin-right: 8px;
   }
 
   .col-description::before {
     content: "Description:";
     font-weight: 600;
-    margin-right: 8px;
   }
 
   .col-category::before {
     content: "Category:";
     font-weight: 600;
-    margin-right: 8px;
+  }
+
+  .col-type::before {
+    content: "Type:";
+    font-weight: 600;
+  }
+
+  .col-date::before {
+    content: "Date:";
+    font-weight: 600;
   }
 
   .col-actions {
@@ -103,21 +110,16 @@
     overflow-x: auto;
     width: 100%;
     margin-top: 4px;
-    justify-content: flex-end; /* aligns buttons to the right */
+    justify-content: flex-end;
   }
 
   .col-actions::before {
     content: "Actions:";
     font-weight: 600;
-    margin-right: 8px;
-    flex-grow: 1;
-    text-align: left;
+    margin-right: auto;
   }
 
   .col-actions button {
     flex-shrink: 0;
-    margin: 0;
-    padding: 6px 10px;
-    font-size: 0.9rem;
   }
 }

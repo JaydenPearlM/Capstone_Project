@@ -1,4 +1,4 @@
-export function handleCategorySubmit(
+export async function handleCategorySubmit(
   e,
   catForm,
   catEditing,
@@ -14,37 +14,71 @@ export function handleCategorySubmit(
     return;
   }
 
-  if (catEditing) {
-    setCategories((prev) =>
-      prev.map((cat) =>
-        cat.id === catForm.id ? { ...catForm, budget: budgetNum } : cat
-      )
-    );
-  } else {
-    const newCategory = {
-      id: categories.length ? Math.max(...categories.map((c) => c.id)) + 1 : 1,
-      name: catForm.name,
-      budget: budgetNum,
-    };
-    setCategories((prev) => [...prev, newCategory]);
-  }
+  try {
+    if (catEditing) {
+      const res = await fetch(`/api/categories/${catForm._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: catForm.name, budget: budgetNum })
+      });
 
-  setCatForm({ id: null, name: '', budget: '' });
-  setCatEditing(false);
+      if (!res.ok) {
+        const errorText = await res.text();
+        alert(`Error ${res.status}: ${errorText}`);
+        return;
+      }
+
+      const updated = await res.json();
+
+      // Update local categories state directly with updated category
+      setCategories(prev => prev.map(cat => cat._id === catForm._id ? updated : cat));
+    } else {
+      const res = await fetch('/api/categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: catForm.name, budget: budgetNum })
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        alert(`Error ${res.status}: ${errorText}`);
+        return;
+      }
+
+      const created = await res.json();
+
+      // Add newly created category to local state without re-fetching
+      setCategories(prev => [...prev, created]);
+    }
+
+    // Reset form and editing state
+    setCatForm({ id: null, name: '', budget: '' });
+    setCatEditing(false);
+  } catch (err) {
+    alert(`Failed to save category: ${err.message}`);
+  }
 }
 
-export function deleteCategory(catId, setCategories, setTransactions) {
-  if (
-    window.confirm(
-      'Deleting this category will also delete all related transactions. Continue?'
-    )
-  ) {
-    setCategories((prev) => prev.filter((cat) => cat.id !== catId));
-    setTransactions((prev) => prev.filter((tx) => tx.categoryId !== catId));
+export async function deleteCategory(catId, setCategories, setTransactions) {
+  if (window.confirm('Deleting this category will also delete all related transactions. Continue?')) {
+    try {
+      const res = await fetch(`/api/categories/${catId}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const errorText = await res.text();
+        alert(`Error ${res.status}: ${errorText}`);
+        return;
+      }
+
+      // Remove deleted category and related transactions from local state
+      setCategories(prev => prev.filter(cat => cat._id !== catId));
+      setTransactions(prev => prev.filter(tx => tx.categoryId !== catId));
+    } catch (err) {
+      alert(`Failed to delete category: ${err.message}`);
+    }
   }
 }
 
-export function handleTransactionSubmit(
+export async function handleTransactionSubmit(
   e,
   txForm,
   txEditing,
@@ -55,42 +89,78 @@ export function handleTransactionSubmit(
 ) {
   e.preventDefault();
   const amountNum = Number(txForm.amount);
-  if (
-    !txForm.description ||
-    !txForm.categoryId ||
-    isNaN(amountNum) ||
-    amountNum <= 0
-  ) {
+  if (!txForm.description || !txForm.categoryId || isNaN(amountNum) || amountNum <= 0) {
     alert('Please enter valid transaction details');
     return;
   }
 
-  if (txEditing) {
-    setTransactions((prev) =>
-      prev.map((tx) =>
-        tx.id === txForm.id
-          ? { ...txForm, amount: amountNum, categoryId: Number(txForm.categoryId) }
-          : tx
-      )
-    );
-  } else {
-    const newTransaction = {
-      id: transactions.length
-        ? Math.max(...transactions.map((t) => t.id)) + 1
-        : 1,
-      description: txForm.description,
-      amount: amountNum,
-      categoryId: Number(txForm.categoryId),
-    };
-    setTransactions((prev) => [...prev, newTransaction]);
-  }
+  const body = {
+    ...txForm,
+    amount: amountNum,
+    categoryId: txForm.categoryId,
+    type: txForm.type,
+    date: new Date(txForm.date)
+  };
 
-  setTxForm({ id: null, categoryId: '', amount: '', description: '' });
-  setTxEditing(false);
+  try {
+    if (txEditing) {
+      const res = await fetch(`/api/transactions/${txForm._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        alert(`Error ${res.status}: ${errorText}`);
+        return;
+      }
+
+      const updated = await res.json();
+
+      // Update local transactions state with updated transaction
+      setTransactions(prev => prev.map(tx => tx._id === txForm._id ? updated : tx));
+    } else {
+      const res = await fetch('/api/transactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        alert(`Error ${res.status}: ${errorText}`);
+        return;
+      }
+
+      const created = await res.json();
+
+      // Add new transaction to local state
+      setTransactions(prev => [...prev, created]);
+    }
+
+    // Reset form and editing state
+    setTxForm({ id: null, categoryId: '', amount: '', description: '', type: 'expense', date: '' });
+    setTxEditing(false);
+  } catch (err) {
+    alert(`Failed to save transaction: ${err.message}`);
+  }
 }
 
-export function deleteTransaction(txId, setTransactions) {
+export async function deleteTransaction(txId, setTransactions) {
   if (window.confirm('Delete this transaction?')) {
-    setTransactions((prev) => prev.filter((tx) => tx.id !== txId));
+    try {
+      const res = await fetch(`/api/transactions/${txId}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const errorText = await res.text();
+        alert(`Error ${res.status}: ${errorText}`);
+        return;
+      }
+
+      // Remove deleted transaction from local state
+      setTransactions(prev => prev.filter(tx => tx._id !== txId));
+    } catch (err) {
+      alert(`Failed to delete transaction: ${err.message}`);
+    }
   }
 }
