@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Home, 
+         AttachMoney,
          Logout, 
          Dashboard, 
          Savings, 
@@ -44,10 +45,13 @@ const SideBar = () => {
         <MenuItem className="menu-item" icon={<Dashboard />} href="/dashboard">
           Dashboard
         </MenuItem>
+        <MenuItem className="menu-item" icon={<AttachMoney />} href="/dashboard/budgeting">
+          Budgeting
+        </MenuItem>
         <MenuItem className="menu-item" icon={<CreditCard />} href="/dashboard/cardManagement">
           Card Management
         </MenuItem>
-        <MenuItem className="menu-item" icon={<ListAlt />} href="/dashboard/expenses">
+        <MenuItem className="menu-item" icon={<ListAlt />} href="/dashboard/budgeting">
           Expenses
         </MenuItem>
         <MenuItem className="menu-item" icon={<RealEstateAgent />} href="/dashboard/debt">
@@ -56,13 +60,13 @@ const SideBar = () => {
         <MenuItem className="menu-item" icon={<Savings />} href="/dashboard/savings">
           Savings
         </MenuItem>
-        <MenuItem className="menu-item" icon={<AccountBalanceWallet />} href="/dashboard/transactions">
+        <MenuItem className="menu-item" icon={<AccountBalanceWallet />} href="/dashboard/budgeting">
           Transactions
         </MenuItem>
         <MenuItem className="menu-item" icon={<Adjust />} href="/dashboard/goals">
           Goals
         </MenuItem>
-        <MenuItem className="menu-item" icon={<Settings />} href="/dashboard/savings">
+        <MenuItem className="menu-item" icon={<Settings />} href="/dashboard/settings">
           Settings
         </MenuItem>
         <MenuItem className="menu-item" icon={<Logout />} onClick={handleLogout}>
