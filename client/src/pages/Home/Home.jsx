@@ -8,7 +8,11 @@ import {Link} from 'react-router-dom';
 
 const Home = () => {
     return (
+<<<<<<< HEAD
         <div>
+=======
+        <div className="home-background">
+>>>>>>> main
             <header>
                 <NavBar />
             </header>

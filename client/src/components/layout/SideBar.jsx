@@ -45,10 +45,20 @@ const SideBar = () => {
         <MenuItem className="menu-item" icon={<Dashboard />} href="/dashboard">
           Dashboard
         </MenuItem>
+<<<<<<< HEAD
         <MenuItem className="menu-item" icon={<CreditCard />} href="/dashboard/cardManagement">
           Card Management
         </MenuItem>
         <MenuItem className="menu-item" icon={<ListAlt />} href="/dashboard/expenses">
+=======
+        <MenuItem className="menu-item" icon={<AttachMoney />} href="/dashboard/budgeting">
+          Budgeting
+        </MenuItem>
+        <MenuItem className="menu-item" icon={<CreditCard />} href="/dashboard/cardManagement">
+          Card Management
+        </MenuItem>
+        <MenuItem className="menu-item" icon={<ListAlt />} href="/dashboard/budgeting">
+>>>>>>> main
           Expenses
         </MenuItem>
         <MenuItem className="menu-item" icon={<RealEstateAgent />} href="/dashboard/debt">
@@ -57,12 +67,18 @@ const SideBar = () => {
         <MenuItem className="menu-item" icon={<Savings />} href="/dashboard/savings">
           Savings
         </MenuItem>
+<<<<<<< HEAD
         <MenuItem className="menu-item" icon={<AccountBalanceWallet />} href="/dashboard/transactions">
           Transactions
         </MenuItem>
         <MenuItem className="menu-item" icon={<AttachMoney />} href="/dashboard/budgeting">
           Budgeting
         </MenuItem>
+=======
+        <MenuItem className="menu-item" icon={<AccountBalanceWallet />} href="/dashboard/budgeting">
+          Transactions
+        </MenuItem>
+>>>>>>> main
         <MenuItem className="menu-item" icon={<Adjust />} href="/dashboard/goals">
           Goals
         </MenuItem>

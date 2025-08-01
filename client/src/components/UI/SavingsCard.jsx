@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Card, CardContent, Typography, Box, Divier } from "@mui/material";
+=======
+import { Card, CardContent } from "@mui/material";
+>>>>>>> main
 import "./dashboardCards.css";
 
 export default function SavingsCard() {
@@ -12,7 +16,10 @@ export default function SavingsCard() {
                 <div className="progress-bar goals">
                     <div className="progress-fill" style={{ width: "80%" }}></div>
                 </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
             </CardContent>
         </Card>
     )

@@ -1,6 +1,10 @@
 @import-normalize;
+<<<<<<< HEAD
 
 body {
+=======
+.home-background {
+>>>>>>> main
     background-image: url('homepage-background.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -8,14 +12,26 @@ body {
     min-height: 100vh;
     /* display: flex; */
     flex-direction: column;
+<<<<<<< HEAD
 }
+=======
+} 
+>>>>>>> main
 
 header {
     min-height: 50px;
 }
 
 footer {
+<<<<<<< HEAD
     min-height: 50px;
+=======
+  margin: 0 auto;
+  padding: 1rem;
+  background: white;
+  text-align: center;
+  width: 100%;
+>>>>>>> main
 }
 
 main {

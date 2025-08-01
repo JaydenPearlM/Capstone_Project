@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Card, CardContent, Typography, Box, Divier } from "@mui/material";
+=======
+import { Card, CardContent } from "@mui/material";
+>>>>>>> main
 import { Link} from 'react-router-dom';
 import "./dashboardCards.css";
 
