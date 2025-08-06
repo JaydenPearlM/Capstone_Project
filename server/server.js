@@ -13,7 +13,7 @@ const app = express();
 const plaidRoutes = require('./routes/Plaidroutes');
 const apiRoutes   = require('./routes/index');  // transactions, categories, etc.
 const budgetRoutes = require('./routes/budget');
-
+app.set('trust proxy', 1);
 app.use(cors({ origin: 'http://localhost:3000' }));
 
 // JSON body parser
@@ -33,7 +33,6 @@ app.use(rateLimit({
 app.get('/', (req, res) => {
   res.send(' Cache Budget API is running! ');
 })
-
 
 
 // Swagger
@@ -79,15 +78,18 @@ app.get('/api/v1', (req, res) => {
 
 
 // Category routes:
+const debtRoutes = require('./routes/debtRoutes');
+app.use('/api/v1/debts', debtRoutes);
+
+const savingsRoutes = require('./routes/savingsRoutes');
+app.use('/api/v1/savings', savingsRoutes);
+
 const categoryRoutes = require('./routes/categoryRoutes');
-app.use('/api/categories', categoryRoutes);
+app.use('/api/v1/categories', categoryRoutes);
 const transactionRoutes = require('./routes/transactionRoutes');
-app.use('/api/transactions', transactionRoutes);
-
+app.use('/api/v1/transactions', transactionRoutes);
 //budget route
-app.use('/api/budget', budgetRoutes);
-
-
+app.use('/api/v1/budget', budgetRoutes);
 // centralized error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);

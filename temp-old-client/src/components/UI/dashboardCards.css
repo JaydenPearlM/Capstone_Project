@@ -1,0 +1,27 @@
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    border-radius: 8px;
+    background-color: #e0e0e0;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 8px;
+    background-color: #9be3b3;
+}
+
+.accounts h2, .budget h2, .debt h2, .savings h2{
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.amount {
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-align: center;
+    margin: 1rem 0;
+}

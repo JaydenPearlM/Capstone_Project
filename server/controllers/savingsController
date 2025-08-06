@@ -1,0 +1,50 @@
+const SavingsGoal = require('../models/savingsGoal');
+
+
+exports.getAll = async (req, res) => {
+  try {
+    const goals = await SavingsGoal.find({ userId: req.user.id });
+    const withProgress = goals.map(goal => ({
+      ...goal.toObject(),
+      progress: goal.progress
+    }));
+    res.json(withProgress);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+exports.create = async (req, res) => {
+  try {
+    const newGoal = new SavingsGoal({ ...req.body, userId: req.user.id });
+    const saved = await newGoal.save();
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+
+exports.contribute = async (req, res) => {
+  try {
+    if (!req.body.amount || req.body.amount <= 0) {
+      return res.status(400).json({ error: 'Contribution amount must be a positive number' });
+    }
+
+    const goal = await SavingsGoal.findById(req.params.id);
+    if (!goal) return res.status(404).json({ error: 'Goal not found' });
+
+    if (!goal.userId.equals(req.user.id)) {
+      return res.status(403).json({ error: 'You are not authorized to update this goal' });
+    }
+
+    goal.contributions.push({ amount: req.body.amount });
+    await goal.save();
+
+    res.json({ ...goal.toObject(), progress: goal.progress });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
