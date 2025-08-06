@@ -7,7 +7,7 @@ const BudgetSummary = ({categories, transactions}) => {
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const res = await fetch("/api/budget");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/budget`);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         const data = await res.json();
         setSummary(data);

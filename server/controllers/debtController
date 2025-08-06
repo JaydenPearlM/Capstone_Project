@@ -1,0 +1,230 @@
+const Debt = require('../models/debtModel');
+
+exports.getAll = async (req, res) => {
+  try {
+    const debts = await Debt.find({ userId: req.user.id });
+
+    const totalDebt = debts.reduce((sum, debt) => sum + debt.currentBalance, 0);
+    const monthlyPayments = debts.reduce((sum, debt) => sum + debt.minimumPayment, 0);
+    
+    const totalBalanceWeight = debts.reduce((sum, debt) => sum + debt.currentBalance, 0);
+    const averageInterestRate = totalBalanceWeight > 0 
+      ? debts.reduce((sum, debt) => 
+          sum + (debt.interestRate * (debt.currentBalance / totalBalanceWeight)), 0
+        )
+      : 0;
+
+    const transformedDebts = debts.map(debt => ({
+      ...debt.toObject(),
+      paidAmount: debt.paidAmount,
+      progress: parseFloat(debt.progress),
+      remaining: debt.remaining
+    }));
+
+    res.json({
+      totalDebt,
+      monthlyPayments,
+      averageInterestRate: parseFloat(averageInterestRate.toFixed(2)),
+      debtFreeDate: null,
+      debts: transformedDebts
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+exports.getById = async (req, res) => {
+  try {
+    const debt = await Debt.findById(req.params.id);
+    if (!debt) {
+      return res.status(404).json({ error: 'Debt not found' });
+    }
+    
+    if (!debt.userId.equals(req.user.id)) {
+      return res.status(403).json({ error: 'You are not authorized to view this debt' });
+    }
+    
+    res.json({
+      ...debt.toObject(),
+      paidAmount: debt.paidAmount,
+      progress: parseFloat(debt.progress),
+      remaining: debt.remaining
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+exports.create = async (req, res) => {
+  try {
+    const { name, balance, interestRate, minimumPayment, type } = req.body;
+    
+    if (!name || !balance || !interestRate || !minimumPayment) {
+      return res.status(400).json({ 
+        error: 'Name, balance, interest rate, and minimum payment are required' 
+      });
+    }
+
+    if (balance <= 0 || interestRate < 0 || minimumPayment <= 0) {
+      return res.status(400).json({ 
+        error: 'Balance and minimum payment must be positive, interest rate cannot be negative' 
+      });
+    }
+
+    const newDebt = new Debt({ 
+      ...req.body, 
+      userId: req.user.id,
+      originalBalance: balance,
+      currentBalance: balance
+    });
+    
+    const saved = await newDebt.save();
+    
+    res.status(201).json({
+      ...saved.toObject(),
+      paidAmount: saved.paidAmount,
+      progress: parseFloat(saved.progress),
+      remaining: saved.remaining
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.update = async (req, res) => {
+  try {
+    const debt = await Debt.findById(req.params.id);
+    if (!debt) {
+      return res.status(404).json({ error: 'Debt not found' });
+    }
+    
+    if (!debt.userId.equals(req.user.id)) {
+      return res.status(403).json({ error: 'You are not authorized to update this debt' });
+    }
+
+    const allowedUpdates = ['name', 'currentBalance', 'interestRate', 'minimumPayment', 'type'];
+    const updates = {};
+    
+    for (const field of allowedUpdates) {
+      if (req.body[field] !== undefined) {
+        updates[field] = req.body[field];
+      }
+    }
+
+    if (updates.currentBalance !== undefined && updates.currentBalance < 0) {
+      return res.status(400).json({ error: 'Current balance cannot be negative' });
+    }
+    if (updates.interestRate !== undefined && updates.interestRate < 0) {
+      return res.status(400).json({ error: 'Interest rate cannot be negative' });
+    }
+    if (updates.minimumPayment !== undefined && updates.minimumPayment <= 0) {
+      return res.status(400).json({ error: 'Minimum payment must be positive' });
+    }
+
+    const updated = await Debt.findByIdAndUpdate(
+      req.params.id, 
+      updates, 
+      { new: true, runValidators: true }
+    );
+    
+    res.json({
+      ...updated.toObject(),
+      paidAmount: updated.paidAmount,
+      progress: parseFloat(updated.progress),
+      remaining: updated.remaining
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.makePayment = async (req, res) => {
+  try {
+    const { amount, note } = req.body;
+    
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ error: 'Payment amount must be a positive number' });
+    }
+    
+    const debt = await Debt.findById(req.params.id);
+    if (!debt) {
+      return res.status(404).json({ error: 'Debt not found' });
+    }
+    
+    if (!debt.userId.equals(req.user.id)) {
+      return res.status(403).json({ error: 'You are not authorized to make payments to this debt' });
+    }
+
+    if (amount > debt.currentBalance) {
+      return res.status(400).json({ 
+        error: `Payment amount ($${amount}) cannot exceed current balance ($${debt.currentBalance})` 
+      });
+    }
+
+    debt.payments.push({ 
+      amount: parseFloat(amount), 
+      note: note || null 
+    });
+    
+    debt.currentBalance = Math.max(0, debt.currentBalance - parseFloat(amount));
+    
+    await debt.save();
+    
+    res.json({
+      message: 'Payment recorded successfully',
+      debt: {
+        ...debt.toObject(),
+        paidAmount: debt.paidAmount,
+        progress: parseFloat(debt.progress),
+        remaining: debt.remaining
+      },
+      payment: debt.payments[debt.payments.length - 1]
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.delete = async (req, res) => {
+  try {
+    const debt = await Debt.findById(req.params.id);
+    if (!debt) {
+      return res.status(404).json({ error: 'Debt not found' });
+    }
+    
+    if (!debt.userId.equals(req.user.id)) {
+      return res.status(403).json({ error: 'You are not authorized to delete this debt' });
+    }
+    
+    await Debt.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Debt deleted successfully' });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.getPaymentHistory = async (req, res) => {
+  try {
+    const debt = await Debt.findById(req.params.id);
+    if (!debt) {
+      return res.status(404).json({ error: 'Debt not found' });
+    }
+    
+    if (!debt.userId.equals(req.user.id)) {
+      return res.status(403).json({ error: 'You are not authorized to view this debt' });
+    }
+    
+    const sortedPayments = debt.payments.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    res.json({
+      debtName: debt.name,
+      payments: sortedPayments,
+      totalPayments: sortedPayments.length,
+      totalAmountPaid: sortedPayments.reduce((sum, payment) => sum + payment.amount, 0)
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
