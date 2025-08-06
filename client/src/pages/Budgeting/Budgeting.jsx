@@ -43,7 +43,7 @@ export default function Budgeting() {
     }, []);
     const fetchCategories = async () => {
         try {
-            const res = await fetch('/api/categories');
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/categories`);
             if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
             const data = await res.json();
             setCategories(data);
@@ -54,7 +54,7 @@ export default function Budgeting() {
 
     const fetchTransactions = async () => {
         try {
-            const res = await fetch('/api/transactions');
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/transactions`);
             if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
             const data = await res.json();
             setTransactions(data);

@@ -18,7 +18,7 @@ export default function Dashboard() {
     useEffect(() => {
         async function fetchBudgetData() {
             try {
-                const response = await fetch("/api/budget"); // Your real API endpoint
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/budget`); // this line previously had a comment "your real api", this line was updated for vite
                 if (!response.ok) {
                     throw new Error("Failed to fetch budget data");
                 }

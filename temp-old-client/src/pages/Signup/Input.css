@@ -1,0 +1,38 @@
+.input-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+.input-wrapper input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #555;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  width: 24px;
+}
+
+.error {
+  color: #cc0000;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
