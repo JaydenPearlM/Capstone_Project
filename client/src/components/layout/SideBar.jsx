@@ -6,12 +6,9 @@ import { Home,
          Logout, 
          Dashboard, 
          Savings, 
-         Adjust, 
          Settings, 
          CreditCard, 
          RealEstateAgent,
-         AccountBalanceWallet,
-         ListAlt,
          Fullscreen, 
          FullscreenExit} from "@mui/icons-material"
 import {ToggleButton } from "@mui/material";
@@ -25,7 +22,7 @@ const SideBar = () => {
   }
 
   return (
-    <Sidebar className="sidebar" collapsed={collapsed}>
+    <Sidebar className="SideBar" collapsed={collapsed}>
       <div className="toggle-button">
         <ToggleButton
           value="check"
@@ -51,20 +48,11 @@ const SideBar = () => {
         <MenuItem className="menu-item" icon={<CreditCard />} href="/dashboard/cardManagement">
           Card Management
         </MenuItem>
-        <MenuItem className="menu-item" icon={<ListAlt />} href="/dashboard/budgeting">
-          Expenses
-        </MenuItem>
         <MenuItem className="menu-item" icon={<RealEstateAgent />} href="/dashboard/debt">
           Debt
         </MenuItem>
         <MenuItem className="menu-item" icon={<Savings />} href="/dashboard/savings">
           Savings
-        </MenuItem>
-        <MenuItem className="menu-item" icon={<AccountBalanceWallet />} href="/dashboard/budgeting">
-          Transactions
-        </MenuItem>
-        <MenuItem className="menu-item" icon={<Adjust />} href="/dashboard/goals">
-          Goals
         </MenuItem>
         <MenuItem className="menu-item" icon={<Settings />} href="/dashboard/settings">
           Settings

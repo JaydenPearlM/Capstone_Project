@@ -1,0 +1,55 @@
+.card-management-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Layout for sidebar + content */
+.card-management-content {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar */
+.SideBar {
+  width: 250px;
+  flex-shrink: 0;
+}
+
+/* Coming Soon Section */
+.coming-soon-section {
+  flex: 1;
+  padding: 2rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Add this when you're ready to include your image */
+.coming-soon-section {
+  background-image: url('/path/to/your/background.jpg'); /* Replace with actual path */
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .card-management-content {
+    flex-direction: column;
+  }
+
+  .SideBar {
+    width: 100%;
+  }
+
+  .coming-soon-section {
+    padding: 1.5rem;
+    font-size: 1.5rem;
+    min-height: 200px;
+  }
+}

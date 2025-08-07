@@ -38,6 +38,11 @@ const NavBar = () => {
             Sign Up
           </NavLink>
         </li>
+        <li>
+          <NavLink to="/contactUs">
+            Contact Us
+          </NavLink>
+        </li>
       </ul>
     </div >
   );

@@ -1,19 +1,20 @@
 import NavBar from "../../components/layout/NavBar";
 import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
+import "./CardManagement.css";
 
 export default function CardManagement(){
     return(
-        <div>
+         <div className="card-management-page">
             <header>
                 <NavBar />
             </header>
-            
-            <div>
+
+            <div className="card-management-content">
                 <SideBar />
-                <p>
-                    Card management page
-                </p>
+                <div className="coming-soon-section">
+                    <h1>Coming Soon...</h1>
+                </div>
             </div>
 
             <footer>
