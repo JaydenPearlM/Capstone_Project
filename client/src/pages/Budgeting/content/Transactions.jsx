@@ -2,6 +2,11 @@ import React from 'react';
 import "./Transactions.css";
 
 const Transactions = ({ transactions, categories, setTxForm, setTxEditing, deleteTransaction }) => {
+  const formatDate = (isoDate) => {
+    const [year, month, day] = isoDate.slice(0, 10).split("-");
+    return `${month}/${day}/${year}`;
+  };
+
   return (
     <div className="transactions-section">
       <h2>Transactions</h2>
@@ -22,7 +27,7 @@ const Transactions = ({ transactions, categories, setTxForm, setTxEditing, delet
               <div className="col-description">{tx.description}</div>
               <div className="col-category">{category?.name || "Uncategorized"}</div>
               <div className="col-type">{tx.type}</div>
-              <div className="col-date">{new Date(tx.date).toLocaleDateString()}</div>
+              <div className="col-date">{formatDate(tx.date)}</div>
               <div className="col-actions">
                 <button onClick={() => {
                   setTxForm(tx);
