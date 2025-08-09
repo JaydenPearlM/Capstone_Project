@@ -19,16 +19,22 @@ export const AuthProvider = ({ children }) => {
 
   // Set up axios interceptor or fetch headers
   const authFetch = async (url, options = {}) => {
+    // Get the current token from state or localStorage
+    const currentToken = token || localStorage.getItem('token');
+    
     const headers = {
       'Content-Type': 'application/json',
       ...options.headers,
     };
 
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
+    if (currentToken) {
+      headers.Authorization = `Bearer ${currentToken}`;
     }
 
-    const response = await fetch(`${API_BASE_URL}${url}`, {
+    // Check if url is already a full URL or just a path
+    const fetchUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+
+    const response = await fetch(fetchUrl, {
       ...options,
       headers,
     });
@@ -54,9 +60,9 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (response.ok) {
+        localStorage.setItem('token', data.token);
         setToken(data.token);
         setUser(data.user);
-        localStorage.setItem('token', data.token);
         return { success: true, data };
       } else {
         return { success: false, error: data.message };
@@ -79,9 +85,9 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (response.ok) {
+        localStorage.setItem('token', data.token);
         setToken(data.token);
         setUser(data.user);
-        localStorage.setItem('token', data.token);
         return { success: true, data };
       } else {
         return { success: false, error: data.message };
@@ -98,7 +104,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getCurrentUser = async () => {
-    if (!token) {
+    const currentToken = token || localStorage.getItem('token');
+    
+    if (!currentToken) {
       setLoading(false);
       return;
     }
@@ -120,8 +128,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getCurrentUser();
-  }, [token]);
+    // Only get current user on initial load if there's a token in localStorage
+    const storedToken = localStorage.getItem('token');
+    if (storedToken && !user) {
+      getCurrentUser();
+    } else if (!storedToken) {
+      setLoading(false);
+    }
+  }, []); // Run only once on mount
 
   const value = {
     user,

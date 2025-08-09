@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import "./BudgetSummary.css";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const BudgetSummary = ({categories, transactions}) => {
+  const { authFetch } = useAuth();
   const [summary, setSummary] = useState(null);
 
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/budget`);
+        const res = await authFetch(`${import.meta.env.VITE_API_URL}/budget`);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         const data = await res.json();
         setSummary(data);
@@ -18,7 +20,7 @@ const BudgetSummary = ({categories, transactions}) => {
     if (categories.length && transactions.length) {
       fetchSummary();
     }
-  }, [categories, transactions]);
+  }, [categories, transactions, authFetch]);
 
   if (!summary) return <p>Loading budget summary...</p>;
 
