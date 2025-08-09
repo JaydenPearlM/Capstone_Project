@@ -1,5 +1,7 @@
 // src/components/PlaidLinkButton.js
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 // import 'normalize.css';
 import './App.css';
 import Home from "./pages/Home/Home";
@@ -16,22 +18,55 @@ import ContactUs from './pages/ContactUs/ContactUs.jsx'
 
 export default function App() {
   return (
-    <Router>
-      <div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/plaid" element={<Plaid />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/debt" element={<Debt />} />
-          <Route path="/dashboard/savings" element={<Savings />} />
-          <Route path="/dashboard/settings" element={<Settings />} />
-          <Route path="/dashboard/cardManagement" element= {<CardManagement />}/>
-          <Route path="/dashboard/budgeting" element={<Budgeting />} />
-          <Route path="/contactUs" element={<ContactUs />}/>
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/contactUs" element={<ContactUs />}/>
+            
+            {/* Protected routes */}
+            <Route path="/plaid" element={
+              <ProtectedRoute>
+                <Plaid />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/debt" element={
+              <ProtectedRoute>
+                <Debt />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/savings" element={
+              <ProtectedRoute>
+                <Savings />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/settings" element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/cardManagement" element={
+              <ProtectedRoute>
+                <CardManagement />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/budgeting" element={
+              <ProtectedRoute>
+                <Budgeting />
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
