@@ -9,8 +9,10 @@ import SavingsCard from "../../components/UI/SavingsCard";
 import "./Dashboard.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect} from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Dashboard() {
+    const { authFetch } = useAuth();
     const [budgetData, setBudgetData] = useState({ totalSpent: 0, totalBudget: 0 });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -18,7 +20,7 @@ export default function Dashboard() {
     useEffect(() => {
         async function fetchBudgetData() {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/budget`); // this line previously had a comment "your real api", this line was updated for vite
+                const response = await authFetch(`${import.meta.env.VITE_API_URL}/budget`); // using authFetch for authenticated request
                 if (!response.ok) {
                     throw new Error("Failed to fetch budget data");
                 }
@@ -35,7 +37,7 @@ export default function Dashboard() {
         }
 
         fetchBudgetData();
-    }, []);
+    }, [authFetch]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error loading budget: {error}</p>;

@@ -5,7 +5,8 @@ export async function handleCategorySubmit(
   categories,
   setCategories,
   setCatForm,
-  setCatEditing
+  setCatEditing,
+  authFetch
 ) {
   e.preventDefault();
   const budgetNum = Number(catForm.budget);
@@ -16,7 +17,7 @@ export async function handleCategorySubmit(
 
   try {
     if (catEditing) {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/categories/${catForm._id}`, {
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories/${catForm._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: catForm.name, budget: budgetNum })
@@ -33,7 +34,7 @@ export async function handleCategorySubmit(
       // Update local categories state directly with updated category
       setCategories(prev => prev.map(cat => cat._id === catForm._id ? updated : cat));
     } else {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: catForm.name, budget: budgetNum })
@@ -59,10 +60,10 @@ export async function handleCategorySubmit(
   }
 }
 
-export async function deleteCategory(catId, setCategories, setTransactions) {
+export async function deleteCategory(catId, setCategories, setTransactions, authFetch) {
   if (window.confirm('Deleting this category will also delete all related transactions. Continue?')) {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/categories/${catId}`, { method: 'DELETE' });
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories/${catId}`, { method: 'DELETE' });
       if (!res.ok) {
         const errorText = await res.text();
         alert(`Error ${res.status}: ${errorText}`);
@@ -85,7 +86,8 @@ export async function handleTransactionSubmit(
   transactions,
   setTransactions,
   setTxForm,
-  setTxEditing
+  setTxEditing,
+  authFetch
 ) {
   e.preventDefault();
   const amountNum = Number(txForm.amount);
@@ -104,7 +106,7 @@ export async function handleTransactionSubmit(
 
   try {
     if (txEditing) {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/transactions/${txForm._id}`, {
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/transactions/${txForm._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -121,7 +123,7 @@ export async function handleTransactionSubmit(
       // Update local transactions state with updated transaction
       setTransactions(prev => prev.map(tx => tx._id === txForm._id ? updated : tx));
     } else {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/transactions`, {
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/transactions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -147,10 +149,10 @@ export async function handleTransactionSubmit(
   }
 }
 
-export async function deleteTransaction(txId, setTransactions) {
+export async function deleteTransaction(txId, setTransactions, authFetch) {
   if (window.confirm('Delete this transaction?')) {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/transactions/${txId}`, { method: 'DELETE' });
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/transactions/${txId}`, { method: 'DELETE' });
       if (!res.ok) {
         const errorText = await res.text();
         alert(`Error ${res.status}: ${errorText}`);

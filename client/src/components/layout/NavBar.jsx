@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import "./NavBar.css";
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from "../../contexts/AuthContext";
 import CacheBudgetingLogo from "../../assets/CacheBudgetingLogo-long.png"
 import MenuIcon from '@mui/icons-material/Menu';
 
 const NavBar = () => {
   const [ menuOpen, setMenuOpen ] = useState(false);
-  //user
-  //logout
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+    setMenuOpen(false);
+  };
 
   return (
     <div className="navBar">
@@ -19,27 +26,54 @@ const NavBar = () => {
       </div>
       <ul className={menuOpen ? "open" : ""}>
         <li>
-          <NavLink to="/">
+          <NavLink to="/" onClick={() => setMenuOpen(false)}>
             Home
           </NavLink>
         </li>
+        {user ? (
+          <>
+            <li>
+              <NavLink to="/dashboard" onClick={() => setMenuOpen(false)}>
+                Dashboard
+              </NavLink>
+            </li>
+            <li>
+              <span style={{ color: '#333', padding: '0.5rem' }}>
+                Welcome, {user.firstName}!
+              </span>
+            </li>
+            <li>
+              <button 
+                onClick={handleLogout}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#007bff',
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                  textDecoration: 'underline'
+                }}
+              >
+                Logout
+              </button>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <NavLink to="/login" onClick={() => setMenuOpen(false)}>
+                Login
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/signup" onClick={() => setMenuOpen(false)}>
+                Sign Up
+              </NavLink>
+            </li>
+          </>
+        )}
         <li>
-          <NavLink to="/dashboard">
-            Dashboard
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/login">
-            Login
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/signup">
-            Sign Up
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/contactUs">
+          <NavLink to="/contactUs" onClick={() => setMenuOpen(false)}>
             Contact Us
           </NavLink>
         </li>
