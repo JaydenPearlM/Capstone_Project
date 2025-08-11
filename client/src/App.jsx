@@ -15,6 +15,7 @@ import Login from './pages/Login/Login.jsx';
 import Settings from './pages/Settings/Settings.jsx';
 import Budgeting from './pages/Budgeting/Budgeting.jsx';
 import ContactUs from './pages/ContactUs/ContactUs.jsx'
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword.jsx';
 
 export default function App() {
   return (
@@ -27,7 +28,8 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/contactUs" element={<ContactUs />}/>
-            
+            <Route path="/forgot-password" element={<ForgotPassword/>} />
+
             {/* Protected routes */}
             <Route path="/plaid" element={
               <ProtectedRoute>
