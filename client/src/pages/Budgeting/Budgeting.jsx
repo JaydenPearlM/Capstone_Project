@@ -19,8 +19,10 @@ import {
 } from './forms/handlers';
 
 import './Budgeting.css';
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Budgeting() {
+    const { authFetch } = useAuth();
     const [categories, setCategories] = useState([]);
     const [transactions, setTransactions] = useState([]);
 
@@ -43,7 +45,7 @@ export default function Budgeting() {
     }, []);
     const fetchCategories = async () => {
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/categories`);
+            const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories`);
             if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
             const data = await res.json();
             setCategories(data);
@@ -54,7 +56,7 @@ export default function Budgeting() {
 
     const fetchTransactions = async () => {
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/transactions`);
+            const res = await authFetch(`${import.meta.env.VITE_API_URL}/transactions`);
             if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
             const data = await res.json();
             setTransactions(data);
@@ -117,7 +119,7 @@ export default function Budgeting() {
                             categories={categories}
                             setTxForm={setTxForm}
                             setTxEditing={setTxEditing}
-                            deleteTransaction={(id) => deleteTransaction(id, setTransactions)}
+                            deleteTransaction={(id) => deleteTransaction(id, setTransactions, authFetch)}
                         />
 
                         <TransactionForm
@@ -128,7 +130,9 @@ export default function Budgeting() {
                             categories={categories}
                             transactions={transactions}
                             setTransactions={setTransactions}
-                            handleSubmit={handleTransactionSubmit}
+                            handleSubmit={(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing) => 
+                                handleTransactionSubmit(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing, authFetch)
+                            }
                             className="transaction-form"
                         />
                     </div>
@@ -139,7 +143,7 @@ export default function Budgeting() {
                             transactions={transactions}
                             setCatForm={setCatForm}
                             setCatEditing={setCatEditing}
-                            deleteCategory={(id) => deleteCategory(id, setCategories, setTransactions)}
+                            deleteCategory={(id) => deleteCategory(id, setCategories, setTransactions, authFetch)}
                         />
 
                         <CategoryForm
@@ -149,7 +153,9 @@ export default function Budgeting() {
                             setCatEditing={setCatEditing}
                             categories={categories}
                             setCategories={setCategories}
-                            handleSubmit={handleCategorySubmit}
+                            handleSubmit={(e, catForm, catEditing, categories, setCategories, setCatForm, setCatEditing) => 
+                                handleCategorySubmit(e, catForm, catEditing, categories, setCategories, setCatForm, setCatEditing, authFetch)
+                            }
                             className="category-form"
                         />
                     </div>

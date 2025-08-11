@@ -3,7 +3,7 @@ import InputField from "./InputField";
 import "./LoginForm.css";
 import {Visibility, VisibilityOff } from "@mui/icons-material"
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = ({ onSubmit, loading }) => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
@@ -26,6 +26,7 @@ const LoginForm = ({ onSubmit }) => {
         name="email"
         value={formData.email}
         onChange={handleChange}
+        required
       />
 
       <div className="input-group password-group">
@@ -45,7 +46,9 @@ const LoginForm = ({ onSubmit }) => {
         </div>
       </div>
 
-      <button type="submit">Login</button>
+      <button type="submit" disabled={loading}>
+        {loading ? 'Logging in...' : 'Login'}
+      </button>
     </form>
   );
 };

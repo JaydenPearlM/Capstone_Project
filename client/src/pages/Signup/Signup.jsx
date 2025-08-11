@@ -1,12 +1,33 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/layout/NavBar";
 import Footer from "../../components/layout/Footer";
 import SignupForm from "./SignupForm";
+import { useAuth } from "../../contexts/AuthContext";
 import "./Signup.css";
 
 export default function Signup() {
-    const handleSignup = (data) => {
-        console.log("Signup data:", data);
-        // TODO: send to backend API or further processing
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const { register } = useAuth();
+    const navigate = useNavigate();
+
+    const handleSignup = async (data) => {
+        setLoading(true);
+        setError('');
+        
+        // Remove confirmPassword before sending to backend
+        const { confirmPassword, ...userData } = data;
+        
+        const result = await register(userData);
+        
+        if (result.success) {
+            navigate('/dashboard');
+        } else {
+            setError(result.error);
+        }
+        
+        setLoading(false);
     };
 
     return (
@@ -17,7 +38,8 @@ export default function Signup() {
             <div className="main-content">
                 <div className="signup-page">
                     <h2>Create an Account</h2>
-                    <SignupForm onSubmit={handleSignup} />
+                    {error && <div className="error-message" style={{color: 'red', marginBottom: '1rem'}}>{error}</div>}
+                    <SignupForm onSubmit={handleSignup} loading={loading} />
                 </div>
             </div>
             <footer>

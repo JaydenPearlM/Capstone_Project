@@ -2,14 +2,18 @@ const express = require('express');
 const router = express.Router();
 const Category = require('../models/Category');
 const Transaction = require('../models/Transaction');
+const auth = require('../middleware/auth');
+
+// Apply auth middleware
+router.use(auth);
 
 router.get('/', async (req, res) => {
   try {
-    // Fetch all categories
-    const categories = await Category.find();
+    // Fetch categories for the authenticated user
+    const categories = await Category.find({ user: req.user._id });
 
-    // Fetch all transactions
-    const transactions = await Transaction.find();
+    // Fetch transactions for the authenticated user
+    const transactions = await Transaction.find({ user: req.user._id });
 
     // Build category summaries
     const categorySummaries = categories.map((cat) => {
