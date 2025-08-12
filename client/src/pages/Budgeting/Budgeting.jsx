@@ -43,6 +43,7 @@ export default function Budgeting() {
         fetchCategories();
         fetchTransactions();
     }, []);
+
     const fetchCategories = async () => {
         try {
             const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories`);
@@ -67,32 +68,16 @@ export default function Budgeting() {
 
     const getCategorySpending = (categoryId) =>
         transactions
-            .filter((tx) => tx.categoryId === categoryId)
-            .reduce((sum, tx) => sum + tx.amount, 0);
+            .filter((tx) =>
+                tx.categoryId &&
+                (tx.categoryId._id?.toString?.() || tx.categoryId.toString()) === categoryId.toString()
+            )
+            .reduce((sum, tx) => sum + Number(tx.amount), 0);
 
     const totalBudget = categories.reduce((sum, cat) => sum + Number(cat.budget), 0);
     const totalSpent = transactions.reduce((sum, tx) => sum + Number(tx.amount), 0);
-    const remaining = Math.max(totalBudget - totalSpent, 0);
 
-    const pastelColors = [
-        '#A8DADC', '#FFDDD2', '#FFD6E0', '#E0BBE4', '#B5EAD7',
-        '#C7CEEA', '#FCD5CE', '#D8E2DC', '#E2F0CB', '#B5D2CB',
-    ];
-
-    const pieData = {
-        labels: [...categories.map((cat) => cat.name), 'Remaining Budget'],
-        datasets: [
-            {
-                data: [...categories.map((cat) => getCategorySpending(cat._id)), remaining],
-                backgroundColor: [
-                    ...categories.map((_, idx) => pastelColors[idx % pastelColors.length]),
-                    '#D3D3D3',
-                ],
-                borderColor: '#ffffff',
-                borderWidth: 2,
-            },
-        ],
-    };
+    const noData = categories.length === 0 && transactions.length === 0;
 
     return (
         <div>
@@ -105,12 +90,49 @@ export default function Budgeting() {
 
                 <div className="budget-content">
 
+                    {/* Show a getting started section if there is no data */}
+                    {noData && (
+                        <div className="getting-started">
+                            <h2>Getting Started with Budgeting</h2>
+                            <p>
+                                It looks like you haven’t set up your budget yet!
+                                Here’s how to begin:
+                            </p>
+                            <ol>
+                                <li>Create your first budget category (e.g., Rent, Groceries, Savings).</li>
+                                <li>Set a monthly budget amount for each category.</li>
+                                <li>Add your transactions to track spending.</li>
+                                <li>Watch the pie chart update in real-time!</li>
+                            </ol>
+                        </div>
+                    )}
+
                     <div className="budgeting-summary-container">
                         <h2>Budget Summary</h2>
-                        <div className="pieChart">
-                            <Pie data={pieData} />
-                        </div>
                         <BudgetSummary categories={categories} transactions={transactions} />
+                    </div>
+
+                    <div className="categories-container">
+                        <Categories
+                            categories={categories}
+                            transactions={transactions}
+                            setCatForm={setCatForm}
+                            setCatEditing={setCatEditing}
+                            deleteCategory={(id) => deleteCategory(id, setCategories, setTransactions, authFetch)}
+                        />
+
+                        <CategoryForm
+                            catForm={catForm}
+                            setCatForm={setCatForm}
+                            catEditing={catEditing}
+                            setCatEditing={setCatEditing}
+                            categories={categories}
+                            setCategories={setCategories}
+                            handleSubmit={(e, catForm, catEditing, categories, setCategories, setCatForm, setCatEditing) =>
+                                handleCategorySubmit(e, catForm, catEditing, categories, setCategories, setCatForm, setCatEditing, authFetch)
+                            }
+                            className="category-form"
+                        />
                     </div>
 
                     <div className="transactions-container">
@@ -130,35 +152,14 @@ export default function Budgeting() {
                             categories={categories}
                             transactions={transactions}
                             setTransactions={setTransactions}
-                            handleSubmit={(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing) => 
+                            handleSubmit={(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing) =>
                                 handleTransactionSubmit(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing, authFetch)
                             }
                             className="transaction-form"
                         />
                     </div>
 
-                    <div className="categories-container">
-                        <Categories
-                            categories={categories}
-                            transactions={transactions}
-                            setCatForm={setCatForm}
-                            setCatEditing={setCatEditing}
-                            deleteCategory={(id) => deleteCategory(id, setCategories, setTransactions, authFetch)}
-                        />
 
-                        <CategoryForm
-                            catForm={catForm}
-                            setCatForm={setCatForm}
-                            catEditing={catEditing}
-                            setCatEditing={setCatEditing}
-                            categories={categories}
-                            setCategories={setCategories}
-                            handleSubmit={(e, catForm, catEditing, categories, setCategories, setCatForm, setCatEditing) => 
-                                handleCategorySubmit(e, catForm, catEditing, categories, setCategories, setCatForm, setCatEditing, authFetch)
-                            }
-                            className="category-form"
-                        />
-                    </div>
                 </div>
             </div>
 

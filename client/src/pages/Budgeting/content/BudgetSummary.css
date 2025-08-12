@@ -4,6 +4,15 @@
   margin-top: 1rem;
 }
 
+.pieChart {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 250px;
+  max-height: 500px;
+  
+}
+
 .total-budget-summary {
   display: flex;
   flex-direction: column;

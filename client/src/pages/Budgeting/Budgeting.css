@@ -17,15 +17,6 @@
   flex-direction: column;
 }
 
-.pieChart {
-    display: flex;
-    justify-content: center;
-  width: 100%;
-  min-height: 250px;
-  max-height: 500px;
-  
-}
-
 .budgeting-summary-container,
 .categories-container,
 .transactions-container {
@@ -39,6 +30,26 @@
   flex-direction: column;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin: 15px 0;
+}
+
+.getting-started {
+  background: #f7f9fc;
+  border: 1px solid #e0e4eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.getting-started h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.getting-started ol {
+  margin-top: 10px;
+  padding-left: 20px;
+  line-height: 1.6;
 }
 
 @media (max-width: 600px) {

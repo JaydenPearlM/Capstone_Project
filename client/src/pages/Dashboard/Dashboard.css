@@ -36,7 +36,6 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Optional: Add a hover effect for interactivity */
 .card:hover {
   transform: translateY(-4px);
   box-shadow:

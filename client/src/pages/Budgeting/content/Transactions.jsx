@@ -20,12 +20,11 @@ const Transactions = ({ transactions, categories, setTxForm, setTxEditing, delet
       </div>
       <ul className="transaction-list">
         {transactions.map((tx) => {
-          const category = categories.find((c) => c._id === tx.categoryId);
           return (
             <li key={tx._id} className="transaction-row">
               <div className="col-amount">${Number(tx.amount).toFixed(2)}</div>
               <div className="col-description">{tx.description}</div>
-              <div className="col-category">{category?.name || "Uncategorized"}</div>
+              <div className="col-category">{tx.categoryId?.name || "Uncategorized"}</div>
               <div className="col-type">{tx.type}</div>
               <div className="col-date">{formatDate(tx.date)}</div>
               <div className="col-actions">

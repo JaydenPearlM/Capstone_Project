@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { Pie } from "react-chartjs-2";
+import "chart.js/auto";
 import "./BudgetSummary.css";
 import { useAuth } from "../../../contexts/AuthContext";
 
-const BudgetSummary = ({categories, transactions}) => {
+const BudgetSummary = ({ categories, transactions }) => {
   const { authFetch } = useAuth();
   const [summary, setSummary] = useState(null);
 
@@ -17,15 +19,62 @@ const BudgetSummary = ({categories, transactions}) => {
         console.error("Failed to fetch budget summary:", err);
       }
     };
-    if (categories.length && transactions.length) {
+    if (categories.length) {
       fetchSummary();
     }
   }, [categories, transactions, authFetch]);
+
+  const getCategorySpending = (categoryId) =>
+    transactions
+      .filter(
+        (tx) =>
+          tx.categoryId &&
+          (tx.categoryId._id?.toString?.() || tx.categoryId.toString()) ===
+            categoryId.toString()
+      )
+      .reduce((sum, tx) => sum + Number(tx.amount), 0);
+
+  const totalBudget = categories.reduce(
+    (sum, cat) => sum + Number(cat.budget),
+    0
+  );
+  const totalSpent = transactions.reduce(
+    (sum, tx) => sum + Number(tx.amount),
+    0
+  );
+  const remaining = Math.max(totalBudget - totalSpent, 0);
+
+  const pastelColors = [
+    "#A8DADC", "#FFDDD2", "#FFD6E0", "#E0BBE4", "#B5EAD7",
+    "#C7CEEA", "#FCD5CE", "#D8E2DC", "#E2F0CB", "#B5D2CB",
+  ];
+
+  const pieData = {
+    labels: [...categories.map((cat) => cat.name), "Remaining Budget"],
+    datasets: [
+      {
+        data: [
+          ...categories.map((cat) => getCategorySpending(cat._id)),
+          remaining,
+        ],
+        backgroundColor: [
+          ...categories.map((_, idx) => pastelColors[idx % pastelColors.length]),
+          "#D3D3D3",
+        ],
+        borderColor: "#ffffff",
+        borderWidth: 2,
+      },
+    ],
+  };
 
   if (!summary) return <p>Loading budget summary...</p>;
 
   return (
     <div className="budgeting-section">
+      <div className="pieChart">
+        <Pie data={pieData} />
+      </div>
+
       <div className="total-budget-summary">
         <p><strong>Total Budget:</strong> ${summary.totalBudget.toFixed(2)}</p>
         <p><strong>Total Spent:</strong> ${summary.totalSpent.toFixed(2)}</p>
