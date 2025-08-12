@@ -325,7 +325,7 @@ export default function Budgeting() {
                                 transactions={transactions}
                                 setTransactions={setTransactions}
                                 handleSubmit={(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing) => {
-                                    handleTransactionSubmit(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing, authFetch);
+                                    handleTransactionSubmit(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing, authFetch, categories);
                                     setShowTransactionModal(false);
                                 }}
                             />
@@ -335,12 +335,13 @@ export default function Budgeting() {
                     <div className="categories-container">
                         <Categories
                             categories={filteredCategories}
-                            transactions={filteredTransactions}
+                            transactions={transactions}
                             setCatForm={(form) => {
                                 setCatForm(form);
                             }}
                             setCatEditing={setCatEditing}
                             deleteCategory={(id) => deleteCategory(id, setCategories, setTransactions, authFetch)}
+                            dateRange={dateRange}
                         />
 
                         <button

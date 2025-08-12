@@ -1,53 +1,41 @@
 import React from "react";
 import "./Categories.css";
 
-const Categories = ({ categories, transactions, setCatForm, setCatEditing, deleteCategory, view, biweeklyStart }) => {
-  // Helper: get current period date range based on view
-  const getPeriodRange = (date, view, biweeklyStart) => {
-    const d = new Date(date);
-    if (view === "weekly") {
-      const start = new Date(d);
-      start.setDate(start.getDate() - start.getDay()); // Sunday start
-      const end = new Date(start);
-      end.setDate(start.getDate() + 6);
-      return { start, end };
-    }
-    if (view === "biweekly") {
-      if (!biweeklyStart) return { start: new Date(0), end: new Date() };
-      const startRef = new Date(biweeklyStart);
-      const diffDays = Math.floor((d - startRef) / (1000 * 60 * 60 * 24));
-      const periodIndex = Math.floor(diffDays / 14);
-      const start = new Date(startRef);
-      start.setDate(startRef.getDate() + periodIndex * 14);
-      const end = new Date(start);
-      end.setDate(start.getDate() + 13);
-      return { start, end };
-    }
-    if (view === "monthly") {
-      const start = new Date(d.getFullYear(), d.getMonth(), 1);
-      const end = new Date(d.getFullYear(), d.getMonth() + 1, 0);
-      return { start, end };
-    }
-    return { start: new Date(0), end: new Date() };
-  };
+const Categories = ({
+  categories,
+  transactions,
+  setCatForm,
+  setCatEditing,
+  deleteCategory,
+  dateRange,  // pass from Budgeting.jsx
+}) => {
+  if (!dateRange || !dateRange.start) return null;
 
-  const currentRange = getPeriodRange(new Date(), view, biweeklyStart);
+  // Ensure dateRange.start is a Date object
+  const startDate =
+    dateRange.start instanceof Date ? dateRange.start : new Date(dateRange.start);
 
-  // Calculate total spending in current period per category
-  const getSpending = (id) => 
+  // Compute full month range for the month containing dateRange.start
+  const monthStart = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+  const monthEnd = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+  monthEnd.setHours(23, 59, 59, 999);
+
+  // Sum spending for each category within that month
+  const getSpending = (categoryId) =>
     transactions
       .filter((tx) => {
-        const catId = tx.categoryId?._id || tx.categoryId;
-        if (catId !== id) return false;
+        const txCatId = tx.categoryId?._id || tx.categoryId;
+        if (txCatId !== categoryId) return false;
+
         const txDate = new Date(tx.date);
-        return txDate >= currentRange.start && txDate <= currentRange.end;
+        return txDate >= monthStart && txDate <= monthEnd;
       })
       .reduce((sum, tx) => sum + Number(tx.amount), 0);
 
   return (
     <div className="categories-section">
       <h2>Categories</h2>
-      <p>Budget number shown is for the whole month.</p>
+      <p>Budget number shown and spent is for the whole month. To see your weekly amount spent and weekly budget number, visit the budget summary section.</p>
       <div className="category-headers">
         <div className="col-name">Category</div>
         <div className="col-budget">Budget</div>

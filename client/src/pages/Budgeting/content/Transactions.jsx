@@ -1,7 +1,15 @@
 import React from "react";
 import "./Transactions.css";
 
-const Transactions = ({ transactions, categories, setTxForm, setTxEditing, deleteTransaction, dateRange, view }) => {
+const Transactions = ({
+  transactions,
+  categories,
+  setTxForm,
+  setTxEditing,
+  deleteTransaction,
+  dateRange,
+  view
+}) => {
   const formatDate = (isoDate) => {
     const [year, month, day] = isoDate.slice(0, 10).split("-");
     return `${month}/${day}/${year}`;
@@ -9,7 +17,11 @@ const Transactions = ({ transactions, categories, setTxForm, setTxEditing, delet
 
   // Helper to format Date objects nicely
   const formatDisplayDate = (date) => {
-    return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+    return date.toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   // Use passed dateRange to filter transactions and show current period
@@ -25,7 +37,8 @@ const Transactions = ({ transactions, categories, setTxForm, setTxEditing, delet
       <h2>Transactions</h2>
       {dateRange && (
         <p className="current-period">
-          Current Period: {formatDisplayDate(dateRange.start)} - {formatDisplayDate(dateRange.end)}
+          Current Period: {formatDisplayDate(dateRange.start)} -{" "}
+          {formatDisplayDate(dateRange.end)}
         </p>
       )}
 
@@ -38,32 +51,46 @@ const Transactions = ({ transactions, categories, setTxForm, setTxEditing, delet
         <div className="col-actions">Actions</div>
       </div>
       <ul className="transaction-list">
-        {filteredTransactions.map((tx) => (
-          <li key={tx._id} className="transaction-row">
-            <div className="col-amount">${Number(tx.amount).toFixed(2)}</div>
-            <div className="col-description">{tx.description}</div>
-            <div className="col-category">{tx.categoryId?.name || "Uncategorized"}</div>
-            <div className="col-type">{tx.type}</div>
-            <div className="col-date">{formatDate(tx.date)}</div>
-            <div className="col-actions">
-              <button
-                className="tx-edit-btn"
-                onClick={() => {
-                  setTxForm({
-                    ...tx,
-                    categoryId: tx.categoryId?._id || tx.categoryId,
-                  });
-                  setTxEditing(true);
-                }}
-              >
-                Edit
-              </button>
-              <button className="tx-del-btn" onClick={() => deleteTransaction(tx._id)}>
-                Delete
-              </button>
-            </div>
-          </li>
-        ))}
+        {filteredTransactions.map((tx) => {
+          // Get category name from populated object or lookup
+          let categoryName =
+            (typeof tx.categoryId === "object" && tx.categoryId?.name) ||
+            categories.find((c) => c._id === tx.categoryId)?.name ||
+            "Uncategorized";
+
+          return (
+            <li key={tx._id} className="transaction-row">
+              <div className="col-amount">${Number(tx.amount).toFixed(2)}</div>
+              <div className="col-description">{tx.description}</div>
+              <div className="col-category">{categoryName}</div>
+              <div className="col-type">{tx.type}</div>
+              <div className="col-date">{formatDate(tx.date)}</div>
+              <div className="col-actions">
+                <button
+                  className="tx-edit-btn"
+                  onClick={() => {
+                    setTxForm({
+                      ...tx,
+                      categoryId:
+                        typeof tx.categoryId === "object"
+                          ? tx.categoryId._id
+                          : tx.categoryId,
+                    });
+                    setTxEditing(true);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="tx-del-btn"
+                  onClick={() => deleteTransaction(tx._id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

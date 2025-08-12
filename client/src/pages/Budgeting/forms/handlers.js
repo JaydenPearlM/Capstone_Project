@@ -30,8 +30,6 @@ export async function handleCategorySubmit(
       }
 
       const updated = await res.json();
-
-      // Update local categories state directly with updated category
       setCategories(prev => prev.map(cat => cat._id === catForm._id ? updated : cat));
     } else {
       const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories`, {
@@ -47,12 +45,9 @@ export async function handleCategorySubmit(
       }
 
       const created = await res.json();
-
-      // Add newly created category to local state without re-fetching
       setCategories(prev => [...prev, created]);
     }
 
-    // Reset form and editing state
     setCatForm({ id: null, name: '', budget: '' });
     setCatEditing(false);
   } catch (err) {
@@ -70,7 +65,6 @@ export async function deleteCategory(catId, setCategories, setTransactions, auth
         return;
       }
 
-      // Remove deleted category and related transactions from local state
       setCategories(prev => prev.filter(cat => cat._id !== catId));
       setTransactions(prev => prev.filter(tx => tx.categoryId !== catId));
     } catch (err) {
@@ -87,7 +81,8 @@ export async function handleTransactionSubmit(
   setTransactions,
   setTxForm,
   setTxEditing,
-  authFetch
+  authFetch,
+  categories
 ) {
   e.preventDefault();
   const amountNum = Number(txForm.amount);
@@ -119,9 +114,13 @@ export async function handleTransactionSubmit(
       }
 
       const updated = await res.json();
+      const categoryObj = categories.find(cat => cat._id === updated.categoryId) || null;
 
-      // Update local transactions state with updated transaction
-      setTransactions(prev => prev.map(tx => tx._id === txForm._id ? updated : tx));
+      setTransactions(prev =>
+        prev.map(tx =>
+          tx._id === txForm._id ? { ...updated, category: categoryObj } : tx
+        )
+      );
     } else {
       const res = await authFetch(`${import.meta.env.VITE_API_URL}/transactions`, {
         method: 'POST',
@@ -136,12 +135,11 @@ export async function handleTransactionSubmit(
       }
 
       const created = await res.json();
+      const categoryObj = categories.find(cat => cat._id === created.categoryId) || null;
 
-      // Add new transaction to local state
-      setTransactions(prev => [...prev, created]);
+      setTransactions(prev => [...prev, { ...created, category: categoryObj }]);
     }
 
-    // Reset form and editing state
     setTxForm({ id: null, categoryId: '', amount: '', description: '', type: 'expense', date: '' });
     setTxEditing(false);
   } catch (err) {
@@ -159,7 +157,6 @@ export async function deleteTransaction(txId, setTransactions, authFetch) {
         return;
       }
 
-      // Remove deleted transaction from local state
       setTransactions(prev => prev.filter(tx => tx._id !== txId));
     } catch (err) {
       alert(`Failed to delete transaction: ${err.message}`);
