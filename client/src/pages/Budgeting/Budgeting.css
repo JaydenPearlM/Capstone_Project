@@ -52,6 +52,22 @@
   line-height: 1.6;
 }
 
+.add-btn {
+  background-color: #80cfa9;
+  color:black;
+  border: none;
+  padding: 15px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-weight: bold;
+}
+
+.add-btn:hover{
+  background-color: #66b68f;
+  color: white;
+  transform: scale(1.03);
+}
+
 @media (max-width: 600px) {
     .budget-content {
         grid-template-columns: 1fr;

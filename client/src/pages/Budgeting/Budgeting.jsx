@@ -1,15 +1,17 @@
 import NavBar from "../../components/layout/NavBar";
 import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
-import { Pie } from 'react-chartjs-2';
 import { useState, useEffect } from 'react';
 import 'chart.js/auto';
+
 
 import CategoryForm from "./forms/CategoryForm";
 import TransactionForm from "./forms/TransactionForm";
 import BudgetSummary from "./content/BudgetSummary";
 import Categories from './content/Categories';
 import Transactions from './content/Transactions';
+import Modal from "./Modal";
+
 
 import {
     handleCategorySubmit,
@@ -29,6 +31,8 @@ export default function Budgeting() {
     const [catForm, setCatForm] = useState({ id: null, name: '', budget: '' });
     const [catEditing, setCatEditing] = useState(false);
 
+    const [showCategoryModal, setShowCategoryModal] = useState(false);
+    const [showTransactionModal, setShowTransactionModal] = useState(false);
     const [txForm, setTxForm] = useState({
         id: null,
         type: 'expense',
@@ -38,6 +42,7 @@ export default function Budgeting() {
         categoryId: ''
     });
     const [txEditing, setTxEditing] = useState(false);
+
 
     useEffect(() => {
         fetchCategories();
@@ -65,17 +70,6 @@ export default function Budgeting() {
             console.error("Failed to fetch transactions:", err.message);
         }
     };
-
-    const getCategorySpending = (categoryId) =>
-        transactions
-            .filter((tx) =>
-                tx.categoryId &&
-                (tx.categoryId._id?.toString?.() || tx.categoryId.toString()) === categoryId.toString()
-            )
-            .reduce((sum, tx) => sum + Number(tx.amount), 0);
-
-    const totalBudget = categories.reduce((sum, cat) => sum + Number(cat.budget), 0);
-    const totalSpent = transactions.reduce((sum, tx) => sum + Number(tx.amount), 0);
 
     const noData = categories.length === 0 && transactions.length === 0;
 
@@ -116,50 +110,75 @@ export default function Budgeting() {
                         <Categories
                             categories={categories}
                             transactions={transactions}
-                            setCatForm={setCatForm}
+                            setCatForm={(form) => { setCatForm(form); }}
                             setCatEditing={setCatEditing}
                             deleteCategory={(id) => deleteCategory(id, setCategories, setTransactions, authFetch)}
                         />
 
-                        <CategoryForm
-                            catForm={catForm}
-                            setCatForm={setCatForm}
-                            catEditing={catEditing}
-                            setCatEditing={setCatEditing}
-                            categories={categories}
-                            setCategories={setCategories}
-                            handleSubmit={(e, catForm, catEditing, categories, setCategories, setCatForm, setCatEditing) =>
-                                handleCategorySubmit(e, catForm, catEditing, categories, setCategories, setCatForm, setCatEditing, authFetch)
-                            }
-                            className="category-form"
-                        />
+                        <button className="add-btn" onClick={() => {
+                            setCatForm({ id: null, name: '', budget: '' });
+                            setCatEditing(false);
+                            setShowCategoryModal(true);
+                        }}>
+                            + Add Category
+                        </button>
+                        {/* Category Modal */}
+                        <Modal
+                            show={showCategoryModal || catEditing}
+                            onClose={() => setShowCategoryModal(false)}
+                            title={catEditing ? "Edit Category" : "Add Category"}
+                        >
+                            <CategoryForm
+                                catForm={catForm}
+                                setCatForm={setCatForm}
+                                catEditing={catEditing}
+                                setCatEditing={setCatEditing}
+                                categories={categories}
+                                setCategories={setCategories}
+                                handleSubmit={(e, catForm, catEditing, categories, setCategories, setCatForm, setCatEditing) => {
+                                    handleCategorySubmit(e, catForm, catEditing, categories, setCategories, setCatForm, setCatEditing, authFetch);
+                                    setShowCategoryModal(false);
+                                }}
+                            />
+                        </Modal>
                     </div>
 
                     <div className="transactions-container">
                         <Transactions
                             transactions={transactions}
                             categories={categories}
-                            setTxForm={setTxForm}
+                            setTxForm={(form) => { setTxForm(form); }}
                             setTxEditing={setTxEditing}
                             deleteTransaction={(id) => deleteTransaction(id, setTransactions, authFetch)}
                         />
-
-                        <TransactionForm
-                            txForm={txForm}
-                            setTxForm={setTxForm}
-                            txEditing={txEditing}
-                            setTxEditing={setTxEditing}
-                            categories={categories}
-                            transactions={transactions}
-                            setTransactions={setTransactions}
-                            handleSubmit={(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing) =>
-                                handleTransactionSubmit(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing, authFetch)
-                            }
-                            className="transaction-form"
-                        />
+                        <button className="add-btn" onClick={() => {
+                            setTxForm({ id: null, categoryId: '', amount: '', description: '', type: 'expense', date: '' });
+                            setTxEditing(false);
+                            setShowTransactionModal(true);
+                        }}>
+                            + Add Transaction
+                        </button>
+                        {/* Transaction Modal */}
+                        <Modal
+                            show={showTransactionModal || txEditing}
+                            onClose={() => setShowTransactionModal(false)}
+                            title={txEditing ? "Edit Transaction" : "Add Transaction"}
+                        >
+                            <TransactionForm
+                                txForm={txForm}
+                                setTxForm={setTxForm}
+                                txEditing={txEditing}
+                                setTxEditing={setTxEditing}
+                                categories={categories}
+                                transactions={transactions}
+                                setTransactions={setTransactions}
+                                handleSubmit={(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing) => {
+                                    handleTransactionSubmit(e, txForm, txEditing, transactions, setTransactions, setTxForm, setTxEditing, authFetch);
+                                    setShowTransactionModal(false);
+                                }}
+                            />
+                        </Modal>
                     </div>
-
-
                 </div>
             </div>
 

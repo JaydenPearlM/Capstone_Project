@@ -23,11 +23,13 @@ const Categories = ({ categories, transactions, setCatForm, setCatEditing, delet
               <div className="col-budget">${Number(cat.budget).toFixed(2)}</div>
               <div className="col-spent">${spent.toFixed(2)}</div>
               <div className="col-actions">
-                <button onClick={() => {
+                <button className="cat-edit-btn" onClick={() => {
                   setCatForm(cat);
                   setCatEditing(true);
-                }}>Edit</button>
-                <button onClick={() => deleteCategory(cat._id)}>Delete</button>
+                }}>
+                  Edit
+                </button>
+                <button className="cat-del-btn" onClick={() => deleteCategory(cat._id)}>Delete</button>
               </div>
             </li>
           );

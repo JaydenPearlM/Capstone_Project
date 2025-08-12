@@ -28,11 +28,16 @@ const Transactions = ({ transactions, categories, setTxForm, setTxEditing, delet
               <div className="col-type">{tx.type}</div>
               <div className="col-date">{formatDate(tx.date)}</div>
               <div className="col-actions">
-                <button onClick={() => {
-                  setTxForm(tx);
+                <button className="tx-edit-btn"onClick={() => {
+                  setTxForm({
+                    ...tx,
+                    categoryId: tx.categoryId?._id || tx.categoryId
+                  });
                   setTxEditing(true);
-                }}>Edit</button>
-                <button onClick={() => deleteTransaction(tx._id)}>Delete</button>
+                }}>
+                  Edit
+                </button>
+                <button className="tx-del-btn" onClick={() => deleteTransaction(tx._id)}>Delete</button>
               </div>
             </li>
           );
