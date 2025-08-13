@@ -3,7 +3,7 @@ import Input from "./Input";
 import "./SignupForm.css";
 import { Link } from "react-router-dom";
 
-const SignupForm = ({ onSubmit }) => {
+const SignupForm = ({ onSubmit, loading }) => {
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -27,6 +27,7 @@ const SignupForm = ({ onSubmit }) => {
         else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email invalid";
         if (!formData.username.trim()) newErrors.username = "Username required";
         if (!formData.password) newErrors.password = "Password required";
+        else if (formData.password.length < 6) newErrors.password = "Password must be at least 6 characters";
         if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords must match";
         return newErrors;
     };
@@ -96,7 +97,9 @@ const SignupForm = ({ onSubmit }) => {
                 required
             />
 
-            <button type="submit" className="signup-btn">Sign Up</button>
+            <button type="submit" className="signup-btn" disabled={loading}>
+                {loading ? 'Creating Account...' : 'Sign Up'}
+            </button>
             <div className="login-redirect">
                 Already have an account? <Link to="/login">Log in</Link>
             </div>

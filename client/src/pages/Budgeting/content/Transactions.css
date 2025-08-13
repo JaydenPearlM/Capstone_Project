@@ -39,7 +39,7 @@
   text-align: right;
 }
 
-.col-actions button {
+.tx-edit-btn {
   background-color: #FFF9C4;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -50,11 +50,27 @@
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.col-actions button:hover {
+.tx-edit-btn:hover {
   background-color: #f7f2a9;
   transform: scale(1.03);
 }
 
+.tx-del-btn {
+  background-color: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 4px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.tx-del-btn:hover {
+  background-color: #ffcdd2;
+  transform: scale(1.03);
+}
 /* Mobile */
 @media (max-width: 600px) {
   .transaction-headers {
