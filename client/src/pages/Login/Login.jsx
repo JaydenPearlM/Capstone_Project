@@ -42,10 +42,12 @@ export default function Login() {
                         <Link to="/signup" className="link">Create Account</Link>
                     </div>
                 </div>
-                <footer>
+                
+            </div>
+
+            <footer>
                     <Footer />
                 </footer>
-            </div>
         </div>
     )
 }
