@@ -35,7 +35,7 @@ export default function AccountCard() {
   }, []);
 
   return (
-    <Link to="/CardManagement">
+    <Link to="/dashboard/cardManagement">
       <Card>
         <CardContent className="accounts">
           <h2>Account Balance</h2>

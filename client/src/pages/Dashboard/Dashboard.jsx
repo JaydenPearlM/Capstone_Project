@@ -8,8 +8,10 @@ import SavingsCard from "../../components/UI/SavingsCard";
 import "./Dashboard.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Dashboard() {
+  const { authFetch } = useAuth();
   const [budgetData, setBudgetData] = useState({ totalSpent: 0, totalBudget: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,52 +19,27 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetchBudgetData() {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/budget`);
-        if (!response.ok) throw new Error("Failed to fetch budget data");
+        const response = await authFetch(`${import.meta.env.VITE_API_URL}/budget`); // using authFetch for authenticated request
+        if (!response.ok) {
+          throw new Error("Failed to fetch budget data");
+        }
         const data = await response.json();
-        setBudgetData({ totalSpent: data.totalSpent, totalBudget: data.totalBudget });
+        setBudgetData({
+          totalSpent: data.totalSpent,
+          totalBudget: data.totalBudget,
+        });
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     }
+
     fetchBudgetData();
-  }, []);
+  }, [authFetch]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading budget: {error}</p>;
-=======
-import { useState, useEffect} from "react";
-import { useAuth } from "../../contexts/AuthContext";
-
-export default function Dashboard() {
-    const { authFetch } = useAuth();
-    const [budgetData, setBudgetData] = useState({ totalSpent: 0, totalBudget: 0 });
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        async function fetchBudgetData() {
-            try {
-                const response = await authFetch(`${import.meta.env.VITE_API_URL}/budget`); // using authFetch for authenticated request
-                if (!response.ok) {
-                    throw new Error("Failed to fetch budget data");
-                }
-                const data = await response.json();
-                setBudgetData({
-                    totalSpent: data.totalSpent,
-                    totalBudget: data.totalBudget,
-                });
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        fetchBudgetData();
-    }, [authFetch]);
 
   return (
     <div>
@@ -71,7 +48,7 @@ export default function Dashboard() {
         <SideBar />
         <div className="content">
           {/* path to keep syncing with your router */}
-          <Link to="/dashboard/CardManagement">
+          <Link to="dashboard/cardManagement">
             <div className="card">
               <AccountsCard />
             </div>
