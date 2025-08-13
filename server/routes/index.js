@@ -1,7 +1,11 @@
 const router = require('express').Router();
+const logger = require('../config/logger');
 router.use('/transactions', require('./transactionRoutes'));
 router.use('/categories', require('./categoryRoutes.js'));
-const logger = require('../config/logger');
+router.use('/debts', require('./debtRoutes'));
 router.use('/savings', require('./savingsRoutes.js'));
+router.use('/cards', require('./cardRoutes'));
+router.use('/reports', require('./reportRoutes'));
+
 
 module.exports = router;
