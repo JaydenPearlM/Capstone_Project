@@ -1,7 +1,15 @@
 import React from 'react';
 import "./CategoryForm.css";
 
-const CategoryForm = ({ catForm, setCatForm, catEditing, setCatEditing, categories, setCategories, handleSubmit }) => {
+const CategoryForm = ({
+  catForm,
+  setCatForm,
+  catEditing,
+  setCatEditing,
+  categories,
+  setCategories,
+  handleSubmit,
+}) => {
   return (
     <form
       className="category-form"
@@ -10,6 +18,7 @@ const CategoryForm = ({ catForm, setCatForm, catEditing, setCatEditing, categori
       }
     >
       <h3>{catEditing ? 'Edit' : 'Add'} Category</h3>
+
       <div className="form-row">
         <label htmlFor="catName">Name:</label>
         <input
@@ -21,8 +30,10 @@ const CategoryForm = ({ catForm, setCatForm, catEditing, setCatEditing, categori
           required
         />
       </div>
+
       <div className="form-row">
-        <label htmlFor="catBudget">Budget:</label>
+        <label htmlFor="catBudget">Budget Amount:</label>
+        <p>Note: This number is for the entire monthly budget.</p>
         <input
           id="catBudget"
           type="number"
@@ -30,8 +41,11 @@ const CategoryForm = ({ catForm, setCatForm, catEditing, setCatEditing, categori
           value={catForm.budget}
           onChange={(e) => setCatForm({ ...catForm, budget: e.target.value })}
           required
+          min="0"
+          step="0.01"
         />
       </div>
+
       <button className="submit-btn" type="submit">
         {catEditing ? 'Update' : 'Add'} Category
       </button>

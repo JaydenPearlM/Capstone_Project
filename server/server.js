@@ -61,6 +61,10 @@ app.post('/api/items', async (req, res) => {
 });
 
 app.use('/api/v1/plaid', plaidRoutes);
+// Auth routes (no authentication required)
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/v1/auth', authRoutes);
+
 // app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1', apiRoutes);
 // app.use('/api/v1/transactions', transactionRoutes);

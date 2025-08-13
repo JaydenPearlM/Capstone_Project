@@ -17,18 +17,10 @@
   flex-direction: column;
 }
 
-.pieChart {
-    display: flex;
-    justify-content: center;
-  width: 100%;
-  min-height: 250px;
-  max-height: 500px;
-  
-}
-
 .budgeting-summary-container,
 .categories-container,
-.transactions-container {
+.transactions-container,
+.budget-control-container  {
   background-color: white;
   padding: 1.5rem;
   border-radius: 16px;
@@ -41,11 +33,158 @@
   margin: 15px 0;
 }
 
-@media (max-width: 600px) {
-    .budget-content {
-        grid-template-columns: 1fr;
-    }
+.getting-started {
+  background: #f7f9fc;
+  border: 1px solid #e0e4eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
+.getting-started h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
 
+.getting-started ol {
+  margin-top: 10px;
+  padding-left: 20px;
+  line-height: 1.6;
+}
 
+.add-btn {
+  background-color: #80cfa9;
+  color: black;
+  border: none;
+  padding: 15px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-weight: bold;
+}
+
+.add-btn:hover {
+  background-color: #66b68f;
+  color: white;
+  transform: scale(1.03);
+}
+
+.period-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.period-navigation button {
+  background-color: #80cfa9;
+  color: black;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  font-family: inherit;
+}
+
+.period-navigation button:hover {
+  background-color: #66b68f;
+  color: white;
+  transform: scale(1.03);
+  font-weight: bold;
+  font-family: inherit;
+}
+
+.period-navigation button:disabled,
+.period-navigation button[disabled] {
+  background-color: #ccc;
+  cursor: default;
+}
+
+.date-range-display {
+  min-width: 220px;
+  text-align: center;
+  color: #333;
+  user-select: none;
+}
+
+.budget-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.budget-controls label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #444;
+  min-width: 200px;
+}
+
+.budget-controls select,
+.budget-controls input[type="date"] {
+  margin-top: 6px;
+  padding: 8px 10px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  outline-offset: 2px;
+  transition: border-color 0.3s ease;
+}
+
+.budget-controls select:focus,
+.budget-controls input[type="date"]:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 4px #4a90e2aa;
+}
+
+.frequency-p {
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .budget-content {
+    grid-template-columns: 1fr;
+  }
+
+  .period-navigation {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .date-range-display {
+    min-width: auto;
+    font-size: 14px;
+  }
+
+  .period-navigation button {
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .budget-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .budget-controls label {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .budget-controls select,
+  .budget-controls input[type="date"] {
+    width: 100%;
+  }
+}

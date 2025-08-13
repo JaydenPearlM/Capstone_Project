@@ -1,5 +1,7 @@
 // src/components/PlaidLinkButton.js
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 // import 'normalize.css';
 import './App.css';
 import Home from "./pages/Home/Home";
@@ -7,36 +9,66 @@ import Plaid from "./components/layout/PlaidLinkButton.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import Debt from "./pages/Debt/Debt.jsx";
 import CardManagement from './pages/CardManagement/CardManagement.jsx';
-import Expenses from './pages/Expenses/Expenses.jsx';
 import Savings from './pages/Savings/Savings.jsx';
-import Goals from './pages/Goals/Goals.jsx';
 import Signup from './pages/Signup/Signup.jsx';
 import Login from './pages/Login/Login.jsx';
 import Settings from './pages/Settings/Settings.jsx';
-import Transactions from './pages/Transactions/Transactions.jsx';
 import Budgeting from './pages/Budgeting/Budgeting.jsx';
-
+import ContactUs from './pages/ContactUs/ContactUs.jsx'
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword.jsx';
 
 export default function App() {
   return (
-    <Router>
-      <div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/plaid" element={<Plaid />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/expenses" element={<Expenses />} />
-          <Route path="/dashboard/debt" element={<Debt />} />
-          <Route path="/dashboard/savings" element={<Savings />} />
-          <Route path="/dashboard/goals" element={<Goals />} />
-          <Route path="/dashboard/settings" element={<Settings />} />
-          <Route path="/dashboard/cardManagement" element= {<CardManagement />}/>
-          <Route path="/dashboard/transactions" element={<Transactions />}/>
-          <Route path="/dashboard/budgeting" element={<Budgeting />} />
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/contactUs" element={<ContactUs />}/>
+            <Route path="/forgot-password" element={<ForgotPassword/>} />
+
+            {/* Protected routes */}
+            <Route path="/plaid" element={
+              <ProtectedRoute>
+                <Plaid />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/debt" element={
+              <ProtectedRoute>
+                <Debt />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/savings" element={
+              <ProtectedRoute>
+                <Savings />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/settings" element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/cardManagement" element={
+              <ProtectedRoute>
+                <CardManagement />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/budgeting" element={
+              <ProtectedRoute>
+                <Budgeting />
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }

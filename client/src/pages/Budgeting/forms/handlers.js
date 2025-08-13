@@ -5,7 +5,8 @@ export async function handleCategorySubmit(
   categories,
   setCategories,
   setCatForm,
-  setCatEditing
+  setCatEditing,
+  authFetch
 ) {
   e.preventDefault();
   const budgetNum = Number(catForm.budget);
@@ -16,7 +17,11 @@ export async function handleCategorySubmit(
 
   try {
     if (catEditing) {
+<<<<<<< HEAD
       const res = await fetch(`${import.meta.env.VITE_API_URL}/categories/${catForm._id}`, {
+=======
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories/${catForm._id}`, {
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: catForm.name, budget: budgetNum })
@@ -29,11 +34,13 @@ export async function handleCategorySubmit(
       }
 
       const updated = await res.json();
-
-      // Update local categories state directly with updated category
       setCategories(prev => prev.map(cat => cat._id === catForm._id ? updated : cat));
     } else {
+<<<<<<< HEAD
       const res = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
+=======
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories`, {
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: catForm.name, budget: budgetNum })
@@ -46,12 +53,9 @@ export async function handleCategorySubmit(
       }
 
       const created = await res.json();
-
-      // Add newly created category to local state without re-fetching
       setCategories(prev => [...prev, created]);
     }
 
-    // Reset form and editing state
     setCatForm({ id: null, name: '', budget: '' });
     setCatEditing(false);
   } catch (err) {
@@ -59,17 +63,20 @@ export async function handleCategorySubmit(
   }
 }
 
-export async function deleteCategory(catId, setCategories, setTransactions) {
+export async function deleteCategory(catId, setCategories, setTransactions, authFetch) {
   if (window.confirm('Deleting this category will also delete all related transactions. Continue?')) {
     try {
+<<<<<<< HEAD
       const res = await fetch(`${import.meta.env.VITE_API_URL}/categories/${catId}`, { method: 'DELETE' });
+=======
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories/${catId}`, { method: 'DELETE' });
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
       if (!res.ok) {
         const errorText = await res.text();
         alert(`Error ${res.status}: ${errorText}`);
         return;
       }
 
-      // Remove deleted category and related transactions from local state
       setCategories(prev => prev.filter(cat => cat._id !== catId));
       setTransactions(prev => prev.filter(tx => tx.categoryId !== catId));
     } catch (err) {
@@ -85,7 +92,9 @@ export async function handleTransactionSubmit(
   transactions,
   setTransactions,
   setTxForm,
-  setTxEditing
+  setTxEditing,
+  authFetch,
+  categories
 ) {
   e.preventDefault();
   const amountNum = Number(txForm.amount);
@@ -104,7 +113,11 @@ export async function handleTransactionSubmit(
 
   try {
     if (txEditing) {
+<<<<<<< HEAD
       const res = await fetch(`${import.meta.env.VITE_API_URL}/transactions/${txForm._id}`, {
+=======
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/transactions/${txForm._id}`, {
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -117,11 +130,19 @@ export async function handleTransactionSubmit(
       }
 
       const updated = await res.json();
+      const categoryObj = categories.find(cat => cat._id === updated.categoryId) || null;
 
-      // Update local transactions state with updated transaction
-      setTransactions(prev => prev.map(tx => tx._id === txForm._id ? updated : tx));
+      setTransactions(prev =>
+        prev.map(tx =>
+          tx._id === txForm._id ? { ...updated, category: categoryObj } : tx
+        )
+      );
     } else {
+<<<<<<< HEAD
       const res = await fetch(`${import.meta.env.VITE_API_URL}/transactions`, {
+=======
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/transactions`, {
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -134,12 +155,11 @@ export async function handleTransactionSubmit(
       }
 
       const created = await res.json();
+      const categoryObj = categories.find(cat => cat._id === created.categoryId) || null;
 
-      // Add new transaction to local state
-      setTransactions(prev => [...prev, created]);
+      setTransactions(prev => [...prev, { ...created, category: categoryObj }]);
     }
 
-    // Reset form and editing state
     setTxForm({ id: null, categoryId: '', amount: '', description: '', type: 'expense', date: '' });
     setTxEditing(false);
   } catch (err) {
@@ -147,17 +167,20 @@ export async function handleTransactionSubmit(
   }
 }
 
-export async function deleteTransaction(txId, setTransactions) {
+export async function deleteTransaction(txId, setTransactions, authFetch) {
   if (window.confirm('Delete this transaction?')) {
     try {
+<<<<<<< HEAD
       const res = await fetch(`${import.meta.env.VITE_API_URL}/transactions/${txId}`, { method: 'DELETE' });
+=======
+      const res = await authFetch(`${import.meta.env.VITE_API_URL}/transactions/${txId}`, { method: 'DELETE' });
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
       if (!res.ok) {
         const errorText = await res.text();
         alert(`Error ${res.status}: ${errorText}`);
         return;
       }
 
-      // Remove deleted transaction from local state
       setTransactions(prev => prev.filter(tx => tx._id !== txId));
     } catch (err) {
       alert(`Failed to delete transaction: ${err.message}`);

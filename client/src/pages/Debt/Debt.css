@@ -59,11 +59,19 @@
 }
 
 .debt-icon {
+<<<<<<< HEAD
   background: linear-gradient(135deg, #c9817c, #ff7961);
 }
 
 .payment-icon {
   background: linear-gradient(135deg, #8aceb5, #B5EAD7);
+=======
+  background: linear-gradient(135deg, #f44336, #ff7961);
+}
+
+.payment-icon {
+  background: linear-gradient(135deg, #2196f3, #42a5f5);
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
 }
 
 .actions-icon {
@@ -202,12 +210,20 @@
 }
 
 .action-btn.primary {
+<<<<<<< HEAD
   background: linear-gradient(135deg, #80cfa9, #66bb6a);
+=======
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
   color: white;
 }
 
 .action-btn.secondary {
+<<<<<<< HEAD
   background-color: #D6CEC3 ;
+=======
+  background-color: #f5f5f5;
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
   color: #555;
   border: 1px solid #ddd;
 }
@@ -302,7 +318,11 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
+<<<<<<< HEAD
   background: linear-gradient(135deg, #D8E2DC, #77d79d);
+=======
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
   display: flex;
   align-items: center;
   justify-content: center;
@@ -346,7 +366,11 @@
 .payment-btn {
   width: 100%;
   padding: 0.75rem;
+<<<<<<< HEAD
   background: #80cfa9;
+=======
+  background: #FF6B6B;
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
   color: white;
   border: none;
   border-radius: 8px;
@@ -359,8 +383,13 @@
 
 .payment-btn:hover {
   transform: translateY(-1px);
+<<<<<<< HEAD
   background: #66b68f;
   box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+=======
+  background: #ee5a52;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
 }
 
 .debt-actions {
@@ -381,7 +410,11 @@
 }
 
 .debt-action-btn.edit {
+<<<<<<< HEAD
   background-color: #FFF9C4;
+=======
+  background-color: #f0f0f0;
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
   color: #555;
 }
 
@@ -391,7 +424,11 @@
 }
 
 .debt-action-btn.edit:hover {
+<<<<<<< HEAD
   background-color: #f4eb99;
+=======
+  background-color: #e0e0e0;
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
 }
 
 .debt-action-btn.delete:hover {
@@ -420,7 +457,10 @@
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
+<<<<<<< HEAD
   box-sizing: border-box;
+=======
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
 }
 
 .modal h3 {
@@ -431,7 +471,10 @@
 
 .form-group {
   margin-bottom: 1rem;
+<<<<<<< HEAD
   box-sizing: border-box;
+=======
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
 }
 
 .form-group label {
@@ -443,7 +486,10 @@
 
 .form-group input,
 .form-group select {
+<<<<<<< HEAD
   box-sizing: border-box;
+=======
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
   width: 100%;
   padding: 0.75rem;
   border: 2px solid #e0e0e0;

@@ -1,5 +1,8 @@
 import { Card, CardContent } from "@mui/material";
 import "./dashboardCards.css";
+import { useEffect, useState } from "react";
+
+const API = import.meta.env.VITE_API_URL;
 
 export default function DebtCard({ totalDebt = 0 }) {
     return (
