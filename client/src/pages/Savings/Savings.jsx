@@ -199,7 +199,17 @@ export default function Savings() {
                         <div className="card overview-card">
                             <div className="card-header">
                                 <h3>Total Savings</h3>
+<<<<<<< HEAD
+                                <span className="card-icon savings-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="12" y1="1" x2="12" y2="23"/>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                    </svg>
+                                </span>
+=======
                                 <span className="card-icon savings-icon">$</span>
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
                             </div>
                             <div className="card-content">
                                 <div className="amount-display">
@@ -225,7 +235,17 @@ export default function Savings() {
                         <div className="card overview-card">
                             <div className="card-header">
                                 <h3>Overall Progress</h3>
+<<<<<<< HEAD
+                                <span className="card-icon goal-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M21 12a9 9 0 1 1-9-9v9z"/>
+                                        <path d="M12 3a9 9 0 0 1 9 9"/>
+                                    </svg>
+                                </span>
+=======
                                 <span className="card-icon goal-icon">%</span>
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
                             </div>
                             <div className="card-content">
                                 <div className="goal-amount">
@@ -250,7 +270,17 @@ export default function Savings() {
                         <div className="card overview-card">
                             <div className="card-header">
                                 <h3>Quick Actions</h3>
+<<<<<<< HEAD
+                                <span className="card-icon actions-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"/>
+                                        <line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                </span>
+=======
                                 <span className="card-icon actions-icon">+</span>
+>>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
                             </div>
                             <div className="card-content">
                                 <div className="action-buttons">

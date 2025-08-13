@@ -7,5 +7,7 @@ router.use(tempUser);
 router.get('/', ctrl.getAll);
 router.post('/', ctrl.create);
 router.post('/:id/contribute', ctrl.contribute);
+router.delete('/:id', ctrl.delete);        
+router.post('/:id/contribute', ctrl.contribute);
 
 module.exports = router;
