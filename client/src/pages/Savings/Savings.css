@@ -60,11 +60,11 @@
 }
 
 .savings-icon {
-  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  background: linear-gradient(135deg, #F7CD45 , #80cfa9);
 }
 
 .goal-icon {
-  background: linear-gradient(135deg, #2196f3, #42a5f5);
+  background: linear-gradient(135deg, #77d79d, #e3eee8);
 }
 
 .accounts-icon {
@@ -185,14 +185,14 @@
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  background: #80cfa9;
   color: white;
   font-family: inherit;  
   font-weight: 500;
 }
 
 .action-btn.secondary {
-  background-color: #f5f5f5;
+  background-color: #fcd249;
   color: #555;
   border: 1px solid #ddd;
   font-family: inherit;  
@@ -208,7 +208,7 @@
 }
 
 .action-btn.secondary:hover {
-  background-color: #e8e8e8;
+  background-color: #fce705;
 }
 
 .goals-section {
@@ -253,7 +253,7 @@
 }
 
 .goal-action-btn.edit {
-  background-color: #f0f0f0;
+  background-color: #FFF9C4;
   color: #555;
   font-family: inherit;  
   font-weight: 500;
@@ -267,7 +267,7 @@
 }
 
 .goal-action-btn.edit:hover {
-  background-color: #e0e0e0;
+  background-color: #f4eb99;
 }
 
 .goal-action-btn.delete:hover {
@@ -322,7 +322,7 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  background: linear-gradient(135deg, #D8E2DC, #77d79d);
   display: flex;
   align-items: center;
   justify-content: center;
