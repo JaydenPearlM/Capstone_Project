@@ -1,6 +1,8 @@
 .sidebar {
     display:flex;
-    box-shadow: 0 4px 8px #D6CEC3;
+    box-shadow: var(--shadow-md);
+    background-color: var(--background-secondary);
+    border-right: 1px solid var(--border-color);
     flex: 1;
 }
 
@@ -13,6 +15,25 @@
     font-size: 18px;
     margin-bottom: 15px;
     text-decoration: none;
+    color: var(--text-secondary);
     transition: all 0.3s ease;
     
+}
+
+/* ===== THEME COMPATIBILITY FOR SIDEBAR ===== */
+
+.sidebar .menu-item:hover,
+.sidebar .menu-item.active {
+    color: var(--text-primary);
+    background-color: var(--background-tertiary);
+}
+
+.sidebar .toggle-button {
+    color: var(--text-primary);
+    background-color: var(--background-tertiary);
+    border: 1px solid var(--border-color);
+}
+
+.sidebar .toggle-button:hover {
+    background-color: var(--background-primary);
 }

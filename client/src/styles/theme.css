@@ -1,0 +1,250 @@
+/* ===== THEME VARIABLES ===== */
+
+/* Light Theme */
+:root {
+  /* Primary Colors */
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #dbeafe;
+  
+  /* Accent Colors */
+  --accent-color: #10b981;
+  --accent-hover: #059669;
+  --accent-light: #d1fae5;
+  
+  /* Background Colors */
+  --background-primary: #ffffff;
+  --background-secondary: #f8fafc;
+  --background-tertiary: #f1f5f9;
+  --background-card: #ffffff;
+  --background-modal: rgba(0, 0, 0, 0.5);
+  
+  /* Navbar Specific Colors */
+  --navbar-bg: #e7eced;
+  --navbar-text: #2c3e50;
+  --navbar-text-hover: #ffffff;
+  
+  /* Text Colors */
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --text-inverse: #ffffff;
+  
+  /* Border Colors */
+  --border-color: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --border-focus: #3b82f6;
+  
+  /* Status Colors */
+  --success-color: #10b981;
+  --success-bg: #d1fae5;
+  --warning-color: #f59e0b;
+  --warning-bg: #fef3c7;
+  --error-color: #ef4444;
+  --error-bg: #fee2e2;
+  --info-color: #3b82f6;
+  --info-bg: #dbeafe;
+  
+  /* Shadow and Effects */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --focus-color: rgba(59, 130, 246, 0.5);
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  /* Primary Colors */
+  --primary-color: #3b82f6;
+  --primary-hover: #2563eb;
+  --primary-light: #1e3a8a;
+  
+  /* Accent Colors */
+  --accent-color: #10b981;
+  --accent-hover: #059669;
+  --accent-light: #064e3b;
+  
+  /* Background Colors */
+  --background-primary: #0f172a;
+  --background-secondary: #1e293b;
+  --background-tertiary: #334155;
+  --background-card: #1e293b;
+  --background-modal: rgba(0, 0, 0, 0.8);
+  
+  /* Navbar Specific Colors for Dark Theme */
+  --navbar-bg: #1e293b;
+  --navbar-text: #ffffff;
+  --navbar-text-hover: #ffffff;
+  
+  /* Text Colors */
+  --text-primary: #1e293b;
+  --text-secondary: #1c4d9c;
+  --text-muted: #94a3b8;
+  --text-inverse: #1e293b;
+  
+  /* Border Colors */
+  --border-color: #334155;
+  --border-hover: #475569;
+  --border-focus: #3b82f6;
+  
+  /* Status Colors */
+  --success-color: #10b981;
+  --success-bg: #064e3b;
+  --warning-color: #f59e0b;
+  --warning-bg: #451a03;
+  --error-color: #ef4444;
+  --error-bg: #450a0a;
+  --info-color: #3b82f6;
+  --info-bg: #1e3a8a;
+  
+  /* Shadow and Effects */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --focus-color: rgba(59, 130, 246, 0.8);
+}
+
+/* ===== GLOBAL THEME APPLICATION ===== */
+
+body {
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* Update common elements to use theme variables */
+.container, .main-content, .page-container {
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
+/* Cards and panels */
+.card, .panel, .modal {
+  background-color: var(--background-card);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--text-inverse);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--background-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--background-tertiary);
+  border-color: var(--border-hover);
+}
+
+/* Forms */
+.form-control, input, textarea, select {
+  background-color: var(--background-primary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.form-control:focus, input:focus, textarea:focus, select:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--focus-color);
+}
+
+/* Tables */
+.table {
+  background-color: var(--background-card);
+  color: var(--text-primary);
+}
+
+.table th {
+  border-bottom-color: var(--border-color);
+  background-color: var(--background-secondary);
+}
+
+.table td {
+  border-bottom-color: var(--border-color);
+}
+
+/* Sidebar and Navigation */
+.sidebar {
+  background-color: var(--background-secondary);
+  border-right-color: var(--border-color);
+}
+
+.nav-link {
+  color: var(--text-secondary);
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--text-primary);
+  background-color: var(--background-tertiary);
+}
+
+/* Status indicators */
+.text-success { color: var(--success-color) !important; }
+.text-warning { color: var(--warning-color) !important; }
+.text-danger { color: var(--error-color) !important; }
+.text-info { color: var(--info-color) !important; }
+.text-muted { color: var(--text-muted) !important; }
+
+.bg-success { background-color: var(--success-bg) !important; }
+.bg-warning { background-color: var(--warning-bg) !important; }
+.bg-danger { background-color: var(--error-bg) !important; }
+.bg-info { background-color: var(--info-bg) !important; }
+
+/* ===== SMOOTH TRANSITIONS ===== */
+* {
+  transition: background-color var(--transition-normal), 
+              color var(--transition-normal), 
+              border-color var(--transition-normal),
+              box-shadow var(--transition-normal);
+}
+
+/* ===== SCROLLBAR THEMING ===== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) var(--background-secondary);
+}

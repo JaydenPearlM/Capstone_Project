@@ -99,5 +99,39 @@ header .navBar {
   }
 }
 
+/* ===== THEME TOGGLE IN NAVBAR ===== */
+.theme-toggle-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+@media (max-width: 768px) {
+  .theme-toggle-nav {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Update navbar to use theme variables */
+.navBar {
+  background-color: var(--background-secondary) !important;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.navBar ul li a {
+  color: var(--text-primary) !important;
+  transition: var(--transition-normal);
+}
+
+.navBar ul li a:hover,
+.navBar ul li a.active {
+  background-color: var(--accent-color) !important;
+  color: var(--text-inverse) !important;
+}
+
 
 

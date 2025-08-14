@@ -1,10 +1,15 @@
 
+/* Import theme styles */
+@import './styles/theme.css';
+
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Space Grotesk', sans-serif;
-  background-color: #dbc5e8;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
 /* code {

@@ -1,9 +1,11 @@
 // src/components/PlaidLinkButton.js
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from "./contexts/AuthContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 // import 'normalize.css';
 import './App.css';
+import './styles/theme.css';
 import Home from "./pages/Home/Home";
 import Plaid from "./components/layout/PlaidLinkButton.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
@@ -19,10 +21,11 @@ import ForgotPassword from './pages/ForgotPassword/ForgotPassword.jsx';
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div>
-          <Routes>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <div>
+            <Routes>
             {/* Public routes */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -70,5 +73,6 @@ export default function App() {
         </div>
       </Router>
     </AuthProvider>
+  </ThemeProvider>
   );
 }

@@ -5,8 +5,8 @@
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #dbc5e8;
+  box-shadow: var(--shadow-lg);
+  background-color: var(--background-primary);
   font-family: 'Space Grotesk', sans-serif;
 }
 
@@ -564,4 +564,79 @@
     .debt-actions {
         flex-direction: column;
     }
+}
+
+/* ===== THEME COMPATIBILITY FOR DEBT PAGE ===== */
+
+/* Update all elements to use theme variables */
+.debt-content {
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
+.debt-overview-card {
+  background-color: var(--background-card) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-md) !important;
+  color: var(--text-primary) !important;
+}
+
+.debt-card {
+  background-color: var(--background-card) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-md) !important;
+  color: var(--text-primary) !important;
+}
+
+.modal {
+  background-color: var(--background-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.modal-overlay {
+  background-color: var(--background-modal) !important;
+}
+
+.btn, button {
+  background-color: var(--primary-color) !important;
+  color: var(--text-inverse) !important;
+  border: 1px solid var(--primary-color) !important;
+}
+
+.btn:hover, button:hover {
+  background-color: var(--primary-hover) !important;
+}
+
+.btn-secondary {
+  background-color: var(--background-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.form-input, input, textarea, select {
+  background-color: var(--background-primary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.form-input:focus, input:focus, textarea:focus, select:focus {
+  border-color: var(--border-focus) !important;
+  box-shadow: 0 0 0 3px var(--focus-color) !important;
+}
+
+.progress-bar {
+  background-color: var(--background-tertiary) !important;
+}
+
+.progress-fill {
+  background-color: var(--error-color) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.debt-stats h3, .debt-stats h4 {
+  color: var(--text-primary) !important;
 }

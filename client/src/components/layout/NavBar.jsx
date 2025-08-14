@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./NavBar.css";
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from "../../contexts/AuthContext";
+import ThemeToggle from "../UI/ThemeToggle";
 import CacheBudgetingLogo from "../../assets/CacheBudgetingLogo-long.png"
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -76,6 +77,9 @@ const NavBar = () => {
           <NavLink to="/contactUs" onClick={() => setMenuOpen(false)}>
             Contact Us
           </NavLink>
+        </li>
+        <li className="theme-toggle-nav">
+          <ThemeToggle />
         </li>
       </ul>
     </div >

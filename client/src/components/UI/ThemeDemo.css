@@ -1,0 +1,116 @@
+.theme-demo {
+  padding: 2rem;
+  margin: 1rem 0;
+  background-color: var(--background-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.theme-demo-content {
+  max-width: 600px;
+}
+
+.theme-demo h3 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.theme-demo p {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.theme-demo-features {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: var(--background-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.theme-demo-features h4 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.theme-demo-features ul {
+  color: var(--text-secondary);
+  padding-left: 1.5rem;
+}
+
+.theme-demo-features li {
+  margin-bottom: 0.5rem;
+}
+
+.theme-demo-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.theme-demo-button {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.theme-demo-button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.theme-demo-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-indicator {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.status-indicator.light {
+  background-color: var(--warning-bg);
+  color: var(--warning-color);
+  border: 1px solid var(--warning-color);
+}
+
+.status-indicator.dark {
+  background-color: var(--info-bg);
+  color: var(--info-color);
+  border: 1px solid var(--info-color);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .theme-demo {
+    padding: 1.5rem;
+    margin: 0.5rem 0;
+  }
+  
+  .theme-demo-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .theme-demo-button {
+    width: 100%;
+    text-align: center;
+  }
+}
