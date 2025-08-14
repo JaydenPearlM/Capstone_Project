@@ -3,8 +3,10 @@ import NavBar from "../../components/layout/NavBar";
 import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
 import "./Savings.css";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Savings() {
+    const { authFetch } = useAuth();
     const [savingsData, setSavingsData] = useState({
         totalSavings: 0,
         monthlyContribution: 0,
@@ -36,7 +38,7 @@ export default function Savings() {
 
     const fetchSavingsData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/savings`);
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings`);
             
             if (!response.ok) {
                 throw new Error("Failed to fetch savings data");
@@ -86,7 +88,7 @@ export default function Savings() {
     const handleAddGoal = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/savings`, {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -112,7 +114,7 @@ export default function Savings() {
     const handleContribution = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/savings/${selectedGoalForContribution.id}/contribute`, {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings/${selectedGoalForContribution.id}/contribute`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ amount: parseFloat(contributionForm.amount) })
@@ -135,7 +137,7 @@ export default function Savings() {
     const handleEditGoal = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/savings/${selectedGoalForEdit.id}`, {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings/${selectedGoalForEdit.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -144,6 +146,7 @@ export default function Savings() {
                     targetDate: editGoalForm.targetDate || null
                 })
             });
+            console.log("Response status:", response.status);
             
             if (response.ok) {
                 setEditGoalForm({ title: '', goalAmount: '', targetDate: '' });
@@ -162,7 +165,7 @@ export default function Savings() {
     const handleDeleteGoal = async (goalId, goalTitle) => {
         if (window.confirm(`Are you sure you want to delete "${goalTitle}"? This action cannot be undone.`)) {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/savings/${goalId}`, {
+                const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings/${goalId}`, {
                     method: 'DELETE'
                 });
                 
@@ -199,7 +202,6 @@ export default function Savings() {
                         <div className="card overview-card">
                             <div className="card-header">
                                 <h3>Total Savings</h3>
-<<<<<<< HEAD
                                 <span className="card-icon savings-icon">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -207,9 +209,6 @@ export default function Savings() {
                                         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                                     </svg>
                                 </span>
-=======
-                                <span className="card-icon savings-icon">$</span>
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
                             </div>
                             <div className="card-content">
                                 <div className="amount-display">
@@ -235,7 +234,6 @@ export default function Savings() {
                         <div className="card overview-card">
                             <div className="card-header">
                                 <h3>Overall Progress</h3>
-<<<<<<< HEAD
                                 <span className="card-icon goal-icon">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -243,9 +241,6 @@ export default function Savings() {
                                         <path d="M12 3a9 9 0 0 1 9 9"/>
                                     </svg>
                                 </span>
-=======
-                                <span className="card-icon goal-icon">%</span>
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
                             </div>
                             <div className="card-content">
                                 <div className="goal-amount">
@@ -270,7 +265,6 @@ export default function Savings() {
                         <div className="card overview-card">
                             <div className="card-header">
                                 <h3>Quick Actions</h3>
-<<<<<<< HEAD
                                 <span className="card-icon actions-icon">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
                                          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -278,9 +272,6 @@ export default function Savings() {
                                         <line x1="5" y1="12" x2="19" y2="12"/>
                                     </svg>
                                 </span>
-=======
-                                <span className="card-icon actions-icon">+</span>
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
                             </div>
                             <div className="card-content">
                                 <div className="action-buttons">

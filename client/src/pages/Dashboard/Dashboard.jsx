@@ -11,6 +11,8 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function Dashboard() {
+    const { authFetch } = useAuth();
+    
     const [budgetData, setBudgetData] = useState({ totalSpent: 0, totalBudget: 0 });
     const [debtData, setDebtData] = useState({ totalDebt: 0 });
     const [savingsData, setSavingsData] = useState({ totalSavings: 0, goalProgress: 0 });
@@ -21,7 +23,7 @@ export default function Dashboard() {
         async function fetchAllData() {
             
             try {
-                const budgetResponse = await fetch(`${import.meta.env.VITE_API_URL}/budget`);
+                const budgetResponse = await authFetch(`${import.meta.env.VITE_API_URL}/budget`);
                 if (!budgetResponse.ok) {
                     throw new Error("Failed to fetch budget data");
                 }
@@ -33,7 +35,7 @@ export default function Dashboard() {
 
                 // debt data
                 try {
-                    const debtResponse = await fetch(`${import.meta.env.VITE_API_URL}/debts`);
+                    const debtResponse = await authFetch(`${import.meta.env.VITE_API_URL}/debts`);
                     if (debtResponse.ok) {
                         const debtResult = await debtResponse.json();
                         // console.log("Debt API response:", debtResult);
@@ -47,7 +49,7 @@ export default function Dashboard() {
 
                 // savings data
                 try {
-                    const savingsResponse = await fetch(`${import.meta.env.VITE_API_URL}/savings`);
+                    const savingsResponse = await authFetch(`${import.meta.env.VITE_API_URL}/savings`);
                     if (savingsResponse.ok) {
                         const savingsResult = await savingsResponse.json();
                         

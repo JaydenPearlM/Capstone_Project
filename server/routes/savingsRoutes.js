@@ -6,6 +6,7 @@ router.use(tempUser);
 
 router.get('/', ctrl.getAll);
 router.post('/', ctrl.create);
+router.put('/:id', ctrl.update);
 router.post('/:id/contribute', ctrl.contribute);
 router.delete('/:id', ctrl.delete);        
 router.post('/:id/contribute', ctrl.contribute);
