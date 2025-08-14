@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const ctrl = require('../controllers/debtController');
-const tempUser = require('../middleware/tempUser');
+const auth = require('../middleware/auth');
 
-router.use(tempUser);
+router.use(auth);
 
 router.get('/', ctrl.getAll);
 

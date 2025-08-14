@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../../components/layout/NavBar";
 import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
+import { useAuth } from "../../contexts/AuthContext";
 import "./Debt.css";
 
 export default function Debt() {
+    const { authFetch } = useAuth();
     const [debtData, setDebtData] = useState({
         totalDebt: 0, monthlyPayments: 0, averageInterestRate: 0, debtFreeDate: null
     });
@@ -34,7 +36,7 @@ export default function Debt() {
             headers: { 'Content-Type': 'application/json' },
             ...(body && { body: JSON.stringify(body) })
         };
-        const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, config);
+        const response = await authFetch(`${import.meta.env.VITE_API_URL}${endpoint}`, config);
         if (!response.ok) throw new Error(await response.text());
         return method === 'DELETE' ? null : response.json();
     };
