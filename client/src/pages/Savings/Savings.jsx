@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../../components/layout/NavBar";
 import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
+import { useAuth } from "../../contexts/AuthContext";
 import "./Savings.css";
 
 export default function Savings() {
+    const { authFetch } = useAuth();
     const [savingsData, setSavingsData] = useState({
         totalSavings: 0,
         monthlyContribution: 0,
@@ -36,7 +38,7 @@ export default function Savings() {
 
     const fetchSavingsData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/savings`);
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings`);
             
             if (!response.ok) {
                 throw new Error("Failed to fetch savings data");
@@ -86,7 +88,7 @@ export default function Savings() {
     const handleAddGoal = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/savings`, {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -112,7 +114,7 @@ export default function Savings() {
     const handleContribution = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/savings/${selectedGoalForContribution.id}/contribute`, {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings/${selectedGoalForContribution.id}/contribute`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ amount: parseFloat(contributionForm.amount) })
@@ -135,7 +137,7 @@ export default function Savings() {
     const handleEditGoal = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/savings/${selectedGoalForEdit.id}`, {
+            const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings/${selectedGoalForEdit.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -162,7 +164,7 @@ export default function Savings() {
     const handleDeleteGoal = async (goalId, goalTitle) => {
         if (window.confirm(`Are you sure you want to delete "${goalTitle}"? This action cannot be undone.`)) {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/savings/${goalId}`, {
+                const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings/${goalId}`, {
                     method: 'DELETE'
                 });
                 
