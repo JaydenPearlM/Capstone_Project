@@ -29,7 +29,6 @@ async function safeFetchJson(url, { signal } = {}) {
     return null;
   }
 }
-// ----------------------------------------------------------------
 
 export default function CardManagement() {
   const [cards, setCards] = useState([]);
