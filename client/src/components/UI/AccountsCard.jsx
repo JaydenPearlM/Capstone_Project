@@ -1,9 +1,6 @@
 import { Card, CardContent } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link} from 'react-router-dom';
 import "./dashboardCards.css";
-import { useEffect, useState } from "react";
-
-const API = import.meta.env.VITE_API_URL;
 
 export default function AccountCard({ savingsBalance = 0.00 }){
     return (

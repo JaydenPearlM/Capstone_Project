@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../../components/layout/NavBar";
 import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
+import { useAuth } from "../../contexts/AuthContext";
 import "./Savings.css";
 import { useAuth } from "../../contexts/AuthContext";
 

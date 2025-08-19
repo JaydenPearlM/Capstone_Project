@@ -1,3 +1,4 @@
+import React from "react";
 import NavBar from "../../components/layout/NavBar";
 import Footer from "../../components/layout/Footer";
 import SideBar from "../../components/layout/SideBar";
@@ -7,7 +8,7 @@ import DebtCard from "../../components/UI/DebtCard";
 import SavingsCard from "../../components/UI/SavingsCard";
 import "./Dashboard.css";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function Dashboard() {
@@ -80,8 +81,8 @@ export default function Dashboard() {
         fetchAllData();
     }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading budget: {error}</p>;
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error loading budget: {error}</p>;
 
     return (
         <div>
