@@ -17,11 +17,7 @@ export async function handleCategorySubmit(
 
   try {
     if (catEditing) {
-<<<<<<< HEAD
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/categories/${catForm._id}`, {
-=======
       const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories/${catForm._id}`, {
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: catForm.name, budget: budgetNum })
@@ -36,11 +32,7 @@ export async function handleCategorySubmit(
       const updated = await res.json();
       setCategories(prev => prev.map(cat => cat._id === catForm._id ? updated : cat));
     } else {
-<<<<<<< HEAD
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
-=======
       const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories`, {
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: catForm.name, budget: budgetNum })
@@ -66,11 +58,7 @@ export async function handleCategorySubmit(
 export async function deleteCategory(catId, setCategories, setTransactions, authFetch) {
   if (window.confirm('Deleting this category will also delete all related transactions. Continue?')) {
     try {
-<<<<<<< HEAD
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/categories/${catId}`, { method: 'DELETE' });
-=======
       const res = await authFetch(`${import.meta.env.VITE_API_URL}/categories/${catId}`, { method: 'DELETE' });
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
       if (!res.ok) {
         const errorText = await res.text();
         alert(`Error ${res.status}: ${errorText}`);
@@ -113,11 +101,7 @@ export async function handleTransactionSubmit(
 
   try {
     if (txEditing) {
-<<<<<<< HEAD
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/transactions/${txForm._id}`, {
-=======
       const res = await authFetch(`${import.meta.env.VITE_API_URL}/transactions/${txForm._id}`, {
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -138,11 +122,7 @@ export async function handleTransactionSubmit(
         )
       );
     } else {
-<<<<<<< HEAD
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/transactions`, {
-=======
       const res = await authFetch(`${import.meta.env.VITE_API_URL}/transactions`, {
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -170,11 +150,7 @@ export async function handleTransactionSubmit(
 export async function deleteTransaction(txId, setTransactions, authFetch) {
   if (window.confirm('Delete this transaction?')) {
     try {
-<<<<<<< HEAD
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/transactions/${txId}`, { method: 'DELETE' });
-=======
       const res = await authFetch(`${import.meta.env.VITE_API_URL}/transactions/${txId}`, { method: 'DELETE' });
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
       if (!res.ok) {
         const errorText = await res.text();
         alert(`Error ${res.status}: ${errorText}`);
