@@ -8,6 +8,10 @@ export default function BudgetingCard() {
     const [transactions, setTransactions] = useState([]);
     const [categories, setCategories] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    
     useEffect(() => {
         async function fetchData() {
             try {
@@ -25,6 +29,7 @@ export default function BudgetingCard() {
 
                 setTransactions(txData);
                 setCategories(catData);
+                setLoading(false);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -34,6 +39,9 @@ export default function BudgetingCard() {
 
         fetchData();
     }, [authFetch]);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error loading data: {error}</p>;
 
     // Compute current month period
     const today = new Date();

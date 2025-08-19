@@ -12,12 +12,7 @@ import "./Dashboard.css";
 
 export default function Dashboard() {
     const { authFetch } = useAuth();
-    // const [loading, setLoading] = useState(true);
-    // const [error, setError] = useState(null);
-
-    // if (loading) return <p>Loading...</p>;
-    // if (error) return <p>Error loading data: {error}</p>;
-
+    
     return (
         <div>
             <header>
