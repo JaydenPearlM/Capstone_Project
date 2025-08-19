@@ -4,7 +4,7 @@ import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
 import { useAuth } from "../../contexts/AuthContext";
 import "./Savings.css";
-import { useAuth } from "../../contexts/AuthContext";
+// import { useAuth } from "../../contexts/AuthContext";
 
 export default function Savings() {
     const { authFetch } = useAuth();
