@@ -8,24 +8,8 @@ const BudgetSummary = ({ categories, transactions, view, dateRange }) => {
   const adjustBudgetForView = (category) => {
     const { budget, budgetPeriod = "monthly" } = category;
 
-<<<<<<< HEAD
-  useEffect(() => {
-    const fetchSummary = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/budget`);
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-        const data = await res.json();
-        setSummary(data);
-      } catch (err) {
-        console.error("Failed to fetch budget summary:", err);
-      }
-    };
-    if (categories.length && transactions.length) {
-      fetchSummary();
-=======
     if (budgetPeriod === "monthly") {
       return budget;
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
     }
     if (budgetPeriod === "biweekly") {
       if (view === "monthly") return budget * 2;

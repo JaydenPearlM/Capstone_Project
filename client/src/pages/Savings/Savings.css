@@ -60,19 +60,11 @@
 }
 
 .savings-icon {
-<<<<<<< HEAD
-  background: linear-gradient(135deg, #F7CD45 , #80cfa9);
-}
-
-.goal-icon {
-  background: linear-gradient(135deg, #77d79d, #e3eee8);
-=======
   background: linear-gradient(135deg, #4caf50, #66bb6a);
 }
 
 .goal-icon {
   background: linear-gradient(135deg, #2196f3, #42a5f5);
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
 }
 
 .accounts-icon {
@@ -193,22 +185,14 @@
 }
 
 .action-btn.primary {
-<<<<<<< HEAD
-  background: #80cfa9;
-=======
   background: linear-gradient(135deg, #4caf50, #66bb6a);
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
   color: white;
   font-family: inherit;  
   font-weight: 500;
 }
 
 .action-btn.secondary {
-<<<<<<< HEAD
-  background-color: #fcd249;
-=======
   background-color: #f5f5f5;
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
   color: #555;
   border: 1px solid #ddd;
   font-family: inherit;  
@@ -224,11 +208,7 @@
 }
 
 .action-btn.secondary:hover {
-<<<<<<< HEAD
-  background-color: #fce705;
-=======
   background-color: #e8e8e8;
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
 }
 
 .goals-section {
@@ -273,11 +253,7 @@
 }
 
 .goal-action-btn.edit {
-<<<<<<< HEAD
-  background-color: #FFF9C4;
-=======
   background-color: #f0f0f0;
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
   color: #555;
   font-family: inherit;  
   font-weight: 500;
@@ -291,11 +267,7 @@
 }
 
 .goal-action-btn.edit:hover {
-<<<<<<< HEAD
-  background-color: #f4eb99;
-=======
   background-color: #e0e0e0;
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
 }
 
 .goal-action-btn.delete:hover {
@@ -350,11 +322,7 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-<<<<<<< HEAD
-  background: linear-gradient(135deg, #D8E2DC, #77d79d);
-=======
   background: linear-gradient(135deg, #4caf50, #66bb6a);
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
   display: flex;
   align-items: center;
   justify-content: center;

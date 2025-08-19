@@ -5,27 +5,6 @@ import { useEffect, useState } from "react";
 
 const API = import.meta.env.VITE_API_URL;
 
-<<<<<<< HEAD
-export default function AccountCard({ savingsBalance = 500.00 }){
-    return (
-        // <Link to="/CardManagement">
-            <Card>
-                <CardContent className="accounts">
-                    <h2>Account Balance</h2>
-                    <p className="amount">
-                        {/* Add actual checking amount here */}
-                        Checking: $1000.00<br />
-                        {/* shows savings balance with 2 decimal places */}
-                        Savings: ${savingsBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                    </p>
-
-                </CardContent>
-            </Card>
-            
-        // </Link>
-    )
-}
-=======
 export default function AccountCard() {
   const [checking, setChecking] = useState(0);
   const [savings, setSavings] = useState(0);
@@ -74,4 +53,3 @@ export default function AccountCard() {
     </Link>
   );
 }
->>>>>>> bfe520b9001345e53c4930e2a178963ff6a5ec8d
