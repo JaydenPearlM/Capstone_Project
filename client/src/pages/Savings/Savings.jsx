@@ -4,6 +4,7 @@ import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
 import { useAuth } from "../../contexts/AuthContext";
 import "./Savings.css";
+// import { useAuth } from "../../contexts/AuthContext";
 
 export default function Savings() {
     const { authFetch } = useAuth();
@@ -146,6 +147,7 @@ export default function Savings() {
                     targetDate: editGoalForm.targetDate || null
                 })
             });
+            console.log("Response status:", response.status);
             
             if (response.ok) {
                 setEditGoalForm({ title: '', goalAmount: '', targetDate: '' });
@@ -201,7 +203,13 @@ export default function Savings() {
                         <div className="card overview-card">
                             <div className="card-header">
                                 <h3>Total Savings</h3>
-                                <span className="card-icon savings-icon">$</span>
+                                <span className="card-icon savings-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="12" y1="1" x2="12" y2="23"/>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                    </svg>
+                                </span>
                             </div>
                             <div className="card-content">
                                 <div className="amount-display">
@@ -227,7 +235,13 @@ export default function Savings() {
                         <div className="card overview-card">
                             <div className="card-header">
                                 <h3>Overall Progress</h3>
-                                <span className="card-icon goal-icon">%</span>
+                                <span className="card-icon goal-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M21 12a9 9 0 1 1-9-9v9z"/>
+                                        <path d="M12 3a9 9 0 0 1 9 9"/>
+                                    </svg>
+                                </span>
                             </div>
                             <div className="card-content">
                                 <div className="goal-amount">
@@ -252,7 +266,13 @@ export default function Savings() {
                         <div className="card overview-card">
                             <div className="card-header">
                                 <h3>Quick Actions</h3>
-                                <span className="card-icon actions-icon">+</span>
+                                <span className="card-icon actions-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"/>
+                                        <line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                </span>
                             </div>
                             <div className="card-content">
                                 <div className="action-buttons">

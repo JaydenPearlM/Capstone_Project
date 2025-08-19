@@ -6,6 +6,9 @@ router.use(auth);
 
 router.get('/', ctrl.getAll);
 router.post('/', ctrl.create);
+router.put('/:id', ctrl.update);
+router.post('/:id/contribute', ctrl.contribute);
+router.delete('/:id', ctrl.delete);        
 router.post('/:id/contribute', ctrl.contribute);
 
 module.exports = router;

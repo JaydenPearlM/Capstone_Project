@@ -5,6 +5,27 @@ import Footer from "../../components/layout/Footer";
 import { useAuth } from "../../contexts/AuthContext";
 import "./Debt.css";
 
+
+const Modal = ({ show, title, onClose, children }) => {
+    if (!show) return null;
+    
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-header">
+                    <h3>{title}</h3>
+                    <button className="modal-close" onClick={onClose} type="button">
+                        ×
+                    </button>
+                </div>
+                <div className="modal-body">
+                    {children}
+                </div>
+            </div>
+        </div>
+    );
+};
+
 export default function Debt() {
     const { authFetch } = useAuth();
     const [debtData, setDebtData] = useState({
@@ -121,39 +142,12 @@ export default function Debt() {
     };
 
     const colors = {
-        credit_card: '#FF6B6B', student_loan: '#4ECDC4', auto_loan: '#45B7D1',
-        mortgage: '#96CEB4', personal_loan: '#FECA57', other: '#DDA0DD'
+        credit_card: '#FCD5CE', student_loan: '#4ECDC4', auto_loan: '#C7CEEA',
+        mortgage: '#B5EAD7', personal_loan: '#FECA57', other: '#DDA0DD'
     };
 
     const getDebtTypeIcon = (type) => icons[type] || icons.other;
     const getDebtTypeColor = (type) => colors[type] || colors.other;
-
-    const FormField = ({ label, type, value, onChange, ...props }) => (
-        <div className="form-group">
-            <label htmlFor={props.id}>{label}</label>
-            {type === 'select' ? (
-                <select value={value} onChange={onChange} {...props}>
-                    <option value="credit_card">Credit Card</option>
-                    <option value="student_loan">Student Loan</option>
-                    <option value="auto_loan">Auto Loan</option>
-                    <option value="mortgage">Mortgage</option>
-                    <option value="personal_loan">Personal Loan</option>
-                    <option value="other">Other</option>
-                </select>
-            ) : (
-                <input type={type} value={value} onChange={onChange} {...props} />
-            )}
-        </div>
-    );
-
-    const Modal = ({ show, title, onClose, children }) => show ? (
-        <div className="modal-overlay">
-            <div className="modal">
-                <h3>{title}</h3>
-                {children}
-            </div>
-        </div>
-    ) : null;
 
     useEffect(() => { fetchDebtData(); }, []);
 
@@ -171,8 +165,10 @@ export default function Debt() {
                             <div className="card-header">
                                 <h3>Total Debt</h3>
                                 <span className="card-icon debt-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="12" y1="1" x2="12" y2="23"/>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                                     </svg>
                                 </span>
                             </div>
@@ -198,10 +194,12 @@ export default function Debt() {
 
                         <div className="card overview-card">
                             <div className="card-header">
-                                <h3>Monthly Payments</h3>
+                                <h3>Minimum Monthly Payments</h3>
                                 <span className="card-icon payment-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+                                        <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
                                     </svg>
                                 </span>
                             </div>
@@ -218,7 +216,8 @@ export default function Debt() {
                             <div className="card-header">
                                 <h3>Quick Actions</h3>
                                 <span className="card-icon actions-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                                     </svg>
                                 </span>
@@ -279,7 +278,7 @@ export default function Debt() {
                                             <button className="payment-btn" onClick={() => {
                                                 setSelectedDebtForPayment(debt);
                                                 setShowPaymentForm(true);
-                                            }}>Make Payment to {debt.name}</button>
+                                            }}>Payment made to {debt.name}</button>
                                             <div className="debt-actions">
                                                 <button className="debt-action-btn edit" onClick={() => {
                                                     setSelectedDebtForEdit(debt);
@@ -300,31 +299,97 @@ export default function Debt() {
                     </div>
 
                     {/* Add Debt Modal */}
-                    <Modal show={showAddDebtForm} title="Add New Debt" onClose={() => setShowAddDebtForm(false)}>
+                    <Modal 
+                        show={showAddDebtForm} 
+                        title="Add New Debt" 
+                        onClose={() => setShowAddDebtForm(false)}
+                    >
                         <form onSubmit={handleAddDebt}>
-                            <FormField label="Debt Name" type="text" id="name" value={newDebtForm.name} 
-                                onChange={(e) => setNewDebtForm({...newDebtForm, name: e.target.value})} 
-                                placeholder="e.g., Chase Credit Card" required />
-                            <FormField label="Current Balance ($)" type="number" id="balance" value={newDebtForm.balance}
-                                onChange={(e) => setNewDebtForm({...newDebtForm, balance: e.target.value})}
-                                placeholder="5000" min="0" step="0.01" required />
-                            <FormField label="Interest Rate (%)" type="number" id="interestRate" value={newDebtForm.interestRate}
-                                onChange={(e) => setNewDebtForm({...newDebtForm, interestRate: e.target.value})}
-                                placeholder="18.99" min="0" step="0.01" required />
-                            <FormField label="Minimum Payment ($)" type="number" id="minimumPayment" value={newDebtForm.minimumPayment}
-                                onChange={(e) => setNewDebtForm({...newDebtForm, minimumPayment: e.target.value})}
-                                placeholder="95" min="0" step="0.01" required />
-                            <FormField label="Debt Type" type="select" id="type" value={newDebtForm.type}
-                                onChange={(e) => setNewDebtForm({...newDebtForm, type: e.target.value})} />
+                            <div className="form-group">
+                                <label htmlFor="name">Debt Name</label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    value={newDebtForm.name}
+                                    onChange={(e) => setNewDebtForm({...newDebtForm, name: e.target.value})}
+                                    placeholder="e.g., Chase Credit Card"
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="balance">Current Balance ($)</label>
+                                <input
+                                    type="number"
+                                    id="balance"
+                                    value={newDebtForm.balance}
+                                    onChange={(e) => setNewDebtForm({...newDebtForm, balance: e.target.value})}
+                                    placeholder="5000"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="interestRate">Interest Rate (%)</label>
+                                <input
+                                    type="number"
+                                    id="interestRate"
+                                    value={newDebtForm.interestRate}
+                                    onChange={(e) => setNewDebtForm({...newDebtForm, interestRate: e.target.value})}
+                                    placeholder="18.99"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="minimumPayment">Minimum Payment ($)</label>
+                                <input
+                                    type="number"
+                                    id="minimumPayment"
+                                    value={newDebtForm.minimumPayment}
+                                    onChange={(e) => setNewDebtForm({...newDebtForm, minimumPayment: e.target.value})}
+                                    placeholder="95"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="type">Debt Type</label>
+                                <select
+                                    id="type"
+                                    value={newDebtForm.type}
+                                    onChange={(e) => setNewDebtForm({...newDebtForm, type: e.target.value})}
+                                >
+                                    <option value="credit_card">Credit Card</option>
+                                    <option value="student_loan">Student Loan</option>
+                                    <option value="auto_loan">Auto Loan</option>
+                                    <option value="mortgage">Mortgage</option>
+                                    <option value="personal_loan">Personal Loan</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
                             <div className="form-actions">
-                                <button type="button" className="action-btn secondary" onClick={() => setShowAddDebtForm(false)}>Cancel</button>
-                                <button type="submit" className="action-btn primary">Add Debt</button>
+                                <button type="button" className="action-btn secondary" onClick={() => setShowAddDebtForm(false)}>
+                                    Cancel
+                                </button>
+                                <button type="submit" className="action-btn primary">
+                                    Add Debt
+                                </button>
                             </div>
                         </form>
                     </Modal>
 
                     {/* Payment Modal */}
-                    <Modal show={showPaymentForm} title="Make a Payment" onClose={() => setShowPaymentForm(false)}>
+                    <Modal 
+                        show={showPaymentForm} 
+                        title="Make a Payment" 
+                        onClose={() => {
+                            setShowPaymentForm(false);
+                            setSelectedDebtForPayment(null);
+                        }}
+                    >
                         {!selectedDebtForPayment ? (
                             <div>
                                 <p>Select a debt to make a payment:</p>
@@ -345,7 +410,9 @@ export default function Debt() {
                                         </div>
                                     ))}
                                 </div>
-                                <button className="action-btn secondary" onClick={() => setShowPaymentForm(false)}>Cancel</button>
+                                <button className="action-btn secondary" onClick={() => setShowPaymentForm(false)}>
+                                    Cancel
+                                </button>
                             </div>
                         ) : (
                             <form onSubmit={handlePayment}>
@@ -354,37 +421,123 @@ export default function Debt() {
                                     <p><strong>Current Balance:</strong> ${selectedDebtForPayment.currentBalance.toFixed(2)}</p>
                                     <p><strong>Minimum Payment:</strong> ${selectedDebtForPayment.minimumPayment.toFixed(2)}</p>
                                 </div>
-                                <FormField label="Payment Amount ($)" type="number" id="paymentAmount" value={paymentForm.amount}
-                                    onChange={(e) => setPaymentForm({...paymentForm, amount: e.target.value})}
-                                    placeholder={selectedDebtForPayment.minimumPayment.toString()} min="0.01" step="0.01" required />
+                                <div className="form-group">
+                                    <label htmlFor="paymentAmount">Payment Amount ($)</label>
+                                    <input
+                                        type="number"
+                                        id="paymentAmount"
+                                        value={paymentForm.amount}
+                                        onChange={(e) => setPaymentForm({...paymentForm, amount: e.target.value})}
+                                        placeholder={selectedDebtForPayment.minimumPayment.toString()}
+                                        min="0.01"
+                                        step="0.01"
+                                        required
+                                    />
+                                </div>
                                 <div className="form-actions">
-                                    <button type="button" className="action-btn secondary" onClick={() => {
-                                        setShowPaymentForm(false); setSelectedDebtForPayment(null);
-                                    }}>Cancel</button>
-                                    <button type="submit" className="action-btn primary">Make Payment</button>
+                                    <button 
+                                        type="button" 
+                                        className="action-btn secondary" 
+                                        onClick={() => {
+                                            setShowPaymentForm(false); 
+                                            setSelectedDebtForPayment(null);
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button type="submit" className="action-btn primary">
+                                        Make Payment
+                                    </button>
                                 </div>
                             </form>
                         )}
                     </Modal>
 
                     {/* Edit Debt Modal */}
-                    <Modal show={showEditDebtForm && selectedDebtForEdit} title="Edit Debt" onClose={() => setShowEditDebtForm(false)}>
+                    <Modal 
+                        show={showEditDebtForm && selectedDebtForEdit} 
+                        title="Edit Debt" 
+                        onClose={() => {
+                            setShowEditDebtForm(false);
+                            setSelectedDebtForEdit(null);
+                        }}
+                    >
                         <form onSubmit={handleEditDebt}>
-                            <FormField label="Debt Name" type="text" id="editName" value={editDebtForm.name}
-                                onChange={(e) => setEditDebtForm({...editDebtForm, name: e.target.value})} required />
-                            <FormField label="Current Balance ($)" type="number" id="editBalance" value={editDebtForm.balance}
-                                onChange={(e) => setEditDebtForm({...editDebtForm, balance: e.target.value})} min="0" step="0.01" required />
-                            <FormField label="Interest Rate (%)" type="number" id="editInterestRate" value={editDebtForm.interestRate}
-                                onChange={(e) => setEditDebtForm({...editDebtForm, interestRate: e.target.value})} min="0" step="0.01" required />
-                            <FormField label="Minimum Payment ($)" type="number" id="editMinimumPayment" value={editDebtForm.minimumPayment}
-                                onChange={(e) => setEditDebtForm({...editDebtForm, minimumPayment: e.target.value})} min="0" step="0.01" required />
-                            <FormField label="Debt Type" type="select" id="editType" value={editDebtForm.type}
-                                onChange={(e) => setEditDebtForm({...editDebtForm, type: e.target.value})} />
+                            <div className="form-group">
+                                <label htmlFor="editName">Debt Name</label>
+                                <input
+                                    type="text"
+                                    id="editName"
+                                    value={editDebtForm.name}
+                                    onChange={(e) => setEditDebtForm({...editDebtForm, name: e.target.value})}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="editBalance">Current Balance ($)</label>
+                                <input
+                                    type="number"
+                                    id="editBalance"
+                                    value={editDebtForm.balance}
+                                    onChange={(e) => setEditDebtForm({...editDebtForm, balance: e.target.value})}
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="editInterestRate">Interest Rate (%)</label>
+                                <input
+                                    type="number"
+                                    id="editInterestRate"
+                                    value={editDebtForm.interestRate}
+                                    onChange={(e) => setEditDebtForm({...editDebtForm, interestRate: e.target.value})}
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="editMinimumPayment">Minimum Payment ($)</label>
+                                <input
+                                    type="number"
+                                    id="editMinimumPayment"
+                                    value={editDebtForm.minimumPayment}
+                                    onChange={(e) => setEditDebtForm({...editDebtForm, minimumPayment: e.target.value})}
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="editType">Debt Type</label>
+                                <select
+                                    id="editType"
+                                    value={editDebtForm.type}
+                                    onChange={(e) => setEditDebtForm({...editDebtForm, type: e.target.value})}
+                                >
+                                    <option value="credit_card">Credit Card</option>
+                                    <option value="student_loan">Student Loan</option>
+                                    <option value="auto_loan">Auto Loan</option>
+                                    <option value="mortgage">Mortgage</option>
+                                    <option value="personal_loan">Personal Loan</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
                             <div className="form-actions">
-                                <button type="button" className="action-btn secondary" onClick={() => {
-                                    setShowEditDebtForm(false); setSelectedDebtForEdit(null);
-                                }}>Cancel</button>
-                                <button type="submit" className="action-btn primary">Update Debt</button>
+                                <button 
+                                    type="button" 
+                                    className="action-btn secondary" 
+                                    onClick={() => {
+                                        setShowEditDebtForm(false); 
+                                        setSelectedDebtForEdit(null);
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                                <button type="submit" className="action-btn primary">
+                                    Update Debt
+                                </button>
                             </div>
                         </form>
                     </Modal>
