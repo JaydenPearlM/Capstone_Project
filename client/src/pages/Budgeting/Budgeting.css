@@ -20,7 +20,7 @@
 .budgeting-summary-container,
 .categories-container,
 .transactions-container,
-.budget-control-container  {
+.budget-control-container, .quick-actions{
   background-color: white;
   padding: 1.5rem;
   border-radius: 16px;
@@ -41,7 +41,11 @@
   margin-bottom: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
-
+.frequency-toggle-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .getting-started h2 {
   color: #333;
   margin-bottom: 10px;
@@ -151,6 +155,18 @@
 
 .frequency-p {
   text-align: center;
+  font-size:small;
+}
+
+.quick-actions .add-btn {
+  margin-top: 8px;
+}
+
+/* Hide on mobile (<900px) */
+@media (max-width: 900px) {
+  .quick-actions {
+    display: none;
+  }
 }
 
 @media (max-width: 600px) {

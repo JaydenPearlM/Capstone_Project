@@ -51,9 +51,6 @@ const Home = () => {
                     <p className="about-text">
                         As students ourselves, we understand the struggles of managing money during college. That’s why we created this budgeting app, a tool designed to help students like us take control of their <strong>spending</strong>, build healthy <strong>saving habits</strong>, and stay on top of <strong>debt</strong>.
                     </p>
-                    <p className="about-text">
-                        Our mission is simple: make personal finance easier, smarter, and more accessible — starting with the student community.
-                    </p>
                 </div>
 
             </main>

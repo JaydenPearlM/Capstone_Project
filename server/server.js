@@ -24,11 +24,11 @@ app.use(helmet());
 app.use(cors({ origin: process.env.FRONTEND_URL }));
 
 // Basic rate limiter - only allow your frontend
-app.use(rateLimit({
-  windowMs: 15*60*1000,
-  max: 250,
-  message: "Too many requests from this IP, please try again later."
-}))
+// app.use(rateLimit({
+//   windowMs: 15*60*1000,
+//   max: 250,
+//   message: "Too many requests from this IP, please try again later."
+// }))
 
 app.get('/', (req, res) => {
   res.send(' Cache Budget API is running! ');
