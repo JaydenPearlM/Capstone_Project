@@ -10,6 +10,8 @@ import BudgetSummary from "./content/BudgetSummary";
 import Categories from "./content/Categories";
 import Transactions from "./content/Transactions";
 import Modal from "./Modal";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 import {
     handleCategorySubmit,
@@ -45,6 +47,7 @@ export default function Budgeting() {
     const [biweeklyStart, setBiweeklyStart] = useState(""); // YYYY-MM-DD for biweekly start
 
     const [view, setView] = useState("monthly"); // Controls view mode for BudgetSummary & filtering
+    const [showFrequencyControls, setShowFrequencyControls] = useState(false);
 
     // track an offset in periods (weeks, biweeks, months) relative to "today"
     // 0 means current period, -1 previous period, +1 next period, etc.
@@ -145,9 +148,14 @@ export default function Budgeting() {
     // Filter transactions based on dateRange
     const filteredTransactions = useMemo(() => {
         if (!dateRange) return [];
+
+        const pad = (n) => n.toString().padStart(2, "0");
+        const startStr = `${dateRange.start.getFullYear()}-${pad(dateRange.start.getMonth() + 1)}-${pad(dateRange.start.getDate())}`;
+        const endStr = `${dateRange.end.getFullYear()}-${pad(dateRange.end.getMonth() + 1)}-${pad(dateRange.end.getDate())}`;
+
         return transactions.filter((tx) => {
-            const txDate = new Date(tx.date);
-            return txDate >= dateRange.start && txDate <= dateRange.end;
+            const txDateStr = tx.date.slice(0, 10); // take YYYY-MM-DD
+            return txDateStr >= startStr && txDateStr <= endStr;
         });
     }, [transactions, dateRange]);
 
@@ -230,43 +238,60 @@ export default function Budgeting() {
                             </span>
                             <button onClick={handleNextPeriod}>Next &gt;</button>
                         </div>
-            
+
                         <p className="frequency-p">
-                            Choose the frequency you'd like to view your budget. 
+                            Choose the frequency you'd like to view your budget.
                         </p>
                         {/* Budget Controls */}
-                        <div className="budget-controls">
-                            <label>
-                                Budget Frequency:
-                                <select
-                                    value={budgetFrequency}
-                                    onChange={(e) => {
-                                        setBudgetFrequency(e.target.value);
-                                        setView(e.target.value);
-                                        setPeriodOffset(0);
-                                    }}
-                                >
-                                    <option value="weekly">Weekly</option>
-                                    <option value="biweekly">Biweekly</option>
-                                    <option value="monthly">Monthly</option>
-                                </select>
-                            </label>
+                        <div className="budget-controls-container">
+                            <div
+                                className="frequency-toggle-icon"
+                                onClick={() => setShowFrequencyControls(!showFrequencyControls)}
+                            >
+                                {showFrequencyControls ? (
+                                    <ArrowDropUpIcon style={{ fontSize: '32px', cursor: 'pointer' }} />
+                                ) : (
+                                    <ArrowDropDownIcon style={{ fontSize: '32px', cursor: 'pointer' }} />
+                                )}
+                            </div>
 
-                            {budgetFrequency === "biweekly" && (
-                                <label>
-                                    Biweekly Start Date:
-                                    <input
-                                        type="date"
-                                        value={biweeklyStart}
-                                        onChange={(e) => {
-                                            setBiweeklyStart(e.target.value);
-                                            setPeriodOffset(0);
-                                        }}
-                                    />
-                                </label>
+                            {showFrequencyControls && (
+                                <div className="budget-controls">
+                                    <label>
+                                        Budget Frequency:
+                                        <select
+                                            value={budgetFrequency}
+                                            onChange={(e) => {
+                                                setBudgetFrequency(e.target.value);
+                                                setView(e.target.value);
+                                                setPeriodOffset(0);
+                                            }}
+                                        >
+                                            <option value="weekly">Weekly</option>
+                                            <option value="biweekly">Biweekly</option>
+                                            <option value="monthly">Monthly</option>
+                                        </select>
+                                    </label>
+
+                                    {budgetFrequency === "biweekly" && (
+                                        <label>
+                                            Biweekly Start Date:
+                                            <input
+                                                type="date"
+                                                value={biweeklyStart}
+                                                onChange={(e) => {
+                                                    setBiweeklyStart(e.target.value);
+                                                    setPeriodOffset(0);
+                                                }}
+                                            />
+                                        </label>
+                                    )}
+                                </div>
                             )}
                         </div>
                     </div>
+
+
 
                     <div className="budgeting-summary-container">
                         <h2>Budget Summary</h2>
@@ -285,6 +310,31 @@ export default function Budgeting() {
                                 setPeriodOffset(0);
                             }}
                         />
+                    </div>
+
+                    {/* Quick Actions Panel (Desktop only) */}
+                    <div className="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <button
+                            className="add-btn"
+                            onClick={() => {
+                                setTxForm({ id: null, categoryId: "", amount: "", description: "", type: "expense", date: "" });
+                                setTxEditing(false);
+                                setShowTransactionModal(true);
+                            }}
+                        >
+                            + Add Transaction
+                        </button>
+                        <button
+                            className="add-btn"
+                            onClick={() => {
+                                setCatForm({ id: null, name: "", budget: "", budgetPeriod: "monthly", isRecurring: true });
+                                setCatEditing(false);
+                                setShowCategoryModal(true);
+                            }}
+                        >
+                            + Add Category
+                        </button>
                     </div>
 
                     <div className="transactions-container">
@@ -331,6 +381,8 @@ export default function Budgeting() {
                             />
                         </Modal>
                     </div>
+
+
 
                     <div className="categories-container">
                         <Categories
