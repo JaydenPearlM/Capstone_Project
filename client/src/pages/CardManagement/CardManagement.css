@@ -64,13 +64,15 @@
 }
 
 .account-bal-card,
-.debt-card, .csv-card {
+.debt-card,
+.csv-card {
   padding: 18px;
 }
 
 .card-panel h2,
 .account-bal-card h3,
-.debt-card h3, .csv-card h3 {
+.debt-card h3,
+.csv-card h3 {
   color: var(--ink);
   margin: 0 px;
   font-size: 1.35rem;
@@ -296,20 +298,22 @@ body,
   margin: 0;
 }
 
-
 .card-grid {
   display: grid;
-  grid-template-columns: minmax(520px, auto) 1fr; /* default desktop */
+  grid-template-columns: minmax(520px, auto) 1fr;
+  /* default desktop */
   column-gap: 20px;
   align-items: start;
-  margin-right: 0; /* remove inline overrides */
+  margin-right: 0;
+  /* remove inline overrides */
   padding-right: 16px;
 }
 
 /* Mobile layout: single column */
 @media (max-width: 900px) {
   .card-grid {
-    grid-template-columns: 1fr; /* stack panels vertically */
+    grid-template-columns: 1fr;
+    /* stack panels vertically */
     gap: 16px;
     padding-right: 0;
   }
@@ -329,21 +333,24 @@ body,
   .account-bal-card,
   .debt-card,
   .csv-card {
-    width: 100%; /* make all cards full width */
+    width: 100%;
+    /* make all cards full width */
   }
 }
 
 /* Extra mobile layout: sidebar on top, everything stacked */
 @media (max-width: 600px) {
   .card-management-content {
-    flex-direction: column;  /* stack sidebar + main content vertically */
+    flex-direction: column;
+    /* stack sidebar + main content vertically */
     gap: 16px;
     padding: 0 12px;
     margin-left: 0;
   }
 
   .card-grid {
-    grid-template-columns: 1fr; /* stack all panels vertically */
+    grid-template-columns: 1fr;
+    /* stack all panels vertically */
     gap: 16px;
     padding-right: 0;
     margin-left: 0;
@@ -364,8 +371,9 @@ body,
   .account-bal-card,
   .debt-card,
   .csv-card,
-  .left-rail { 
+  .left-rail {
     margin-left: 0;
-    width: 100%; /* make all sections full width */
+    width: 100%;
+    /* make all sections full width */
   }
 }
