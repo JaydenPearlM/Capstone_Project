@@ -12,7 +12,6 @@ import "./Dashboard.css";
 
 export default function Dashboard() {
     const { authFetch } = useAuth();
-
     const [budgetData, setBudgetData] = useState({ totalSpent: 0, totalBudget: 0 });
     const [debtData, setDebtData] = useState({ totalDebt: 0 });
     const [savingsData, setSavingsData] = useState({ totalSavings: 0, goalProgress: 0 });
@@ -37,6 +36,9 @@ export default function Dashboard() {
                     const debtResponse = await authFetch(`${import.meta.env.VITE_API_URL}/debts`);
                     if (debtResponse.ok) {
                         const debtResult = await debtResponse.json();
+
+                        // console.log("Debt API response:", debtResult);
+
                         setDebtData({
                             totalDebt: debtResult.totalDebt || 0
                         });
@@ -120,6 +122,6 @@ export default function Dashboard() {
             <footer>
                 <Footer />
             </footer>
-        </div>
-    );
+            </div>
+  )
 }

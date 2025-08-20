@@ -61,7 +61,7 @@ exports.create = async (req, res) => {
   try {
     const { name, balance, interestRate, minimumPayment, type } = req.body;
     
-    if (!name || !balance || !interestRate || !minimumPayment) {
+    if (!name || !balance || interestRate === undefined || interestRate === null || !minimumPayment) {
       return res.status(400).json({ 
         error: 'Name, balance, interest rate, and minimum payment are required' 
       });
