@@ -25,12 +25,17 @@ const Transactions = ({
   };
 
   // Use passed dateRange to filter transactions and show current period
-  const filteredTransactions = dateRange
-    ? transactions.filter((tx) => {
-        const txDate = new Date(tx.date);
-        return txDate >= dateRange.start && txDate <= dateRange.end;
-      })
-    : transactions; // fallback: show all
+const filteredTransactions = dateRange
+  ? transactions.filter((tx) => {
+      const pad = (n) => n.toString().padStart(2, "0");
+
+      const startStr = `${dateRange.start.getFullYear()}-${pad(dateRange.start.getMonth() + 1)}-${pad(dateRange.start.getDate())}`;
+      const endStr = `${dateRange.end.getFullYear()}-${pad(dateRange.end.getMonth() + 1)}-${pad(dateRange.end.getDate())}`;
+
+      const txDateStr = tx.date.slice(0, 10); // YYYY-MM-DD
+      return txDateStr >= startStr && txDateStr <= endStr;
+    })
+  : transactions; // fallback: show all
 
   return (
     <div className="transactions-section">

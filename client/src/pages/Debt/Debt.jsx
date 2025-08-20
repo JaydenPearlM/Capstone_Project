@@ -336,9 +336,11 @@ export default function Debt() {
                                     id="interestRate"
                                     value={newDebtForm.interestRate}
                                     onChange={(e) => setNewDebtForm({...newDebtForm, interestRate: e.target.value})}
+
                                     placeholder="17.99"
                                     min="0"
                                     step="0.01"     
+
                                 />
                             </div>
                             <div className="form-group">
@@ -491,9 +493,11 @@ export default function Debt() {
                                     id="editInterestRate"
                                     value={editDebtForm.interestRate}
                                     onChange={(e) => setEditDebtForm({...editDebtForm, interestRate: e.target.value})}
+
                                     placeholder="17.99"
                                     min="0"
                                     step="0.01"
+
                                 />
                             </div>
                             <div className="form-group">
