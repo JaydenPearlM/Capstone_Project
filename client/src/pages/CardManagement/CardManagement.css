@@ -1,55 +1,379 @@
-.card-management-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+/* ===== Theme ===== */
+:root {
+  --bg-lavender: #dbc5e8;
+  --card-bg: #fff;
+  --ink: #111827;
+  --text: #374151;
+  --muted: #6b7280;
+  --ring: rgba(17, 24, 39, .10);
+  --shadow: 0 12px 36px rgba(0, 0, 0, .10);
+  --primary: #4ba3a6;
+  --footer-yellow: #fff5cc;
+  --header-offset: 84px;
+  --rail-width: 340px;
 }
 
-/* Layout for sidebar + content */
+/* ===== Page ===== */
+.card-management-page {
+  min-height: 100vh;
+  background: var(--bg-lavender);
+  color: var(--text);
+}
+
 .card-management-content {
   display: flex;
-  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 28px;
+  padding: 0 0px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Sidebar */
-.SideBar {
-  width: 250px;
-  flex-shrink: 0;
+.card-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(720px, 1.6fr) minmax(540px, 1fr);
+  gap: 20px;
+  min-width: 0;
+  padding: 20px 0 28px;
+  align-items: start;
 }
 
-/* Coming Soon Section */
-.coming-soon-section {
-  flex: 1;
-  padding: 2rem;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+/* ===== Cards ===== */
+.card-panel,
+.stats-panel,
+.debt-card,
+.account-bal-card,
+.csv-card {
+  background: var(--card-bg);
+  border: 1px solid var(--ring);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  margin-top: 20px;
+}
+
+.card-panel {
+  padding: 24px;
+}
+
+.stats-panel {
+  padding: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+.account-bal-card,
+.debt-card,
+.csv-card {
+  padding: 18px;
+}
+
+.card-panel h2,
+.account-bal-card h3,
+.debt-card h3,
+.csv-card h3 {
+  color: var(--ink);
+  margin: 0 px;
+  font-size: 1.35rem;
+}
+
+/* ===== Inputs: (shadows) ===== */
+.card-form label {
+  display: block;
+  font-size: 1rem;
+  color: var(--ink);
+  margin: 12px 0 6px;
+}
+
+.card-form input,
+.card-form select,
+.search-widget input,
+.csv-export-widget input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  font-size: 1rem;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--ring);
+  background: #fff;
+  outline: none;
+
+
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, .03),
+    0 1px 2px rgba(0, 0, 0, .04);
+  transition: box-shadow .12s ease, border-color .12s ease, transform .06s ease;
+}
+
+.card-form input:hover,
+.card-form select:hover,
+.search-widget input:hover,
+.csv-export-widget input:hover {
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, .06),
+    0 1px 3px rgba(0, 0, 0, .06);
+}
+
+.card-form input:focus,
+.card-form select:focus,
+.search-widget input:focus,
+.csv-export-widget input:focus {
+  border-color: rgba(75, 163, 166, .6);
+  box-shadow: 0 0 0 4px rgba(75, 163, 166, .12), 0 2px 6px rgba(0, 0, 0, .06);
+}
+
+.card-form .row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  /* prevents overflow */
+  gap: 16px;
+}
+
+/* Primary button */
+.card-form .primary,
+.search-widget button,
+.csv-export-widget button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+  border-radius: 14px;
+  min-height: 46px;
+  padding: 12px 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(75, 163, 166, .25);
+}
+
+.card-form .primary:hover,
+.search-widget button:hover,
+.csv-export-widget button:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+/* Saved cards list */
+.card-list {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.saved-card {
+  padding: 12px 14px;
+  border: 1px dashed var(--ring);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.saved-card .muted {
+  color: var(--muted);
+  font-size: .95rem;
+  margin-top: 4px;
+}
+
+.link.danger {
+  background: transparent;
+  border: none;
+  color: #b91c1c;
+  cursor: pointer;
+}
+
+/* ===== Actions row ===== */
+.actions-row {
+  display: grid;
+  gap: 12px;
+}
+
+
+.search-widget .row {
+  display: grid;
+  grid-template-columns: 1fr 160px 160px 160px;
+  gap: 10px;
+}
+
+.search-widget button {
+  width: 100%;
+}
+
+@media (max-width: 1500px) {
+  .search-widget .row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.csv-export-widget {
+  display: grid;
+  gap: 10px;
+}
+
+.csv-export-widget button {
+  width: 100%;
+}
+
+/* ===== Footer pastel yellow strip ===== */
+.card-management-page .footer-strip {
+  background: var(--footer-yellow);
+  border-top: 1px solid var(--ring);
+}
+
+.card-management-page .footer-strip>* {
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* remove horizontal scrollbar without changing layout */
+html,
+body,
+#root {
+  overflow-x: hidden;
+}
+
+/* force the export button styling regardless of inner component markup */
+.csv-export-skin button,
+.csv-export-skin .btn,
+.csv-export-skin [type="button"] {
+  background-color: #A7E8BD !important;
+  border-color: #A7E8BD !important;
+  color: #6B7280 !important;
+}
+
+/* hide any extra fields inside CsvExport - leave only the button(s) */
+.csv-export-skin input,
+.csv-export-skin select,
+.csv-export-skin label,
+.csv-export-skin .row,
+.csv-export-skin .filters,
+.csv-export-skin .search,
+.csv-export-skin .search-widget {
+  display: none !important;
+}
+
+/* === Card Overview item boxes (thin border + subtle shadow) === */
+.cards-overview-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.cards-overview-item {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.cards-overview-item .co-main {
+  display: grid;
+  gap: 6px;
+}
+
+.cards-overview-item .co-title {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  font-weight: bold;
-  color: white;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-/* Add this when you're ready to include your image */
-.coming-soon-section {
-  background-image: url('/path/to/your/background.jpg'); /* Replace with actual path */
+.cards-overview-item .co-title strong {
+  font-weight: 600;
 }
 
-/* Mobile responsive */
-@media (max-width: 768px) {
+.cards-overview-item .co-meta {
+  color: #6B7280;
+  font-size: 0.9em;
+  text-transform: none;
+}
+
+.cards-overview-item .co-sub p {
+  margin: 0;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: minmax(520px, auto) 1fr;
+  /* default desktop */
+  column-gap: 20px;
+  align-items: start;
+  margin-right: 0;
+  /* remove inline overrides */
+  padding-right: 16px;
+}
+
+/* Mobile layout: single column */
+@media (max-width: 900px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+    /* stack panels vertically */
+    gap: 16px;
+    padding-right: 0;
+  }
+
+  .left-stack {
+    display: grid;
+    gap: 16px;
+  }
+
+  .stats-panel {
+    display: grid;
+    gap: 16px;
+  }
+
+  .card-panel,
+  .stats-panel,
+  .account-bal-card,
+  .debt-card,
+  .csv-card {
+    width: 100%;
+    /* make all cards full width */
+  }
+}
+
+/* Extra mobile layout: sidebar on top, everything stacked */
+@media (max-width: 600px) {
   .card-management-content {
     flex-direction: column;
+    /* stack sidebar + main content vertically */
+    gap: 16px;
+    padding: 0 12px;
+    margin-left: 0;
   }
 
-  .SideBar {
+  .card-grid {
+    grid-template-columns: 1fr;
+    /* stack all panels vertically */
+    gap: 16px;
+    padding-right: 0;
+    margin-left: 0;
+  }
+
+  .left-stack {
+    display: grid;
+    gap: 16px;
+  }
+
+  .stats-panel {
+    display: grid;
+    gap: 16px;
+  }
+
+  .card-panel,
+  .stats-panel,
+  .account-bal-card,
+  .debt-card,
+  .csv-card,
+  .left-rail {
+    margin-left: 0;
     width: 100%;
-  }
-
-  .coming-soon-section {
-    padding: 1.5rem;
-    font-size: 1.5rem;
-    min-height: 200px;
+    /* make all sections full width */
   }
 }
