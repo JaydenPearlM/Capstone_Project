@@ -92,7 +92,7 @@ export default function Debt() {
     const handleAddDebt = (e) => handleSubmit(e, '/debts', 'POST', {
         name: newDebtForm.name,
         balance: parseFloat(newDebtForm.balance),
-        interestRate: parseFloat(newDebtForm.interestRate),
+        interestRate: parseFloat(newDebtForm.interestRate) || 0,
         minimumPayment: parseFloat(newDebtForm.minimumPayment),
         type: newDebtForm.type
     }, () => {
@@ -112,7 +112,7 @@ export default function Debt() {
     const handleEditDebt = (e) => handleSubmit(e, `/debts/${selectedDebtForEdit.id}`, 'PUT', {
         name: editDebtForm.name,
         currentBalance: parseFloat(editDebtForm.balance),
-        interestRate: parseFloat(editDebtForm.interestRate),
+        interestRate: parseFloat(editDebtForm.interestRate) || 0,
         minimumPayment: parseFloat(editDebtForm.minimumPayment),
         type: editDebtForm.type
     }, () => {
@@ -336,10 +336,11 @@ export default function Debt() {
                                     id="interestRate"
                                     value={newDebtForm.interestRate}
                                     onChange={(e) => setNewDebtForm({...newDebtForm, interestRate: e.target.value})}
-                                    placeholder="18.99"
+
+                                    placeholder="17.99"
                                     min="0"
-                                    step="0.01"
-                                    required
+                                    step="0.01"     
+
                                 />
                             </div>
                             <div className="form-group">
@@ -492,9 +493,11 @@ export default function Debt() {
                                     id="editInterestRate"
                                     value={editDebtForm.interestRate}
                                     onChange={(e) => setEditDebtForm({...editDebtForm, interestRate: e.target.value})}
+
+                                    placeholder="17.99"
                                     min="0"
                                     step="0.01"
-                                    required
+
                                 />
                             </div>
                             <div className="form-group">
