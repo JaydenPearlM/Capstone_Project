@@ -1,16 +1,16 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import "./BudgetSummary.css";
 
 const BudgetSummary = ({ categories, transactions, view, dateRange }) => {
-  // Helper: adjust budget amount based on category's budgetPeriod and current view
+  const [showAllCategories, setShowAllCategories] = useState(false);
+
   const adjustBudgetForView = (category) => {
     const { budget, budgetPeriod = "monthly" } = category;
-
-    if (budgetPeriod === "monthly") {
-      return budget;
-    }
+    if (budgetPeriod === "monthly") return budget;
     if (budgetPeriod === "biweekly") {
       if (view === "monthly") return budget * 2;
       if (view === "biweekly") return budget;
@@ -24,7 +24,6 @@ const BudgetSummary = ({ categories, transactions, view, dateRange }) => {
     return budget;
   };
 
-  // Spending per category filtered by current transactions (already filtered)
   const getCategorySpending = (category) =>
     transactions
       .filter((tx) => {
@@ -33,7 +32,6 @@ const BudgetSummary = ({ categories, transactions, view, dateRange }) => {
       })
       .reduce((sum, tx) => sum + Number(tx.amount), 0);
 
-  // Adjusted budgets & spent amounts
   const adjustedCategories = useMemo(() => {
     return categories.map((cat) => {
       const adjustedBudget = adjustBudgetForView(cat);
@@ -52,28 +50,12 @@ const BudgetSummary = ({ categories, transactions, view, dateRange }) => {
   const totalSpent = adjustedCategories.reduce((sum, c) => sum + c.spent, 0);
   const remaining = Math.max(totalBudget - totalSpent, 0);
 
- const pastelColors = [
-  "#A8DADC",
-  "#FFDDD2",
-  "#FFD6E0",
-  "#E0BBE4",
-  "#B5EAD7",
-  "#C7CEEA",
-  "#FCD5CE",
-  "#D8E2DC",
-  "#E2F0CB",
-  "#B5D2CB",
-  "#F9E2AE", 
-  "#C1DAD6",  
-  "#F7CAC9",  
-  "#D0CFEA",  
-  "#FFE1E8",  
-  "#E8F1F2",  
-  "#FBE7C6",
-  "#BFD8B8", 
-  "#F6D6AD", 
-  "#D7BCE8", 
-];
+  const pastelColors = [
+    "#A8DADC","#FFDDD2","#FFD6E0","#E0BBE4","#B5EAD7","#C7CEEA",
+    "#FCD5CE","#D8E2DC","#E2F0CB","#B5D2CB","#F9E2AE","#C1DAD6",
+    "#F7CAC9","#D0CFEA","#FFE1E8","#E8F1F2","#FBE7C6","#BFD8B8",
+    "#F6D6AD","#D7BCE8"
+  ];
 
   const pieData = {
     labels: [...adjustedCategories.map((cat) => cat.name), "Remaining Budget"],
@@ -90,13 +72,15 @@ const BudgetSummary = ({ categories, transactions, view, dateRange }) => {
     ],
   };
 
-  // Helper to format Date nicely for display
   const formatDisplayDate = (date) => {
     if (!(date instanceof Date)) return "";
     return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
   };
 
   if (!categories.length) return <p>Loading budget summary...</p>;
+
+  // Limit categories to first 3 if showAllCategories is false
+  const categoriesToDisplay = showAllCategories ? adjustedCategories : adjustedCategories.slice(0, 3);
 
   return (
     <div className="budgeting-section">
@@ -111,15 +95,9 @@ const BudgetSummary = ({ categories, transactions, view, dateRange }) => {
       </div>
 
       <div className="total-budget-summary">
-        <p>
-          <strong>Total Budget:</strong> ${totalBudget.toFixed(2)}
-        </p>
-        <p>
-          <strong>Total Spent:</strong> ${totalSpent.toFixed(2)}
-        </p>
-        <p>
-          <strong>Remaining:</strong> ${remaining.toFixed(2)}
-        </p>
+        <p><strong>Total Budget:</strong> ${totalBudget.toFixed(2)}</p>
+        <p><strong>Total Spent:</strong> ${totalSpent.toFixed(2)}</p>
+        <p><strong>Remaining:</strong> ${remaining.toFixed(2)}</p>
       </div>
 
       <div className="budget-header budget-row" id="budget-header">
@@ -130,7 +108,7 @@ const BudgetSummary = ({ categories, transactions, view, dateRange }) => {
       </div>
 
       <ul className="category-list">
-        {adjustedCategories.map((cat) => (
+        {categoriesToDisplay.map((cat) => (
           <div
             key={cat._id}
             className={`budget-item ${cat.remaining < 0 ? "over-budget" : ""}`}
@@ -144,6 +122,23 @@ const BudgetSummary = ({ categories, transactions, view, dateRange }) => {
           </div>
         ))}
       </ul>
+
+      {adjustedCategories.length > 3 && (
+        <button
+          className="see-more-btn"
+          onClick={() => setShowAllCategories(!showAllCategories)}
+        >
+          {showAllCategories ? (
+            <>
+              See Less <ArrowDropUpIcon />
+            </>
+          ) : (
+            <>
+              See More <ArrowDropDownIcon />
+            </>
+          )}
+        </button>
+      )}
     </div>
   );
 };

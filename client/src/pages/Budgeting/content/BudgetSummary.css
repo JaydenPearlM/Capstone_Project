@@ -50,6 +50,31 @@
   text-align: right;
 }
 
+.see-more-btn {
+  background-color: #80cfa9;
+  color: black;
+  border: none;
+  padding: 15px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px; /* space between text and icon */
+  transition: all 0.2s ease-in-out;
+}
+
+.see-more-btn:hover {
+  background-color: #66b68f;
+  color: white;
+  transform: scale(1.03);
+}
+
 /* Mobile Friendly */
 @media (max-width: 600px) {
   .budget-row {
