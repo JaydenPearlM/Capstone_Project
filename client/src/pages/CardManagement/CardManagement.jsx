@@ -3,34 +3,13 @@ import NavBar from "../../components/layout/NavBar";
 import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
 import CsvExport from "../../components/common/CsvExport";
+import { useAuth } from "../../contexts/AuthContext"; // <— key: adds token to requests
 import "./CardManagement.css";
 
 const API = import.meta.env.VITE_API_URL;
 
-async function safeFetchJson(url, { signal } = {}) {
-  try {
-    if (!API) {
-      console.warn("VITE_API_URL is not set; skipping fetch:", url);
-      return null;
-    }
-    const res = await fetch(url, { signal });
-    if (!res.ok) {
-      console.warn(`Request failed ${res.status} ${res.statusText}: ${url}`);
-      return null;
-    }
-    const ct = (res.headers.get("content-type") || "").toLowerCase();
-    if (!ct.includes("application/json")) {
-      console.warn(`Non-JSON response (content-type: ${ct}) from ${url}`);
-      return null;
-    }
-    return await res.json();
-  } catch (err) {
-    console.warn("safeFetchJson error:", err);
-    return null;
-  }
-}
-
 export default function CardManagement() {
+  const { authFetch } = useAuth(); // <— use the authenticated fetch
   const [cards, setCards] = useState([]);
   const [form, setForm] = useState({
     nickname: "",
@@ -43,26 +22,31 @@ export default function CardManagement() {
     balance: ""
   });
 
-  // (legacy placeholders)
-  const [account] = useState({
-    checking: 1000,
-    savings: 500,
-    creditBalance: 2380,
-    todaysCreditDebt: 100,
-    schoolLoans: 12000
-  });
-
   // Debts (kept for totals and overview)
   const [debts, setDebts] = useState([]);
 
   const fetchCards = async (signal) => {
-    const data = await safeFetchJson(`${API}/cards`, { signal });
-    setCards(Array.isArray(data) ? data : []);
+    if (!API) return setCards([]);
+    try {
+      const res = await authFetch(`${API}/cards`, { signal });
+      const data = res?.ok ? await res.json() : [];
+      setCards(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.warn("fetchCards failed:", err);
+      setCards([]);
+    }
   };
 
   const fetchDebts = async (signal) => {
-    const data = await safeFetchJson(`${API}/debts`, { signal });
-    setDebts(Array.isArray(data) ? data : []);
+    if (!API) return setDebts([]);
+    try {
+      const res = await authFetch(`${API}/debts`, { signal });
+      const data = res?.ok ? await res.json() : [];
+      setDebts(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.warn("fetchDebts failed:", err);
+      setDebts([]);
+    }
   };
 
   useEffect(() => {
@@ -74,8 +58,9 @@ export default function CardManagement() {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (!API) return;
     try {
-      const res = await fetch(`${API}/cards`, {
+      const res = await authFetch(`${API}/cards`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form)
@@ -92,6 +77,9 @@ export default function CardManagement() {
           balance: ""
         });
         fetchCards();
+      } else {
+        const err = await res.json().catch(() => ({}));
+        console.warn("create card failed:", err?.error || res.statusText);
       }
     } catch (err) {
       console.warn("create card failed:", err);
@@ -99,8 +87,9 @@ export default function CardManagement() {
   };
 
   const remove = async (id) => {
+    if (!API) return;
     try {
-      await fetch(`${API}/cards/${id}`, { method: "DELETE" });
+      await authFetch(`${API}/cards/${id}`, { method: "DELETE" });
       fetchCards();
     } catch (err) {
       console.warn("delete card failed:", err);
@@ -108,8 +97,9 @@ export default function CardManagement() {
   };
 
   const removeDebt = async (id) => {
+    if (!API) return;
     try {
-      await fetch(`${API}/debts/${id}`, { method: "DELETE" });
+      await authFetch(`${API}/debts/${id}`, { method: "DELETE" });
       fetchDebts();
     } catch (err) {
       console.warn("delete debt failed:", err);
@@ -149,9 +139,6 @@ export default function CardManagement() {
       >
         <NavBar />
       </header>
-
-      {/* page helpers (kept existing overflow-x rule) + NEW card item box styling */}
-      <style></style>
 
       <div className="card-management-content" style={{ maxWidth: "none" }}>
         <SideBar />
@@ -198,7 +185,6 @@ export default function CardManagement() {
                 </div>
 
                 <div className="row">
-                  {/* optional number removed */}
                   <label>
                     Exp (MM/YY)
                     <div className="row compact">
@@ -284,7 +270,7 @@ export default function CardManagement() {
                   const available = isCredit && limit > 0 ? Math.max(limit - bal, 0) : 0;
                   const pct = isCredit && limit > 0 ? Math.min(100, Math.max(0, (bal / limit) * 100)) : 0;
 
-                  const typeLabel = (c.type || "").toLowerCase(); // show just the type as requested
+                  const typeLabel = (c.type || "").toLowerCase();
 
                   return (
                     <li key={c._id} className="cards-overview-item">
@@ -307,7 +293,7 @@ export default function CardManagement() {
                           )}
                         </div>
 
-                        {/* keep the utilization bar for credit if present */}
+                        {/* utilization bar for credit */}
                         {isCredit && limit ? (
                           <div className="co-bar">
                             <div className="co-bar-fill" style={{ width: `${pct}%` }} />
@@ -315,9 +301,21 @@ export default function CardManagement() {
                         ) : null}
                       </div>
 
-                      {/* Delete */}
+                      {/* Actions */}
                       <p>
-                        <button type="button" className="link danger" onClick={()=>remove(c._id)}>
+                        <button
+                          type="button"
+                          className="link"
+                          data-role="edit-card"
+                          data-id={c._id}
+                        >
+                          Edit
+                        </button>{" "}
+                        <button
+                          type="button"
+                          className="link danger"
+                          onClick={()=>remove(c._id)}
+                        >
                           Delete
                         </button>
                       </p>
@@ -385,7 +383,7 @@ export default function CardManagement() {
           </section>
         </div>
       </div>
-      
+
       {/* Full-bleed, thin yellow band across viewport width */}
       <footer
         className="footer-strip"
@@ -403,26 +401,46 @@ export default function CardManagement() {
 }
 
 /*search */
+/*search */
 function TransactionSearch({ buttonStyle }) {
   const API = import.meta.env.VITE_API_URL;
+  const { authFetch } = useAuth(); // use JWT on requests
+
   const [q, setQ] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [results, setResults] = useState([]);
+  const [names, setNames] = useState([]);      // <-- names only
+  const [loading, setLoading] = useState(false);
 
-  const search = async () => {
+  const buildParams = () => {
     const params = new URLSearchParams();
     if (q) params.set("q", q);
     if (from) params.set("from", from);
     if (to) params.set("to", to);
+    return params;
+  };
+
+  const search = async () => {
+    if (!API) return setNames([]);
     try {
-      const res = await fetch(`${API}/transactions?${params.toString()}`);
-      if (!res.ok) { setResults([]); return; }
-      const ct = (res.headers.get("content-type") || "").toLowerCase();
-      const data = ct.includes("application/json") ? await res.json() : [];
-      setResults(Array.isArray(data) ? data : []);
+      setLoading(true);
+      const res = await authFetch(`${API}/transactions?${buildParams().toString()}`);
+      if (!res.ok) {
+        setNames([]);
+        return;
+      }
+      const data = await res.json();
+
+      // unique list of descriptions (names), trimmed, non-empty
+      const uniq = Array.isArray(data)
+        ? Array.from(new Set(data.map(tx => (tx.description || "").trim()).filter(Boolean)))
+        : [];
+
+      setNames(uniq);
     } catch {
-      setResults([]);
+      setNames([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -430,7 +448,7 @@ function TransactionSearch({ buttonStyle }) {
     setQ("");
     setFrom("");
     setTo("");
-    setResults([]);
+    setNames([]);
   };
 
   return (
@@ -445,25 +463,41 @@ function TransactionSearch({ buttonStyle }) {
         />
       </div>
 
-      {/* Dates + buttons below */}
+      {/* Dates + buttons */}
       <div className="row" style={{ gap: 8, marginTop: 8 }}>
         <input type="date" value={from} onChange={(e)=>setFrom(e.target.value)} />
         <input type="date" value={to} onChange={(e)=>setTo(e.target.value)} />
         <button type="button" onClick={search} style={buttonStyle}>Search</button>
-        <button type="button" onClick={clear} style={buttonStyle}>Clear</button>
+        <button type="button" onClick={clear}  style={buttonStyle}>Clear</button>
       </div>
 
-      {results.length > 0 ? (
-        <div className="search-results" style={{ marginTop: 12 }}>
-          {results.slice(0, 8).map(tx => (
-            <div key={tx._id} className="result-row">
-              <span>${Number(tx.amount).toFixed(2)}</span>
-              <span>{new Date(tx.date).toLocaleDateString()}</span>
-              <span className="muted">{tx.description}</span>
-            </div>
-          ))}
-        </div>
-      ) : null}
+      {/* 👇 Names output moved HERE, under the buttons 👇 */}
+      <div style={{ marginTop: 12 }}>
+        {loading && <div className="muted" style={{ fontSize: 12 }}>Loading…</div>}
+
+        {!loading && names.length > 0 && (
+          <div style={{ display: "grid", gap: 8 }}>
+            {names.map(name => (
+              <div
+                key={name}
+                style={{
+                  background: "#A7E8BD",        // mint green
+                  color: "#374151",
+                  padding: "10px 12px",
+                  borderRadius: 12
+                }}
+                title={name}
+              >
+                {name}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {!loading && names.length === 0 && (
+          <div className="muted" style={{ fontSize: 12 }}>No names for current filters.</div>
+        )}
+      </div>
     </div>
   );
 }
