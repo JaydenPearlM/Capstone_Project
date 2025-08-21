@@ -162,6 +162,34 @@ export default function Budgeting() {
         });
     }, [transactions, dateRange]);
 
+    // Only include expense transactions for budget/spending
+    const expenseTransactions = useMemo(() => {
+        return filteredTransactions.filter(tx => tx.type === "expense");
+    }, [filteredTransactions]);
+
+    // Always use full month range for category spending
+    const monthlyExpenseTransactions = useMemo(() => {
+        if (!dateRange) return [];
+
+        // Get the first and last day of the *current month* based on offset
+        const refDate = new Date();
+        refDate.setMonth(refDate.getMonth() + periodOffset);
+
+        const start = new Date(refDate.getFullYear(), refDate.getMonth(), 1);
+        start.setHours(0, 0, 0, 0);
+
+        const end = new Date(refDate.getFullYear(), refDate.getMonth() + 1, 0);
+        end.setHours(23, 59, 59, 999);
+
+        const pad = (n) => n.toString().padStart(2, "0");
+        const startStr = `${start.getFullYear()}-${pad(start.getMonth() + 1)}-${pad(start.getDate())}`;
+        const endStr = `${end.getFullYear()}-${pad(end.getMonth() + 1)}-${pad(end.getDate())}`;
+
+        return transactions.filter(
+            (tx) => tx.type === "expense" && tx.date.slice(0, 10) >= startStr && tx.date.slice(0, 10) <= endStr
+        );
+    }, [transactions, periodOffset]);
+
     // Filter categories WITHOUT recurring or createdAt filtering — include all
     const filteredCategories = useMemo(() => {
         if (!dateRange) return [];
@@ -262,7 +290,7 @@ export default function Budgeting() {
                                         // Adjust budget according to view and category budgetPeriod
                                         budget: adjustBudgetForView(cat.budget, cat.budgetPeriod || "monthly", view),
                                     }))}
-                                    transactions={filteredTransactions}
+                                    transactions={expenseTransactions}
                                     view={view}
                                     dateRange={dateRange}  // <-- pass it here for display
                                     setView={(newView) => {
@@ -288,7 +316,7 @@ export default function Budgeting() {
 
                             {/* Spending Trend: Last 2 Months + Current */}
                             <SpendingTrend
-                                transactions={transactions}
+                                transactions={expenseTransactions}
                                 dateRange={dateRange}
                                 getDateRange={getDateRange}
                                 biweeklyStart={biweeklyStart}
@@ -347,7 +375,7 @@ export default function Budgeting() {
                         <div className="categories-container">
                             <Categories
                                 categories={filteredCategories}
-                                transactions={transactions}
+                                transactions={monthlyExpenseTransactions}
                                 setCatForm={(form) => {
                                     setCatForm(form);
                                 }}
