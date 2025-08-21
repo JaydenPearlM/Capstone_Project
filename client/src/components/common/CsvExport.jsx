@@ -1,13 +1,14 @@
 import { useState, useMemo } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { utils as XLSXUtils, writeFile as writeXLSX } from "xlsx";
 
 const API = import.meta.env.VITE_API_URL;
 
 export default function CsvExport() {
-  // fields the backend supports; toggle which ones you want to export
+  const { authFetch } = useAuth();
+
+  // Which fields go into Excel
   const [selected, setSelected] = useState(["date", "description", "amount"]);
-  const [q, setQ] = useState("");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
   const [downloading, setDownloading] = useState(false);
 
   const allFields = useMemo(
@@ -21,34 +22,37 @@ export default function CsvExport() {
     );
   };
 
-  const doExport = async () => {
+  // Export all (or server-default filtered) transactions to Excel
+  const doExportExcel = async () => {
+    if (!API) return;
     try {
       setDownloading(true);
-      const params = new URLSearchParams();
-      if (selected.length) params.set("fields", selected.join(","));
-      if (q) params.set("q", q);
-      if (from) params.set("from", from);
-      if (to) params.set("to", to);
 
-      const res = await fetch(`${API}/reports/csv?${params.toString()}`);
-      if (!res.ok) {
-        console.error("CSV export failed", await res.text());
-        setDownloading(false);
+      // NOTE: No filters here; if you want this to follow the top Search inputs,
+      // we can wire those up via props next.
+      const res = await authFetch(`${API}/transactions`);
+      if (!res?.ok) {
+        const text = await res.text().catch(() => "");
+        console.error("Excel export failed", res.status, res.statusText, text);
         return;
       }
+      const rows = (await res.json()) || [];
 
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
+      // Keep only selected fields in the chosen order
+      const shaped = rows.map((r) => {
+        const obj = {};
+        for (const f of selected) obj[f] = r?.[f] ?? "";
+        return obj;
+      });
+
+      const ws = XLSXUtils.json_to_sheet(shaped, { header: selected });
+      const wb = XLSXUtils.book_new();
+      XLSXUtils.book_append_sheet(wb, ws, "Transactions");
+
       const stamp = new Date().toISOString().slice(0, 10);
-      a.download = `transactions_${stamp}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
+      writeXLSX(wb, `transactions_${stamp}.xlsx`);
     } catch (e) {
-      console.error(e);
+      console.error("Excel export error:", e);
     } finally {
       setDownloading(false);
     }
@@ -56,8 +60,9 @@ export default function CsvExport() {
 
   return (
     <div className="csv-export-widget" style={{ display: "grid", gap: 8 }}>
-      <div style={{ fontWeight: 600 }}>Export CSV</div>
+      <div style={{ fontWeight: 600 }}>Export to Excel</div>
 
+      {/* Field toggles */}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         {allFields.map((f) => (
           <label key={f} style={{ display: "flex", gap: 6, alignItems: "center" }}>
@@ -71,19 +76,12 @@ export default function CsvExport() {
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
-        <input
-          placeholder="Search (q)"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-        />
-        <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
-        <input type="date" value={to} onChange={(e) => setTo(e.target.value)} />
+      {/* Single button — nothing renders below this */}
+      <div style={{ display: "flex" }}>
+        <button type="button" onClick={doExportExcel} disabled={downloading}>
+          {downloading ? "Exporting…" : "Export Excel"}
+        </button>
       </div>
-
-      <button onClick={doExport} disabled={downloading}>
-        {downloading ? "Exporting…" : "Export CSV"}
-      </button>
     </div>
   );
 }
