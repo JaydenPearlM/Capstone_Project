@@ -8,7 +8,7 @@ import "./Debt.css";
 
 const Modal = ({ show, title, onClose, children }) => {
     if (!show) return null;
-    
+
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -100,8 +100,8 @@ export default function Debt() {
         setShowAddDebtForm(false);
     });
 
-    const handlePayment = (e) => handleSubmit(e, `/debts/${selectedDebtForPayment.id}/payment`, 'POST', 
-        { amount: parseFloat(paymentForm.amount) }, 
+    const handlePayment = (e) => handleSubmit(e, `/debts/${selectedDebtForPayment.id}/payment`, 'POST',
+        { amount: parseFloat(paymentForm.amount) },
         () => {
             setPaymentForm({ amount: '' });
             setShowPaymentForm(false);
@@ -133,12 +133,12 @@ export default function Debt() {
     };
 
     const icons = {
-        credit_card: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>,
-        student_loan: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>,
-        auto_loan: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2"/><path d="M9 17v-6h-2"/><path d="M15 17v-6h2"/></svg>,
-        mortgage: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/></svg>,
-        personal_loan: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
-        other: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
+        credit_card: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2" /><line x1="1" y1="10" x2="23" y2="10" /></svg>,
+        student_loan: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /></svg>,
+        auto_loan: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2" /><path d="M9 17v-6h-2" /><path d="M15 17v-6h2" /></svg>,
+        mortgage: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18" /><path d="M5 21V7l8-4v18" /><path d="M19 21V11l-6-4" /><path d="M9 9v.01" /><path d="M9 12v.01" /><path d="M9 15v.01" /></svg>,
+        personal_loan: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
+        other: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14,2 14,8 20,8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10,9 9,9 8,9" /></svg>
     };
 
     const colors = {
@@ -165,10 +165,10 @@ export default function Debt() {
                             <div className="card-header">
                                 <h3>Total Debt</h3>
                                 <span className="card-icon debt-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
-                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <line x1="12" y1="1" x2="12" y2="23"/>
-                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="12" y1="1" x2="12" y2="23" />
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                                     </svg>
                                 </span>
                             </div>
@@ -196,10 +196,10 @@ export default function Debt() {
                             <div className="card-header">
                                 <h3>Minimum Monthly Payments</h3>
                                 <span className="card-icon payment-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
-                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-                                        <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" />
+                                        <line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
                                     </svg>
                                 </span>
                             </div>
@@ -216,9 +216,9 @@ export default function Debt() {
                             <div className="card-header">
                                 <h3>Quick Actions</h3>
                                 <span className="card-icon actions-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
-                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
                                     </svg>
                                 </span>
                             </div>
@@ -248,7 +248,7 @@ export default function Debt() {
                                     <div key={debt.id} className="debt-card">
                                         <div className="debt-header">
                                             <div className="debt-title">
-                                                <span className="debt-type-icon" style={{color: getDebtTypeColor(debt.type)}}>
+                                                <span className="debt-type-icon" style={{ color: getDebtTypeColor(debt.type) }}>
                                                     {getDebtTypeIcon(debt.type)}
                                                 </span>
                                                 <h3>{debt.name}</h3>
@@ -267,7 +267,7 @@ export default function Debt() {
                                                 </div>
                                             </div>
                                             <div className="progress-bar">
-                                                <div className="progress-fill debt-progress" style={{ 
+                                                <div className="progress-fill debt-progress" style={{
                                                     width: `${debt.progress}%`, background: getDebtTypeColor(debt.type)
                                                 }}></div>
                                             </div>
@@ -299,9 +299,9 @@ export default function Debt() {
                     </div>
 
                     {/* Add Debt Modal */}
-                    <Modal 
-                        show={showAddDebtForm} 
-                        title="Add New Debt" 
+                    <Modal
+                        show={showAddDebtForm}
+                        title="Add New Debt"
                         onClose={() => setShowAddDebtForm(false)}
                     >
                         <form onSubmit={handleAddDebt}>
@@ -311,7 +311,7 @@ export default function Debt() {
                                     type="text"
                                     id="name"
                                     value={newDebtForm.name}
-                                    onChange={(e) => setNewDebtForm({...newDebtForm, name: e.target.value})}
+                                    onChange={(e) => setNewDebtForm({ ...newDebtForm, name: e.target.value })}
                                     placeholder="e.g., Chase Credit Card"
                                     required
                                 />
@@ -322,7 +322,7 @@ export default function Debt() {
                                     type="number"
                                     id="balance"
                                     value={newDebtForm.balance}
-                                    onChange={(e) => setNewDebtForm({...newDebtForm, balance: e.target.value})}
+                                    onChange={(e) => setNewDebtForm({ ...newDebtForm, balance: e.target.value })}
                                     placeholder="5000"
                                     min="0"
                                     step="0.01"
@@ -335,11 +335,11 @@ export default function Debt() {
                                     type="number"
                                     id="interestRate"
                                     value={newDebtForm.interestRate}
-                                    onChange={(e) => setNewDebtForm({...newDebtForm, interestRate: e.target.value})}
+                                    onChange={(e) => setNewDebtForm({ ...newDebtForm, interestRate: e.target.value })}
 
                                     placeholder="17.99"
                                     min="0"
-                                    step="0.01"     
+                                    step="0.01"
 
                                 />
                             </div>
@@ -349,7 +349,7 @@ export default function Debt() {
                                     type="number"
                                     id="minimumPayment"
                                     value={newDebtForm.minimumPayment}
-                                    onChange={(e) => setNewDebtForm({...newDebtForm, minimumPayment: e.target.value})}
+                                    onChange={(e) => setNewDebtForm({ ...newDebtForm, minimumPayment: e.target.value })}
                                     placeholder="95"
                                     min="0"
                                     step="0.01"
@@ -361,7 +361,7 @@ export default function Debt() {
                                 <select
                                     id="type"
                                     value={newDebtForm.type}
-                                    onChange={(e) => setNewDebtForm({...newDebtForm, type: e.target.value})}
+                                    onChange={(e) => setNewDebtForm({ ...newDebtForm, type: e.target.value })}
                                 >
                                     <option value="credit_card">Credit Card</option>
                                     <option value="student_loan">Student Loan</option>
@@ -383,9 +383,9 @@ export default function Debt() {
                     </Modal>
 
                     {/* Payment Modal */}
-                    <Modal 
-                        show={showPaymentForm} 
-                        title="Make a Payment" 
+                    <Modal
+                        show={showPaymentForm}
+                        title="Make a Payment"
                         onClose={() => {
                             setShowPaymentForm(false);
                             setSelectedDebtForPayment(null);
@@ -399,7 +399,7 @@ export default function Debt() {
                                         <div key={debt.id} className="debt-selector" onClick={() => setSelectedDebtForPayment(debt)}>
                                             <div className="selector-content">
                                                 <div className="selector-header">
-                                                    <span className="selector-icon" style={{color: getDebtTypeColor(debt.type)}}>
+                                                    <span className="selector-icon" style={{ color: getDebtTypeColor(debt.type) }}>
                                                         {getDebtTypeIcon(debt.type)}
                                                     </span>
                                                     <span className="selector-title">{debt.name}</span>
@@ -428,7 +428,7 @@ export default function Debt() {
                                         type="number"
                                         id="paymentAmount"
                                         value={paymentForm.amount}
-                                        onChange={(e) => setPaymentForm({...paymentForm, amount: e.target.value})}
+                                        onChange={(e) => setPaymentForm({ ...paymentForm, amount: e.target.value })}
                                         placeholder={selectedDebtForPayment.minimumPayment.toString()}
                                         min="0.01"
                                         step="0.01"
@@ -436,11 +436,11 @@ export default function Debt() {
                                     />
                                 </div>
                                 <div className="form-actions">
-                                    <button 
-                                        type="button" 
-                                        className="action-btn secondary" 
+                                    <button
+                                        type="button"
+                                        className="action-btn secondary"
                                         onClick={() => {
-                                            setShowPaymentForm(false); 
+                                            setShowPaymentForm(false);
                                             setSelectedDebtForPayment(null);
                                         }}
                                     >
@@ -455,9 +455,9 @@ export default function Debt() {
                     </Modal>
 
                     {/* Edit Debt Modal */}
-                    <Modal 
-                        show={showEditDebtForm && selectedDebtForEdit} 
-                        title="Edit Debt" 
+                    <Modal
+                        show={showEditDebtForm && selectedDebtForEdit}
+                        title="Edit Debt"
                         onClose={() => {
                             setShowEditDebtForm(false);
                             setSelectedDebtForEdit(null);
@@ -470,7 +470,7 @@ export default function Debt() {
                                     type="text"
                                     id="editName"
                                     value={editDebtForm.name}
-                                    onChange={(e) => setEditDebtForm({...editDebtForm, name: e.target.value})}
+                                    onChange={(e) => setEditDebtForm({ ...editDebtForm, name: e.target.value })}
                                     required
                                 />
                             </div>
@@ -480,7 +480,7 @@ export default function Debt() {
                                     type="number"
                                     id="editBalance"
                                     value={editDebtForm.balance}
-                                    onChange={(e) => setEditDebtForm({...editDebtForm, balance: e.target.value})}
+                                    onChange={(e) => setEditDebtForm({ ...editDebtForm, balance: e.target.value })}
                                     min="0"
                                     step="0.01"
                                     required
@@ -492,7 +492,7 @@ export default function Debt() {
                                     type="number"
                                     id="editInterestRate"
                                     value={editDebtForm.interestRate}
-                                    onChange={(e) => setEditDebtForm({...editDebtForm, interestRate: e.target.value})}
+                                    onChange={(e) => setEditDebtForm({ ...editDebtForm, interestRate: e.target.value })}
 
                                     placeholder="17.99"
                                     min="0"
@@ -506,7 +506,7 @@ export default function Debt() {
                                     type="number"
                                     id="editMinimumPayment"
                                     value={editDebtForm.minimumPayment}
-                                    onChange={(e) => setEditDebtForm({...editDebtForm, minimumPayment: e.target.value})}
+                                    onChange={(e) => setEditDebtForm({ ...editDebtForm, minimumPayment: e.target.value })}
                                     min="0"
                                     step="0.01"
                                     required
@@ -517,7 +517,7 @@ export default function Debt() {
                                 <select
                                     id="editType"
                                     value={editDebtForm.type}
-                                    onChange={(e) => setEditDebtForm({...editDebtForm, type: e.target.value})}
+                                    onChange={(e) => setEditDebtForm({ ...editDebtForm, type: e.target.value })}
                                 >
                                     <option value="credit_card">Credit Card</option>
                                     <option value="student_loan">Student Loan</option>
@@ -528,11 +528,11 @@ export default function Debt() {
                                 </select>
                             </div>
                             <div className="form-actions">
-                                <button 
-                                    type="button" 
-                                    className="action-btn secondary" 
+                                <button
+                                    type="button"
+                                    className="action-btn secondary"
                                     onClick={() => {
-                                        setShowEditDebtForm(false); 
+                                        setShowEditDebtForm(false);
                                         setSelectedDebtForEdit(null);
                                     }}
                                 >
@@ -546,7 +546,15 @@ export default function Debt() {
                     </Modal>
                 </div>
             </div>
-            <footer><Footer /></footer>
+            <footer className="footer-strip"
+                style={{
+                    padding: "6px 0",
+                    width: "100vw",
+                    marginLeft: "calc(50% - 50vw)",
+                    marginRight: "calc(50% - 50vw)"
+                }}>
+                <Footer />
+            </footer>
         </div>
     );
 }

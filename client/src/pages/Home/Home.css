@@ -18,6 +18,8 @@ footer {
   background: #fff;
   padding: 1.5rem;
   text-align: center;
+  padding: "6px 0";
+  width: "100vw";
 }
 
 /* ===== Main Section ===== */
@@ -149,6 +151,10 @@ footer {
 
   .main-subtext {
     font-size: 0.95rem;
+  }
+
+  .main-section>.SideBar {
+    width: 100%;
   }
 
   .getStartedBtn {

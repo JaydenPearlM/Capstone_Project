@@ -539,7 +539,14 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
+  .debt-container {
+    flex-direction: column;
+  }
+
+  .debt-container > .SideBar {
+    width: 100%;
+  }
     .debt-content {
         padding: 15px;
         gap: 20px;

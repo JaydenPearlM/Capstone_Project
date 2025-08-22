@@ -44,6 +44,9 @@
 }
 
 @media (max-width: 600px) {
+  .dashboard-container > .SideBar {
+    width: 100%;
+  }
     .content {
         grid-template-columns: 1fr;
     }
