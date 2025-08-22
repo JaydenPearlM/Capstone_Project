@@ -94,9 +94,9 @@ export default function Dashboard() {
                 <div className="content">
                     <Link to="/dashboard/cardManagement">
                         <div className="card">
-                            <AccountsCard  
+                            <AccountsCard
                                 savingsBalance={savingsData.totalSavings}
-                            />        
+                            />
                         </div>
                     </Link>
                     <Link to="/dashboard/budgeting">
@@ -111,7 +111,7 @@ export default function Dashboard() {
                     </Link>
                     <Link to="/dashboard/savings">
                         <div className="card">
-                            <SavingsCard 
+                            <SavingsCard
                                 totalSavings={savingsData.totalSavings}
                                 goalProgress={savingsData.goalProgress}
                             />
@@ -119,9 +119,15 @@ export default function Dashboard() {
                     </Link>
                 </div>
             </div>
-            <footer>
+            <footer className="footer-strip"
+                style={{
+                    padding: "6px 0",
+                    width: "100vw",
+                    marginLeft: "calc(50% - 50vw)",
+                    marginRight: "calc(50% - 50vw)"
+                }}>
                 <Footer />
             </footer>
-            </div>
-  )
+        </div>
+    )
 }

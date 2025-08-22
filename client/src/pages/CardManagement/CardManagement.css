@@ -197,12 +197,6 @@
   width: 100%;
 }
 
-@media (max-width: 1500px) {
-  .search-widget .row {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
 .csv-export-widget {
   display: grid;
   gap: 10px;
@@ -213,12 +207,12 @@
 }
 
 /* ===== Footer pastel yellow strip ===== */
-.card-management-page .footer-strip {
+.footer-strip {
   background: var(--footer-yellow);
   border-top: 1px solid var(--ring);
 }
 
-.card-management-page .footer-strip>* {
+.footer-strip>* {
   width: 100%;
   box-sizing: border-box;
   padding-left: 24px;
@@ -340,6 +334,10 @@ body,
 
 /* Extra mobile layout: sidebar on top, everything stacked */
 @media (max-width: 600px) {
+  .card-management-content > .SideBar {
+    width: 100%;
+  }
+
   .card-management-content {
     flex-direction: column;
     /* stack sidebar + main content vertically */

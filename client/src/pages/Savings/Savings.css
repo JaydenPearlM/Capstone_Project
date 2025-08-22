@@ -521,7 +521,15 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
+    .savings-container {
+        flex-direction: column;
+    }
+
+    .savings-container > .SideBar {
+        width: 100%;
+    }
+    
     .savings-content {
         padding: 15px;
         gap: 20px;

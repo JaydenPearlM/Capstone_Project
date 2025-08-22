@@ -40,28 +40,28 @@ export default function Savings() {
     const fetchSavingsData = async () => {
         try {
             const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings`);
-            
+
             if (!response.ok) {
                 throw new Error("Failed to fetch savings data");
             }
-            
+
             const goals = await response.json();
-            
+
             const totalSavings = goals.reduce((sum, goal) => {
                 const goalTotal = goal.contributions.reduce((contribSum, contrib) => contribSum + contrib.amount, 0);
                 return sum + goalTotal;
             }, 0);
-            
+
             const totalGoalAmount = goals.reduce((sum, goal) => sum + goal.goalAmount, 0);
             const overallProgress = totalGoalAmount > 0 ? Math.round((totalSavings / totalGoalAmount) * 100) : 0;
-            
+
             setSavingsData({
                 totalSavings,
-                monthlyContribution: 500, 
+                monthlyContribution: 500,
                 savingsGoal: totalGoalAmount,
                 goalProgress: overallProgress
             });
-            
+
             const transformedGoals = goals.map(goal => {
                 const currentAmount = goal.contributions.reduce((sum, contrib) => sum + contrib.amount, 0);
                 const goalProgress = goal.goalAmount > 0 ? Math.round((currentAmount / goal.goalAmount) * 100) : 0;
@@ -76,7 +76,7 @@ export default function Savings() {
                     remaining: goal.goalAmount - currentAmount
                 };
             });
-            
+
             setSavingsGoals(transformedGoals);
             setLoading(false);
         } catch (error) {
@@ -98,7 +98,7 @@ export default function Savings() {
                     targetDate: newGoalForm.targetDate || null
                 })
             });
-            
+
             if (response.ok) {
                 setNewGoalForm({ title: '', goalAmount: '', targetDate: '' });
                 setShowAddGoalForm(false);
@@ -120,7 +120,7 @@ export default function Savings() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ amount: parseFloat(contributionForm.amount) })
             });
-            
+
             if (response.ok) {
                 setContributionForm({ amount: '' });
                 setShowContributeForm(false);
@@ -148,7 +148,7 @@ export default function Savings() {
                 })
             });
             console.log("Response status:", response.status);
-            
+
             if (response.ok) {
                 setEditGoalForm({ title: '', goalAmount: '', targetDate: '' });
                 setShowEditGoalForm(false);
@@ -169,7 +169,7 @@ export default function Savings() {
                 const response = await authFetch(`${import.meta.env.VITE_API_URL}/savings/${goalId}`, {
                     method: 'DELETE'
                 });
-                
+
                 if (response.ok) {
                     fetchSavingsData();
                 } else {
@@ -193,7 +193,7 @@ export default function Savings() {
             <header>
                 <NavBar />
             </header>
-           
+
             <div className="savings-container">
                 <SideBar />
                 <div className="savings-content">
@@ -205,9 +205,9 @@ export default function Savings() {
                                 <h3>Total Savings</h3>
                                 <span className="card-icon savings-icon">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <line x1="12" y1="1" x2="12" y2="23"/>
-                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="12" y1="1" x2="12" y2="23" />
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                                     </svg>
                                 </span>
                             </div>
@@ -237,9 +237,9 @@ export default function Savings() {
                                 <h3>Overall Progress</h3>
                                 <span className="card-icon goal-icon">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M21 12a9 9 0 1 1-9-9v9z"/>
-                                        <path d="M12 3a9 9 0 0 1 9 9"/>
+                                        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M21 12a9 9 0 1 1-9-9v9z" />
+                                        <path d="M12 3a9 9 0 0 1 9 9" />
                                     </svg>
                                 </span>
                             </div>
@@ -249,8 +249,8 @@ export default function Savings() {
                                 </div>
                                 <div className="progress-container">
                                     <div className="progress-bar">
-                                        <div 
-                                            className="progress-fill" 
+                                        <div
+                                            className="progress-fill"
                                             style={{ width: `${savingsData.goalProgress}%` }}
                                         ></div>
                                     </div>
@@ -267,22 +267,22 @@ export default function Savings() {
                             <div className="card-header">
                                 <h3>Quick Actions</h3>
                                 <span className="card-icon actions-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
-                                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <line x1="12" y1="5" x2="12" y2="19"/>
-                                        <line x1="5" y1="12" x2="19" y2="12"/>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
                                     </svg>
                                 </span>
                             </div>
                             <div className="card-content">
                                 <div className="action-buttons">
-                                    <button 
+                                    <button
                                         className="action-btn primary"
                                         onClick={() => setShowAddGoalForm(true)}
                                     >
                                         Add New Goal
                                     </button>
-                                    <button 
+                                    <button
                                         className="action-btn secondary"
                                         onClick={() => {
                                             if (savingsGoals.length === 0) {
@@ -305,7 +305,7 @@ export default function Savings() {
                         {savingsGoals.length === 0 ? (
                             <div className="no-goals">
                                 <p>No savings goals yet. Create your first goal to get started!</p>
-                                <button 
+                                <button
                                     className="action-btn primary"
                                     onClick={() => setShowAddGoalForm(true)}
                                 >
@@ -334,8 +334,8 @@ export default function Savings() {
                                                 </div>
                                             </div>
                                             <div className="progress-bar">
-                                                <div 
-                                                    className="progress-fill" 
+                                                <div
+                                                    className="progress-fill"
                                                     style={{ width: `${goal.progress}%` }}
                                                 ></div>
                                             </div>
@@ -349,7 +349,7 @@ export default function Savings() {
                                                     </div>
                                                 )}
                                             </div>
-                                            <button 
+                                            <button
                                                 className="contribute-btn"
                                                 onClick={() => {
                                                     setSelectedGoalForContribution(goal);
@@ -359,7 +359,7 @@ export default function Savings() {
                                                 Contribute to {goal.title}
                                             </button>
                                             <div className="goal-actions">
-                                                <button 
+                                                <button
                                                     className="goal-action-btn edit"
                                                     onClick={() => {
                                                         setSelectedGoalForEdit(goal);
@@ -373,7 +373,7 @@ export default function Savings() {
                                                 >
                                                     Edit Goal
                                                 </button>
-                                                <button 
+                                                <button
                                                     className="goal-action-btn delete"
                                                     onClick={() => handleDeleteGoal(goal.id, goal.title)}
                                                 >
@@ -399,7 +399,7 @@ export default function Savings() {
                                             type="text"
                                             id="title"
                                             value={newGoalForm.title}
-                                            onChange={(e) => setNewGoalForm({...newGoalForm, title: e.target.value})}
+                                            onChange={(e) => setNewGoalForm({ ...newGoalForm, title: e.target.value })}
                                             placeholder="e.g., Emergency Fund, Vacation"
                                             required
                                         />
@@ -410,7 +410,7 @@ export default function Savings() {
                                             type="number"
                                             id="goalAmount"
                                             value={newGoalForm.goalAmount}
-                                            onChange={(e) => setNewGoalForm({...newGoalForm, goalAmount: e.target.value})}
+                                            onChange={(e) => setNewGoalForm({ ...newGoalForm, goalAmount: e.target.value })}
                                             placeholder="5000"
                                             min="1"
                                             step="0.01"
@@ -423,12 +423,12 @@ export default function Savings() {
                                             type="date"
                                             id="targetDate"
                                             value={newGoalForm.targetDate}
-                                            onChange={(e) => setNewGoalForm({...newGoalForm, targetDate: e.target.value})}
+                                            onChange={(e) => setNewGoalForm({ ...newGoalForm, targetDate: e.target.value })}
                                         />
                                     </div>
                                     <div className="form-actions">
-                                        <button 
-                                            type="button" 
+                                        <button
+                                            type="button"
                                             className="action-btn secondary"
                                             onClick={() => setShowAddGoalForm(false)}
                                         >
@@ -455,7 +455,7 @@ export default function Savings() {
                                             type="text"
                                             id="editTitle"
                                             value={editGoalForm.title}
-                                            onChange={(e) => setEditGoalForm({...editGoalForm, title: e.target.value})}
+                                            onChange={(e) => setEditGoalForm({ ...editGoalForm, title: e.target.value })}
                                             required
                                         />
                                     </div>
@@ -465,7 +465,7 @@ export default function Savings() {
                                             type="number"
                                             id="editGoalAmount"
                                             value={editGoalForm.goalAmount}
-                                            onChange={(e) => setEditGoalForm({...editGoalForm, goalAmount: e.target.value})}
+                                            onChange={(e) => setEditGoalForm({ ...editGoalForm, goalAmount: e.target.value })}
                                             min="1"
                                             step="0.01"
                                             required
@@ -477,12 +477,12 @@ export default function Savings() {
                                             type="date"
                                             id="editTargetDate"
                                             value={editGoalForm.targetDate}
-                                            onChange={(e) => setEditGoalForm({...editGoalForm, targetDate: e.target.value})}
+                                            onChange={(e) => setEditGoalForm({ ...editGoalForm, targetDate: e.target.value })}
                                         />
                                     </div>
                                     <div className="form-actions">
-                                        <button 
-                                            type="button" 
+                                        <button
+                                            type="button"
                                             className="action-btn secondary"
                                             onClick={() => {
                                                 setShowEditGoalForm(false);
@@ -510,8 +510,8 @@ export default function Savings() {
                                         <p>Select a goal to contribute to:</p>
                                         <div className="goal-selection">
                                             {savingsGoals.map(goal => (
-                                                <div 
-                                                    key={goal.id} 
+                                                <div
+                                                    key={goal.id}
                                                     className="goal-selector"
                                                     onClick={() => setSelectedGoalForContribution(goal)}
                                                 >
@@ -524,7 +524,7 @@ export default function Savings() {
                                                 </div>
                                             ))}
                                         </div>
-                                        <button 
+                                        <button
                                             className="action-btn secondary"
                                             onClick={() => setShowContributeForm(false)}
                                         >
@@ -543,7 +543,7 @@ export default function Savings() {
                                                 type="number"
                                                 id="contributionAmount"
                                                 value={contributionForm.amount}
-                                                onChange={(e) => setContributionForm({...contributionForm, amount: e.target.value})}
+                                                onChange={(e) => setContributionForm({ ...contributionForm, amount: e.target.value })}
                                                 placeholder="100"
                                                 min="0.01"
                                                 step="0.01"
@@ -551,8 +551,8 @@ export default function Savings() {
                                             />
                                         </div>
                                         <div className="form-actions">
-                                            <button 
-                                                type="button" 
+                                            <button
+                                                type="button"
                                                 className="action-btn secondary"
                                                 onClick={() => {
                                                     setShowContributeForm(false);
@@ -573,7 +573,13 @@ export default function Savings() {
                 </div>
             </div>
 
-            <footer>
+            <footer className="footer-strip"
+                style={{
+                    padding: "6px 0",
+                    width: "100vw",
+                    marginLeft: "calc(50% - 50vw)",
+                    marginRight: "calc(50% - 50vw)"
+                }}>
                 <Footer />
             </footer>
         </div>

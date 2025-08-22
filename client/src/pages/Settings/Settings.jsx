@@ -22,7 +22,13 @@ export default function Settings() {
                 </div>
             </div>
 
-            <footer>
+            <footer className="footer-strip"
+                style={{
+                    padding: "6px 0",
+                    width: "100vw",
+                    marginLeft: "calc(50% - 50vw)",
+                    marginRight: "calc(50% - 50vw)"
+                }}>
                 <Footer />
             </footer>
         </div>

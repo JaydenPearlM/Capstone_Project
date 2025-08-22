@@ -15,15 +15,15 @@ export default function Login() {
     const handleLogin = async (data) => {
         setLoading(true);
         setError('');
-        
+
         const result = await login(data.email, data.password);
-        
+
         if (result.success) {
             navigate('/dashboard');
         } else {
             setError(result.error);
         }
-        
+
         setLoading(false);
     };
 
@@ -35,19 +35,25 @@ export default function Login() {
             <div className="main-content">
                 <div className="login-page">
                     <h2 className="login-title">Login</h2>
-                    {error && <div className="error-message" style={{color: 'red', marginBottom: '1rem'}}>{error}</div>}
+                    {error && <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
                     <LoginForm onSubmit={handleLogin} loading={loading} />
                     <div className="login-links">
                         <Link to="/forgot-password" className="link">Forgot password?</Link>
                         <Link to="/signup" className="link">Create Account</Link>
                     </div>
                 </div>
-                
+
             </div>
 
-            <footer>
-                    <Footer />
-                </footer>
+            <footer className="footer-strip"
+                style={{
+                    padding: "6px 0",
+                    width: "100vw",
+                    marginLeft: "calc(50% - 50vw)",
+                    marginRight: "calc(50% - 50vw)"
+                }}>
+                <Footer />
+            </footer>
         </div>
     )
 }

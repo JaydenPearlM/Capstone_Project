@@ -311,6 +311,12 @@
 }
 
 @media (max-width: 600px) {
+  .budget-container {
+    flex-direction: column;
+  }
+  .budget-container > .SideBar {
+    width: 100%;
+  }
 
   .budget-control-container,
   .quick-actions {
