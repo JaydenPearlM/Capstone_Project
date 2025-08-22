@@ -1,24 +1,30 @@
 import React from "react";
 import { useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Home, 
-         AttachMoney,
-         Logout, 
-         Dashboard, 
-         Savings, 
-         Settings, 
-         CreditCard, 
-         RealEstateAgent,
-         Fullscreen, 
-         FullscreenExit} from "@mui/icons-material"
-import {ToggleButton } from "@mui/material";
+import {
+  Home,
+  AttachMoney,
+  Logout,
+  Dashboard,
+  Savings,
+  Settings,
+  CreditCard,
+  RealEstateAgent,
+  Fullscreen,
+  FullscreenExit
+} from "@mui/icons-material"
+import { ToggleButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 const SideBar = () => {
-  const [collapsed, setCollapsed ] = useState(false);
-  // const navigate = useNavigate();
+  const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    console.log("Handle logout");
+    logout();
+    navigate('/');
   }
 
   return (
@@ -30,8 +36,8 @@ const SideBar = () => {
           onChange={() => {
             setCollapsed(!collapsed);
           }}
-        > 
-          {collapsed ? <Fullscreen /> : <FullscreenExit/>}
+        >
+          {collapsed ? <Fullscreen /> : <FullscreenExit />}
         </ToggleButton>
       </div>
 
@@ -57,7 +63,11 @@ const SideBar = () => {
         <MenuItem className="menu-item" icon={<Settings />} href="/dashboard/settings">
           Settings
         </MenuItem>
-        <MenuItem className="menu-item" icon={<Logout />} onClick={handleLogout}>
+        <MenuItem
+          className="menu-item"
+          icon={<Logout />}
+          onClick={handleLogout}
+        >
           Log out
         </MenuItem>
       </Menu>
