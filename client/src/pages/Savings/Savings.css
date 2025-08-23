@@ -1,5 +1,6 @@
 .savings-container {
   display: flex;
+  min-height: 100vh;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
@@ -8,6 +9,15 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #dbc5e8;  
   font-family: 'Space Grotesk', sans-serif; 
+}
+
+.savings-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .savings-content {
