@@ -1,5 +1,5 @@
 import React from 'react';
-import "./CategoryForm.css";
+import "./Form.css";
 
 const CategoryForm = ({
   catForm,
@@ -17,9 +17,7 @@ const CategoryForm = ({
         handleSubmit(e, catForm, catEditing, categories, setCategories, setCatForm, setCatEditing)
       }
     >
-      <h3>{catEditing ? 'Edit' : 'Add'} Category</h3>
-
-      <div className="form-row">
+      <div className="form-group">
         <label htmlFor="catName">Name:</label>
         <input
           id="catName"
@@ -31,7 +29,7 @@ const CategoryForm = ({
         />
       </div>
 
-      <div className="form-row">
+      <div className="form-group">
         <label htmlFor="catBudget">Budget Amount:</label>
         <p>Note: This number is for the entire monthly budget.</p>
         <input
@@ -46,9 +44,11 @@ const CategoryForm = ({
         />
       </div>
 
-      <button className="submit-btn" type="submit">
-        {catEditing ? 'Update' : 'Add'} Category
-      </button>
+      <div className="form-actions">
+        <button className="action-btn primary" type="submit">
+          {catEditing ? 'Update' : 'Add'} Category
+        </button>
+      </div>
     </form>
   );
 };
