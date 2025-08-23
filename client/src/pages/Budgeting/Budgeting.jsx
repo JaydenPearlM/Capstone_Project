@@ -329,6 +329,7 @@ export default function Budgeting() {
                                     setTxForm(form);
                                 }}
                                 setTxEditing={setTxEditing}
+                                setShowTransactionModal={setShowTransactionModal}
                                 deleteTransaction={(id) => deleteTransaction(id, setTransactions, authFetch)}
                                 dateRange={dateRange}
                                 view={view}
@@ -346,8 +347,11 @@ export default function Budgeting() {
 
                             {/* Transaction Modal */}
                             <Modal
-                                show={showTransactionModal || txEditing}
-                                onClose={() => setShowTransactionModal(false)}
+                                show={showTransactionModal}
+                                onClose={() => {
+                                    setShowTransactionModal(false);
+                                    setTxEditing(false);
+                                }}
                                 title={txEditing ? "Edit Transaction" : "Add Transaction"}
                             >
                                 <TransactionForm
@@ -373,6 +377,7 @@ export default function Budgeting() {
                                 setCatForm={(form) => {
                                     setCatForm(form);
                                 }}
+                                setShowCategoryModal={setShowCategoryModal}
                                 setCatEditing={setCatEditing}
                                 deleteCategory={(id) => deleteCategory(id, setCategories, setTransactions, authFetch)}
                                 dateRange={dateRange}
@@ -391,8 +396,11 @@ export default function Budgeting() {
 
                             {/* Category Modal */}
                             <Modal
-                                show={showCategoryModal || catEditing}
-                                onClose={() => setShowCategoryModal(false)}
+                                show={showCategoryModal}
+                                onClose={() => {
+                                    setShowCategoryModal(false);
+                                    setCatEditing(false);
+                                }}
                                 title={catEditing ? "Edit Category" : "Add Category"}
                             >
                                 <CategoryForm

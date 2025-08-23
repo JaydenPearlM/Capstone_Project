@@ -1,5 +1,5 @@
 import React from 'react';
-import "./TransactionForm.css";
+import "./Form.css";
 
 const TransactionForm = ({
   txForm,
@@ -26,9 +26,7 @@ const TransactionForm = ({
         )
       }
     >
-      <h3>{txEditing ? 'Edit' : 'Add'} Transaction</h3>
-
-      <div className="form-row">
+      <div className="form-group">
         <label htmlFor="txDesc">Description:</label>
         <input
           id="txDesc"
@@ -40,7 +38,7 @@ const TransactionForm = ({
         />
       </div>
 
-      <div className="form-row">
+      <div className="form-group">
         <label htmlFor="txAmount">Amount:</label>
         <input
           id="txAmount"
@@ -52,7 +50,7 @@ const TransactionForm = ({
         />
       </div>
 
-      <div className="form-row">
+      <div className="form-group">
         <label htmlFor="txCategory">Category:</label>
         <select
           id="txCategory"
@@ -69,7 +67,7 @@ const TransactionForm = ({
         </select>
       </div>
 
-      <div className="form-row">
+      <div className="form-group">
         <label htmlFor="txType">Type:</label>
         <select
           id="txType"
@@ -82,7 +80,7 @@ const TransactionForm = ({
         </select>
       </div>
 
-      <div className="form-row">
+      <div className="form-group">
         <label htmlFor="txDate">Date:</label>
         <input
           id="txDate"
@@ -93,9 +91,11 @@ const TransactionForm = ({
         />
       </div>
 
-      <button className="submit-btn" type="submit">
-        {txEditing ? 'Update' : 'Add'} Transaction
-      </button>
+      <div className="form-actions">
+        <button className="action-btn primary" type="submit">
+          {txEditing ? 'Update' : 'Add'} Transaction
+        </button>
+      </div>
     </form>
   );
 };

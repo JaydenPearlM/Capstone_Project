@@ -6,6 +6,7 @@ const Categories = ({
   transactions,
   setCatForm,
   setCatEditing,
+  setShowCategoryModal,
   deleteCategory,
   dateRange,  // pass from Budgeting.jsx
 }) => {
@@ -56,6 +57,7 @@ const Categories = ({
                   onClick={() => {
                     setCatForm(cat);
                     setCatEditing(true);
+                    setShowCategoryModal(true);
                   }}
                 >
                   Edit
