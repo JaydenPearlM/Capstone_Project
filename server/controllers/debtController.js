@@ -7,13 +7,14 @@ exports.getAll = async (req, res) => {
     const totalDebt = debts.reduce((sum, debt) => sum + debt.currentBalance, 0);
     const monthlyPayments = debts.reduce((sum, debt) => sum + debt.minimumPayment, 0);
     
+    // calculate weighted avg intereset rate based on balanced proportions
     const totalBalanceWeight = debts.reduce((sum, debt) => sum + debt.currentBalance, 0);
     const averageInterestRate = totalBalanceWeight > 0 
       ? debts.reduce((sum, debt) => 
           sum + (debt.interestRate * (debt.currentBalance / totalBalanceWeight)), 0
         )
       : 0;
-
+    // add calculated fields that aren't stored in database 
     const transformedDebts = debts.map(debt => ({
       ...debt.toObject(),
       paidAmount: debt.paidAmount,
@@ -41,6 +42,7 @@ exports.getById = async (req, res) => {
       return res.status(404).json({ error: 'Debt not found' });
     }
     
+    // ensure user can only access their own debts
     if (!debt.userId.equals(req.user.id)) {
       return res.status(403).json({ error: 'You are not authorized to view this debt' });
     }
@@ -61,15 +63,15 @@ exports.create = async (req, res) => {
   try {
     const { name, balance, interestRate, minimumPayment, type } = req.body;
     
-    if (!name || !balance || interestRate === undefined || interestRate === null || !minimumPayment) {
+    if (!name || !balance || interestRate === undefined || interestRate === null || minimumPayment === undefined || minimumPayment === null) {
       return res.status(400).json({ 
         error: 'Name, balance, interest rate, and minimum payment are required' 
       });
     }
 
-    if (balance <= 0 || interestRate < 0 || minimumPayment <= 0) {
+    if (balance <= 0 || interestRate < 0 || minimumPayment < 0) {
       return res.status(400).json({ 
-        error: 'Balance and minimum payment must be positive, interest rate cannot be negative' 
+        error: 'Balance must be positive, interest rate and minimum payment cannot be negative' 
       });
     }
 
@@ -104,6 +106,7 @@ exports.update = async (req, res) => {
       return res.status(403).json({ error: 'You are not authorized to update this debt' });
     }
 
+    // Only allow specific fields to be updated (security measure)
     const allowedUpdates = ['name', 'currentBalance', 'interestRate', 'minimumPayment', 'type'];
     const updates = {};
     
@@ -119,7 +122,7 @@ exports.update = async (req, res) => {
     if (updates.interestRate !== undefined && updates.interestRate < 0) {
       return res.status(400).json({ error: 'Interest rate cannot be negative' });
     }
-    if (updates.minimumPayment !== undefined && updates.minimumPayment <= 0) {
+    if (updates.minimumPayment !== undefined && updates.minimumPayment < 0) {
       return res.status(400).json({ error: 'Minimum payment must be positive' });
     }
 
@@ -157,6 +160,7 @@ exports.makePayment = async (req, res) => {
       return res.status(403).json({ error: 'You are not authorized to make payments to this debt' });
     }
 
+    // Prevent overpayment beyond current balance
     if (amount > debt.currentBalance) {
       return res.status(400).json({ 
         error: `Payment amount ($${amount}) cannot exceed current balance ($${debt.currentBalance})` 
