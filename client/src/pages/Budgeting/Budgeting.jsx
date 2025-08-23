@@ -220,12 +220,6 @@ export default function Budgeting() {
 
     const noData = filteredCategories.length === 0 && filteredTransactions.length === 0;
 
-    // Format date range nicely for display
-    const formatDate = (date) => {
-        if (!(date instanceof Date)) return "";
-        return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
-    };
-
     // Handlers for Previous / Next period
     const handlePrevPeriod = () => {
         setPeriodOffset((prev) => prev - 1);
