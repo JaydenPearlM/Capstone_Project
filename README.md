@@ -34,7 +34,7 @@ This project was built collaboratively by a 4-person team for the **TechWise Cap
 **Contributors:**  
 - Jayden Maxwell (@JaydenPearlM)  
 - Abby Boggs (@EmeraldVoltron)  
-- lp362  
+- Lidia Pena-Lauria (@lp362)  
 - M.N (@pistachionet)  
 
 ---
