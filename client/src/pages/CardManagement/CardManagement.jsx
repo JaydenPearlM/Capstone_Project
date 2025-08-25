@@ -305,7 +305,7 @@ export default function CardManagement() {
                       <p>
                         <button
                           type="button"
-                          className="link"
+                          className="card-edit-btn"
                           data-role="edit-card"
                           data-id={c._id}
                         >
@@ -313,7 +313,7 @@ export default function CardManagement() {
                         </button>{" "}
                         <button
                           type="button"
-                          className="link danger"
+                          className="card-del-btn"
                           onClick={()=>remove(c._id)}
                         >
                           Delete
