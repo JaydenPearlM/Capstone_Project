@@ -1,25 +1,29 @@
 .dashboard-container {
   display: flex;
-  flex-wrap: wrap;
-  /* max-width: 1200px; */
   width: 100%;
+  min-height: 100vh;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #dbc5e8;
+  min-height: 100vh;
 }
 
 .dashboard-container a {
-    text-decoration: none;
-    color:black;
+  text-decoration: none;
+  color: black;
 }
 
 .content {
-  display:grid;
-  grid-template-columns: repeat(2,1fr);
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 30px;
   padding: 20px;
-  flex: 3;
+
+  min-height: 100%;
+  height: 100%;
 }
 
 .card {
@@ -32,8 +36,21 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 250px;
+  min-height: 250px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card>* {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.card * {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
 }
 
 .card:hover {
@@ -44,7 +61,12 @@
 }
 
 @media (max-width: 600px) {
-    .content {
-        grid-template-columns: 1fr;
-    }
+  .dashboard-container>.SideBar {
+    width: 100%;
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
 }

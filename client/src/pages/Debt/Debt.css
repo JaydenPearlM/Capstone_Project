@@ -8,6 +8,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #dbc5e8;
   font-family: 'Space Grotesk', sans-serif;
+  min-height: 100vh;
 }
 
 .debt-content {
@@ -399,7 +400,7 @@
 }
 
 
-.modal-overlay {
+.debt-container .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -412,7 +413,7 @@
   z-index: 1000;
 }
 
-.modal {
+.debt-container .modal {
   background: white;
   padding: 2rem;
   border-radius: 16px;
@@ -423,7 +424,7 @@
   box-sizing: border-box;
 }
 
-.modal h3 {
+.debt-container .modal h3 {
   margin-top: 0;
   color: #333;
   margin-bottom: 1.5rem;
@@ -539,7 +540,14 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
+  .debt-container {
+    flex-direction: column;
+  }
+
+  .debt-container > .SideBar {
+    width: 100%;
+  }
     .debt-content {
         padding: 15px;
         gap: 20px;

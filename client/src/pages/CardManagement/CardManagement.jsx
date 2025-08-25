@@ -127,7 +127,7 @@ export default function CardManagement() {
   const BTN = { backgroundColor: "#A7E8BD", borderColor: "#A7E8BD", color: "#6B7280" };
 
   return (
-    <div className="card-management-page pastel-bg" style={{ minWidth: "100vw" }}>
+    <div className="card-management-page">
       {/* make header full-bleed across the viewport width */}
       <header
         className="top-bleed"
@@ -305,7 +305,7 @@ export default function CardManagement() {
                       <p>
                         <button
                           type="button"
-                          className="link"
+                          className="card-edit-btn"
                           data-role="edit-card"
                           data-id={c._id}
                         >
@@ -313,7 +313,7 @@ export default function CardManagement() {
                         </button>{" "}
                         <button
                           type="button"
-                          className="link danger"
+                          className="card-del-btn"
                           onClick={()=>remove(c._id)}
                         >
                           Delete
@@ -399,8 +399,6 @@ export default function CardManagement() {
     </div>
   );
 }
-
-/*search */
 /*search */
 function TransactionSearch({ buttonStyle }) {
   const API = import.meta.env.VITE_API_URL;

@@ -162,6 +162,34 @@ export default function Budgeting() {
         });
     }, [transactions, dateRange]);
 
+    // Only include expense transactions for budget/spending
+    const expenseTransactions = useMemo(() => {
+        return filteredTransactions.filter(tx => tx.type === "expense");
+    }, [filteredTransactions]);
+
+    // Always use full month range for category spending
+    const monthlyExpenseTransactions = useMemo(() => {
+        if (!dateRange) return [];
+
+        // Get the first and last day of the *current month* based on offset
+        const refDate = new Date();
+        refDate.setMonth(refDate.getMonth() + periodOffset);
+
+        const start = new Date(refDate.getFullYear(), refDate.getMonth(), 1);
+        start.setHours(0, 0, 0, 0);
+
+        const end = new Date(refDate.getFullYear(), refDate.getMonth() + 1, 0);
+        end.setHours(23, 59, 59, 999);
+
+        const pad = (n) => n.toString().padStart(2, "0");
+        const startStr = `${start.getFullYear()}-${pad(start.getMonth() + 1)}-${pad(start.getDate())}`;
+        const endStr = `${end.getFullYear()}-${pad(end.getMonth() + 1)}-${pad(end.getDate())}`;
+
+        return transactions.filter(
+            (tx) => tx.type === "expense" && tx.date.slice(0, 10) >= startStr && tx.date.slice(0, 10) <= endStr
+        );
+    }, [transactions, periodOffset]);
+
     // Filter categories WITHOUT recurring or createdAt filtering — include all
     const filteredCategories = useMemo(() => {
         if (!dateRange) return [];
@@ -191,12 +219,6 @@ export default function Budgeting() {
     };
 
     const noData = filteredCategories.length === 0 && filteredTransactions.length === 0;
-
-    // Format date range nicely for display
-    const formatDate = (date) => {
-        if (!(date instanceof Date)) return "";
-        return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
-    };
 
     // Handlers for Previous / Next period
     const handlePrevPeriod = () => {
@@ -262,7 +284,7 @@ export default function Budgeting() {
                                         // Adjust budget according to view and category budgetPeriod
                                         budget: adjustBudgetForView(cat.budget, cat.budgetPeriod || "monthly", view),
                                     }))}
-                                    transactions={filteredTransactions}
+                                    transactions={expenseTransactions}
                                     view={view}
                                     dateRange={dateRange}  // <-- pass it here for display
                                     setView={(newView) => {
@@ -288,7 +310,7 @@ export default function Budgeting() {
 
                             {/* Spending Trend: Last 2 Months + Current */}
                             <SpendingTrend
-                                transactions={transactions}
+                                transactions={expenseTransactions}
                                 dateRange={dateRange}
                                 getDateRange={getDateRange}
                                 biweeklyStart={biweeklyStart}
@@ -307,6 +329,7 @@ export default function Budgeting() {
                                     setTxForm(form);
                                 }}
                                 setTxEditing={setTxEditing}
+                                setShowTransactionModal={setShowTransactionModal}
                                 deleteTransaction={(id) => deleteTransaction(id, setTransactions, authFetch)}
                                 dateRange={dateRange}
                                 view={view}
@@ -324,8 +347,11 @@ export default function Budgeting() {
 
                             {/* Transaction Modal */}
                             <Modal
-                                show={showTransactionModal || txEditing}
-                                onClose={() => setShowTransactionModal(false)}
+                                show={showTransactionModal}
+                                onClose={() => {
+                                    setShowTransactionModal(false);
+                                    setTxEditing(false);
+                                }}
                                 title={txEditing ? "Edit Transaction" : "Add Transaction"}
                             >
                                 <TransactionForm
@@ -347,10 +373,11 @@ export default function Budgeting() {
                         <div className="categories-container">
                             <Categories
                                 categories={filteredCategories}
-                                transactions={transactions}
+                                transactions={monthlyExpenseTransactions}
                                 setCatForm={(form) => {
                                     setCatForm(form);
                                 }}
+                                setShowCategoryModal={setShowCategoryModal}
                                 setCatEditing={setCatEditing}
                                 deleteCategory={(id) => deleteCategory(id, setCategories, setTransactions, authFetch)}
                                 dateRange={dateRange}
@@ -369,8 +396,11 @@ export default function Budgeting() {
 
                             {/* Category Modal */}
                             <Modal
-                                show={showCategoryModal || catEditing}
-                                onClose={() => setShowCategoryModal(false)}
+                                show={showCategoryModal}
+                                onClose={() => {
+                                    setShowCategoryModal(false);
+                                    setCatEditing(false);
+                                }}
                                 title={catEditing ? "Edit Category" : "Add Category"}
                             >
                                 <CategoryForm
@@ -393,7 +423,14 @@ export default function Budgeting() {
                 </div>
             </div>
 
-            <footer>
+            <footer
+                className="footer-strip"
+                style={{
+                    padding: "6px 0",
+                    width: "100vw",
+                    marginLeft: "calc(50% - 50vw)",
+                    marginRight: "calc(50% - 50vw)"
+                }}>
                 <Footer />
             </footer>
         </div>

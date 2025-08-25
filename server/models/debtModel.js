@@ -31,6 +31,8 @@ const debtSchema = new mongoose.Schema({
     enum: ['credit_card', 'student_loan', 'auto_loan', 'mortgage', 'personal_loan', 'other'],
     default: 'other'
   },
+
+  // record of all payments made toward debt
   payments: [{
     amount: {
       type: Number,
@@ -46,21 +48,24 @@ const debtSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// how much debt has been paid
 debtSchema.virtual('paidAmount').get(function () {
   return this.originalBalance - this.currentBalance;
 });
 
+// progress of debt paid off in percentage
 debtSchema.virtual('progress').get(function () {
   const paidAmount = this.originalBalance - this.currentBalance;
   const percent = (paidAmount / this.originalBalance) * 100;
   return Math.min(percent, 100).toFixed(1);
 });
 
-
+// how much debt still needs to be paid
 debtSchema.virtual('remaining').get(function () {
   return this.currentBalance;
 });
 
+// ensure virtuals show up when converting to objects/JSON
 debtSchema.set('toObject', { virtuals: true });
 debtSchema.set('toJSON', { virtuals: true });
 

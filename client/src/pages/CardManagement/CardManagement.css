@@ -28,6 +28,7 @@
   padding: 0 0px;
   width: 100%;
   box-sizing: border-box;
+  min-height: 100vh;
 }
 
 .card-grid {
@@ -197,12 +198,6 @@
   width: 100%;
 }
 
-@media (max-width: 1500px) {
-  .search-widget .row {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
 .csv-export-widget {
   display: grid;
   gap: 10px;
@@ -213,12 +208,12 @@
 }
 
 /* ===== Footer pastel yellow strip ===== */
-.card-management-page .footer-strip {
+.footer-strip {
   background: var(--footer-yellow);
   border-top: 1px solid var(--ring);
 }
 
-.card-management-page .footer-strip>* {
+.footer-strip>* {
   width: 100%;
   box-sizing: border-box;
   padding-left: 24px;
@@ -309,6 +304,39 @@ body,
   padding-right: 16px;
 }
 
+.card-edit-btn{
+  background-color: #FFF9C4;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 4px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.card-edit-btn:hover {
+  background-color: #f7f2a9;
+  transform: scale(1.03);
+}
+
+.card-del-btn {
+  background-color: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 4px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.card-del-btn:hover {
+  background-color: #ffcdd2;
+  transform: scale(1.03);
+}
+
 /* Mobile layout: single column */
 @media (max-width: 900px) {
   .card-grid {
@@ -340,6 +368,10 @@ body,
 
 /* Extra mobile layout: sidebar on top, everything stacked */
 @media (max-width: 600px) {
+  .card-management-content > .SideBar {
+    width: 100%;
+  }
+
   .card-management-content {
     flex-direction: column;
     /* stack sidebar + main content vertically */

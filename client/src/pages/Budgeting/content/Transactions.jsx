@@ -6,16 +6,15 @@ const Transactions = ({
   categories,
   setTxForm,
   setTxEditing,
+  setShowTransactionModal,
   deleteTransaction,
   dateRange,
-  view
 }) => {
   const formatDate = (isoDate) => {
     const [year, month, day] = isoDate.slice(0, 10).split("-");
     return `${month}/${day}/${year}`;
   };
 
-  // Helper to format Date objects nicely
   const formatDisplayDate = (date) => {
     return date.toLocaleDateString(undefined, {
       month: "short",
@@ -24,18 +23,15 @@ const Transactions = ({
     });
   };
 
-  // Use passed dateRange to filter transactions and show current period
-const filteredTransactions = dateRange
-  ? transactions.filter((tx) => {
-      const pad = (n) => n.toString().padStart(2, "0");
-
-      const startStr = `${dateRange.start.getFullYear()}-${pad(dateRange.start.getMonth() + 1)}-${pad(dateRange.start.getDate())}`;
-      const endStr = `${dateRange.end.getFullYear()}-${pad(dateRange.end.getMonth() + 1)}-${pad(dateRange.end.getDate())}`;
-
-      const txDateStr = tx.date.slice(0, 10); // YYYY-MM-DD
-      return txDateStr >= startStr && txDateStr <= endStr;
-    })
-  : transactions; // fallback: show all
+  const filteredTransactions = dateRange
+    ? transactions.filter((tx) => {
+        const pad = (n) => n.toString().padStart(2, "0");
+        const startStr = `${dateRange.start.getFullYear()}-${pad(dateRange.start.getMonth() + 1)}-${pad(dateRange.start.getDate())}`;
+        const endStr = `${dateRange.end.getFullYear()}-${pad(dateRange.end.getMonth() + 1)}-${pad(dateRange.end.getDate())}`;
+        const txDateStr = tx.date.slice(0, 10);
+        return txDateStr >= startStr && txDateStr <= endStr;
+      })
+    : transactions;
 
   return (
     <div className="transactions-section">
@@ -55,9 +51,9 @@ const filteredTransactions = dateRange
         <div className="col-date">Date</div>
         <div className="col-actions">Actions</div>
       </div>
+
       <ul className="transaction-list">
         {filteredTransactions.map((tx) => {
-          // Get category name from populated object or lookup
           let categoryName =
             (typeof tx.categoryId === "object" && tx.categoryId?.name) ||
             categories.find((c) => c._id === tx.categoryId)?.name ||
@@ -81,7 +77,8 @@ const filteredTransactions = dateRange
                           ? tx.categoryId._id
                           : tx.categoryId,
                     });
-                    setTxEditing(true);
+                    setTxEditing(tx);         // 👈 pass the tx object instead of just true
+                    setShowTransactionModal(true); // 👈 open modal
                   }}
                 >
                   Edit

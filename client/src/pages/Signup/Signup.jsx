@@ -15,18 +15,18 @@ export default function Signup() {
     const handleSignup = async (data) => {
         setLoading(true);
         setError('');
-        
+
         // Remove confirmPassword before sending to backend
         const { confirmPassword, ...userData } = data;
-        
+
         const result = await register(userData);
-        
+
         if (result.success) {
             navigate('/dashboard');
         } else {
             setError(result.error);
         }
-        
+
         setLoading(false);
     };
 
@@ -38,11 +38,17 @@ export default function Signup() {
             <div className="main-content">
                 <div className="signup-page">
                     <h2>Create an Account</h2>
-                    {error && <div className="error-message" style={{color: 'red', marginBottom: '1rem'}}>{error}</div>}
+                    {error && <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
                     <SignupForm onSubmit={handleSignup} loading={loading} />
                 </div>
             </div>
-            <footer>
+            <footer className="footer-strip"
+                style={{
+                    padding: "6px 0",
+                    width: "100vw",
+                    marginLeft: "calc(50% - 50vw)",
+                    marginRight: "calc(50% - 50vw)"
+                }}>
                 <Footer />
             </footer>
         </div>
