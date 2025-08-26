@@ -415,7 +415,7 @@ export default function CardManagement() {
                         </div>
                       </div>
                       <p>
-                        <button type="button" className="link danger" onClick={()=>removeDebt(d._id)}>
+                        <button type="button" className="card-del-btn" onClick={()=>removeDebt(d._id)}>
                           Delete
                         </button>
                       </p>
