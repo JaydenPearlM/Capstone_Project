@@ -4,6 +4,7 @@ import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
 import CsvExport from "../../components/common/CsvExport";
 import { useAuth } from "../../contexts/AuthContext"; // <— key: adds token to requests
+import { fetchDebtData } from "../Debt/forms/handlers"; // from debt
 import "./CardManagement.css";
 
 const API = import.meta.env.VITE_API_URL;
@@ -24,7 +25,12 @@ export default function CardManagement() {
   const [editingId, setEditingId] = useState(null); // <-- edit mode
 
   // Debts (kept for totals and overview)
+  const [debtData, setDebtData] = useState({totalDebt:0});
   const [debts, setDebts] = useState([]);
+  
+  const refreshDebts = () => {
+  fetchDebtData(setDebtData, setDebts, () => {}, authFetch);
+  };
 
   const fetchCards = async (signal) => {
     if (!API) return setCards([]);
@@ -53,7 +59,8 @@ export default function CardManagement() {
   useEffect(() => {
     const ctrl = new AbortController();
     fetchCards(ctrl.signal);
-    fetchDebts(ctrl.signal);
+    // fetchDebts(ctrl.signal);
+    refreshDebts();
     return () => ctrl.abort();
   }, []);
 
@@ -171,7 +178,9 @@ export default function CardManagement() {
   const studentLoanTotal = debts
     .reduce((sum, d) => sum + Number((d.balance ?? d.currentBalance ?? 0)), 0);
 
-  const combinedDebt = creditTotal + studentLoanTotal;
+  // const combinedDebt = creditTotal + studentLoanTotal; 
+
+  const combinedDebt = creditTotal + (debtData.totalDebt || 0);
   // --------------------------------------------
 
   const BTN = { backgroundColor: "#A7E8BD", borderColor: "#A7E8BD", color: "#6B7280" };
@@ -389,7 +398,9 @@ export default function CardManagement() {
                 })}
 
                 {/* Loans list (no add form) */}
-                {debts.map((d) => {
+                {debts
+                  .filter(d => d.type === "credit_card") // testing this line for credit card only
+                  .map((d) => {
                   const loanBal = Number((d.balance ?? d.currentBalance ?? 0) || 0);
                   const loanType = (d.type || "loan").toLowerCase();
                   return (
