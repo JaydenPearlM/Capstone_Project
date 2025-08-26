@@ -15,12 +15,15 @@ export default function Dashboard() {
     const [budgetData, setBudgetData] = useState({ totalSpent: 0, totalBudget: 0 });
     const [debtData, setDebtData] = useState({ totalDebt: 0 });
     const [savingsData, setSavingsData] = useState({ totalSavings: 0, goalProgress: 0 });
+    const [accountBalance, setAccountBalance] = useState(0);
+    
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         async function fetchAllData() {
             try {
+                // Budget
                 const budgetResponse = await authFetch(`${import.meta.env.VITE_API_URL}/budget`);
                 if (!budgetResponse.ok) {
                     throw new Error("Failed to fetch budget data");
@@ -70,6 +73,20 @@ export default function Dashboard() {
                     console.error("Error fetching savings data:", savingsError);
                 }
 
+                //Accounts
+                try {
+                    const cardsResponse = await authFetch(`${import.meta.env.VITE_API_URL}/cards`);
+                    if (cardsResponse.ok) {
+                        const cardsResult = await cardsResponse.json();
+                        const debitTotal = (Array.isArray(cardsResult) ? cardsResult : [])
+                            .filter(card => card.type === 'debit')
+                            .reduce((sum, card) => sum + card.balance, 0);
+                        setAccountBalance(debitTotal);
+                    }
+                } catch (cardsError) {
+                    console.error("Error fetching cards data:", cardsError);
+                }
+
             } catch (err) {
                 setError(err.message);
                 console.error("Dashboard fetch error:", err);
@@ -95,6 +112,7 @@ export default function Dashboard() {
                     <Link to="/dashboard/cardManagement">
                         <div className="card">
                             <AccountsCard
+                                accountBalance={accountBalance}
                                 savingsBalance={savingsData.totalSavings}
                             />
                         </div>
