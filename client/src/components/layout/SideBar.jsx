@@ -11,7 +11,8 @@ import {
   CreditCard,
   RealEstateAgent,
   Fullscreen,
-  FullscreenExit
+  FullscreenExit,
+  TipsAndUpdates
 } from "@mui/icons-material"
 import { ToggleButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -59,6 +60,9 @@ const SideBar = () => {
         </MenuItem>
         <MenuItem className="menu-item" icon={<Savings />} href="/dashboard/savings">
           Savings
+        </MenuItem>
+        <MenuItem className="menu-item" icon={<TipsAndUpdates />} href="/dashboard/tutorial">
+          Tutorial
         </MenuItem>
         <MenuItem className="menu-item" icon={<Settings />} href="/dashboard/settings">
           Settings

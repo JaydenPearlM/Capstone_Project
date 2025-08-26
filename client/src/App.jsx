@@ -16,6 +16,7 @@ import Settings from './pages/Settings/Settings.jsx';
 import Budgeting from './pages/Budgeting/Budgeting.jsx';
 import ContactUs from './pages/ContactUs/ContactUs.jsx'
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword.jsx';
+import Tutorial from './pages/Tutorial/Tutorial.jsx';
 
 export default function App() {
   return (
@@ -64,6 +65,11 @@ export default function App() {
             <Route path="/dashboard/budgeting" element={
               <ProtectedRoute>
                 <Budgeting />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/tutorial" element={
+              <ProtectedRoute>
+                <Tutorial />
               </ProtectedRoute>
             } />
           </Routes>
