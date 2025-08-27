@@ -4,6 +4,7 @@ import SideBar from "../../components/layout/SideBar";
 import Footer from "../../components/layout/Footer";
 import CsvExport from "../../components/common/CsvExport";
 import { useAuth } from "../../contexts/AuthContext"; // <— key: adds token to requests
+import { fetchDebtData } from "../Debt/forms/handlers"; // from debt
 import "./CardManagement.css";
 
 const API = import.meta.env.VITE_API_URL;
@@ -21,9 +22,15 @@ export default function CardManagement() {
     apr: "",
     balance: ""
   });
+  const [editingId, setEditingId] = useState(null); // <-- edit mode
 
   // Debts (kept for totals and overview)
+  const [debtData, setDebtData] = useState({totalDebt:0});
   const [debts, setDebts] = useState([]);
+  
+  const refreshDebts = () => {
+  fetchDebtData(setDebtData, setDebts, () => {}, authFetch);
+  };
 
   const fetchCards = async (signal) => {
     if (!API) return setCards([]);
@@ -52,37 +59,86 @@ export default function CardManagement() {
   useEffect(() => {
     const ctrl = new AbortController();
     fetchCards(ctrl.signal);
-    fetchDebts(ctrl.signal);
+    // fetchDebts(ctrl.signal);
+    refreshDebts();
     return () => ctrl.abort();
   }, []);
+
+  // ---------- Edit handling ----------
+  const handleEdit = (card) => {
+    setForm({
+      nickname: card.nickname || "",
+      type: card.type || "credit",
+      brand: card.brand || "",
+      expMonth: card.expMonth || "",
+      expYear: card.expYear || "",
+      limit: card.limit ?? "",
+      apr: card.apr ?? "",
+      balance: card.balance ?? ""
+    });
+    setEditingId(card._id);
+    document.getElementById("card-form")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setForm({
+      nickname: "",
+      type: "credit",
+      brand: "",
+      expMonth: "",
+      expYear: "",
+      limit: "",
+      apr: "",
+      balance: ""
+    });
+  };
+  // -----------------------------------
 
   const submit = async (e) => {
     e.preventDefault();
     if (!API) return;
+
+    // Coerce numeric fields to numbers (or null) so backend stays consistent
+    const payload = {
+      nickname: form.nickname.trim(),
+      type: form.type,
+      brand: form.brand.trim(),
+      expMonth: form.expMonth,
+      expYear: form.expYear,
+      limit: form.type === "credit"
+        ? (form.limit === "" ? null : Number(form.limit))
+        : null,
+      apr: form.type === "credit"
+        ? (form.apr === "" ? null : Number(form.apr))
+        : null,
+      balance: form.balance === "" ? 0 : Number(form.balance),
+    };
+
     try {
-      const res = await authFetch(`${API}/cards`, {
-        method: "POST",
+      const url = editingId ? `${API}/cards/${editingId}` : `${API}/cards`;
+      const method = editingId ? "PUT" : "POST";
+
+      const res = await authFetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
+        body: JSON.stringify(payload)
       });
+
       if (res.ok) {
-        setForm({
-          nickname: "",
-          type: "credit",
-          brand: "",
-          expMonth: "",
-          expYear: "",
-          limit: "",
-          apr: "",
-          balance: ""
-        });
-        fetchCards();
+        const saved = await res.json();
+        if (editingId) {
+          setCards(prev => prev.map(c => (c._id === editingId ? saved : c)));
+        } else {
+          setCards(prev => [saved, ...prev]);
+        }
+        cancelEdit(); // reset form + exit edit mode
       } else {
         const err = await res.json().catch(() => ({}));
-        console.warn("create card failed:", err?.error || res.statusText);
+        console.warn(`${editingId ? "update" : "create"} card failed:`, err?.error || res.statusText);
       }
     } catch (err) {
-      console.warn("create card failed:", err);
+      console.warn(`${editingId ? "update" : "create"} card failed:`, err);
     }
   };
 
@@ -90,7 +146,8 @@ export default function CardManagement() {
     if (!API) return;
     try {
       await authFetch(`${API}/cards/${id}`, { method: "DELETE" });
-      fetchCards();
+      setCards(prev => prev.filter(c => c._id !== id));
+      if (editingId === id) cancelEdit();
     } catch (err) {
       console.warn("delete card failed:", err);
     }
@@ -100,7 +157,7 @@ export default function CardManagement() {
     if (!API) return;
     try {
       await authFetch(`${API}/debts/${id}`, { method: "DELETE" });
-      fetchDebts();
+      setDebts(prev => prev.filter(d => d._id !== id));
     } catch (err) {
       console.warn("delete debt failed:", err);
     }
@@ -121,7 +178,9 @@ export default function CardManagement() {
   const studentLoanTotal = debts
     .reduce((sum, d) => sum + Number((d.balance ?? d.currentBalance ?? 0)), 0);
 
-  const combinedDebt = creditTotal + studentLoanTotal;
+  // const combinedDebt = creditTotal + studentLoanTotal; 
+
+  const combinedDebt = creditTotal + (debtData.totalDebt || 0);
   // --------------------------------------------
 
   const BTN = { backgroundColor: "#A7E8BD", borderColor: "#A7E8BD", color: "#6B7280" };
@@ -149,9 +208,9 @@ export default function CardManagement() {
           <div className="left-stack" style={{ display: "grid", gap: 16 }}>
             {/* Enter Card */}
             <section className="card-panel">
-              <h2>Enter Card Information</h2>
+              <h2>{editingId ? "Edit Card" : "Enter Card Information"}</h2>
 
-              <form className="card-form" onSubmit={submit}>
+              <form id="card-form" className="card-form" onSubmit={submit}>
                 <label>
                   Card Nickname
                   <input
@@ -250,7 +309,21 @@ export default function CardManagement() {
                   </label>
                 )}
 
-                <button type="submit" className="primary" style={BTN}>Save Card</button>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {/* keep your submit button exactly as before */}
+                  <button type="submit" className="primary" style={BTN}>
+                    Save Card
+                  </button>
+                  {editingId && (
+                    <button
+                      type="button"
+                      className="card-cancel-btn"
+                      onClick={cancelEdit}
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
               </form>
             </section>
 
@@ -301,13 +374,14 @@ export default function CardManagement() {
                         ) : null}
                       </div>
 
-                      {/* Actions */}
+                      {/* Actions — keep your classes exactly */}
                       <p>
                         <button
                           type="button"
                           className="card-edit-btn"
                           data-role="edit-card"
                           data-id={c._id}
+                          onClick={() => handleEdit(c)}
                         >
                           Edit
                         </button>{" "}
@@ -324,7 +398,9 @@ export default function CardManagement() {
                 })}
 
                 {/* Loans list (no add form) */}
-                {debts.map((d) => {
+                {debts
+                  .filter(d => d.type === "credit_card") // testing this line for credit card only
+                  .map((d) => {
                   const loanBal = Number((d.balance ?? d.currentBalance ?? 0) || 0);
                   const loanType = (d.type || "loan").toLowerCase();
                   return (
@@ -339,7 +415,7 @@ export default function CardManagement() {
                         </div>
                       </div>
                       <p>
-                        <button type="button" className="link danger" onClick={()=>removeDebt(d._id)}>
+                        <button type="button" className="card-del-btn" onClick={()=>removeDebt(d._id)}>
                           Delete
                         </button>
                       </p>
@@ -399,6 +475,7 @@ export default function CardManagement() {
     </div>
   );
 }
+
 /*search */
 function TransactionSearch({ buttonStyle }) {
   const API = import.meta.env.VITE_API_URL;

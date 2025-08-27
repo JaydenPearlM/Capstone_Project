@@ -215,6 +215,7 @@
 
 .action-btn.primary:hover {
   box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  color: white
 }
 
 .action-btn.secondary:hover {
@@ -386,7 +387,7 @@
   width: 100%;
   padding: 0.75rem;
   background: #B5EAD7;
-  color: #333;
+  color: #000000;
   border: none;
   border-radius: 8px;
   font-weight: 500;
@@ -399,6 +400,7 @@
 .contribute-btn:hover {
   transform: translateY(-1px);
   background: #A5D7C4;
+  color: white;
   box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
 }
 

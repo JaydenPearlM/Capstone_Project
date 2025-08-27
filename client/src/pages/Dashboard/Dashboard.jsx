@@ -15,12 +15,15 @@ export default function Dashboard() {
     const [budgetData, setBudgetData] = useState({ totalSpent: 0, totalBudget: 0 });
     const [debtData, setDebtData] = useState({ totalDebt: 0 });
     const [savingsData, setSavingsData] = useState({ totalSavings: 0, goalProgress: 0 });
+    const [accountBalance, setAccountBalance] = useState(0);
+    
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         async function fetchAllData() {
             try {
+                // Budget
                 const budgetResponse = await authFetch(`${import.meta.env.VITE_API_URL}/budget`);
                 if (!budgetResponse.ok) {
                     throw new Error("Failed to fetch budget data");
@@ -53,21 +56,28 @@ export default function Dashboard() {
                     if (savingsResponse.ok) {
                         const savingsResult = await savingsResponse.json();
 
-                        const totalSavings = savingsResult.reduce((sum, goal) => {
-                            const goalTotal = goal.contributions.reduce((contribSum, contrib) => contribSum + contrib.amount, 0);
-                            return sum + goalTotal;
-                        }, 0);
-
-                        const totalGoalAmount = savingsResult.reduce((sum, goal) => sum + goal.goalAmount, 0);
-                        const overallProgress = totalGoalAmount > 0 ? Math.round((totalSavings / totalGoalAmount) * 100) : 0;
-
                         setSavingsData({
-                            totalSavings,
-                            goalProgress: overallProgress
+                            totalSavings: savingsResult.totalSavings || 0,
+                            goalProgress: savingsResult.goalProgress || 0
                         });
                     }
                 } catch (savingsError) {
                     console.error("Error fetching savings data:", savingsError);
+                    setSavingsData({totalSavings: 0, goalProgress: 0});
+                }
+
+                //Accounts
+                try {
+                    const cardsResponse = await authFetch(`${import.meta.env.VITE_API_URL}/cards`);
+                    if (cardsResponse.ok) {
+                        const cardsResult = await cardsResponse.json();
+                        const debitTotal = (Array.isArray(cardsResult) ? cardsResult : [])
+                            .filter(card => card.type === 'debit')
+                            .reduce((sum, card) => sum + card.balance, 0);
+                        setAccountBalance(debitTotal);
+                    }
+                } catch (cardsError) {
+                    console.error("Error fetching cards data:", cardsError);
                 }
 
             } catch (err) {
@@ -95,6 +105,7 @@ export default function Dashboard() {
                     <Link to="/dashboard/cardManagement">
                         <div className="card">
                             <AccountsCard
+                                accountBalance={accountBalance}
                                 savingsBalance={savingsData.totalSavings}
                             />
                         </div>
