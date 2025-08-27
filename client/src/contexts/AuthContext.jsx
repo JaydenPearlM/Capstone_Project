@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
-  const API_BASE_URL = 'https://capstone-project-f.onrender.com/api/v1';
-git
+  const API_BASE_URL = 'https://cache-budgeting.onrender.com/api/v1';
+
   // Set up axios interceptor or fetch headers
   const authFetch = async (url, options = {}) => {
     // Get the current token from state or localStorage
