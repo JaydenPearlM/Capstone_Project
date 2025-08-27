@@ -56,21 +56,14 @@ export default function Dashboard() {
                     if (savingsResponse.ok) {
                         const savingsResult = await savingsResponse.json();
 
-                        const totalSavings = savingsResult.reduce((sum, goal) => {
-                            const goalTotal = goal.contributions.reduce((contribSum, contrib) => contribSum + contrib.amount, 0);
-                            return sum + goalTotal;
-                        }, 0);
-
-                        const totalGoalAmount = savingsResult.reduce((sum, goal) => sum + goal.goalAmount, 0);
-                        const overallProgress = totalGoalAmount > 0 ? Math.round((totalSavings / totalGoalAmount) * 100) : 0;
-
                         setSavingsData({
-                            totalSavings,
-                            goalProgress: overallProgress
+                            totalSavings: savingsResult.totalSavings || 0,
+                            goalProgress: savingsResult.goalProgress || 0
                         });
                     }
                 } catch (savingsError) {
                     console.error("Error fetching savings data:", savingsError);
+                    setSavingsData({totalSavings: 0, goalProgress: 0});
                 }
 
                 //Accounts
