@@ -26,10 +26,20 @@ const safeJson = async (res) => {
 };
 
 export const AuthProvider = ({ children }) => {
-  // IMPORTANT: comes from Vite at build time
-  const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+  // IMPORTANT: Vite injects at build time
+  const API_BASE_URL =
+    import.meta.env.VITE_API_URL ||
+    ""; // do NOT hard-code localhost in production
 
-  const [user, setUser]   = useState(null);
+  // Fail fast if missing (prevents silent bad builds)
+  if (!API_BASE_URL) {
+    // You can comment this throw in dev if needed.
+    // eslint-disable-next-line no-console
+    console.error("❌ VITE_API_URL is missing. Set it in the client env and rebuild.");
+    // throw new Error("Missing VITE_API_URL"); // uncomment to hard-fail
+  }
+
+  const [user, setUser] = useState(null);
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [loading, setLoading] = useState(true);
 
@@ -60,7 +70,6 @@ export const AuthProvider = ({ children }) => {
         logout();
         throw new Error("Unauthorized");
       }
-
       return res;
     },
     [API_BASE_URL, token]
@@ -68,7 +77,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res  = await fetch(joinUrl(API_BASE_URL, "/auth/login"), {
+      const res = await fetch(joinUrl(API_BASE_URL, "/auth/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -82,14 +91,14 @@ export const AuthProvider = ({ children }) => {
         return { success: true, data };
       }
       return { success: false, error: data?.message || "Login failed" };
-    } catch (e) {
+    } catch {
       return { success: false, error: "Network error" };
     }
   };
 
   const register = async (userData) => {
     try {
-      const res  = await fetch(joinUrl(API_BASE_URL, "/auth/register"), {
+      const res = await fetch(joinUrl(API_BASE_URL, "/auth/register"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
@@ -103,7 +112,7 @@ export const AuthProvider = ({ children }) => {
         return { success: true, data };
       }
       return { success: false, error: data?.message || "Registration failed" };
-    } catch (e) {
+    } catch {
       return { success: false, error: "Network error" };
     }
   };
@@ -115,11 +124,12 @@ export const AuthProvider = ({ children }) => {
       return;
     }
     try {
-      const res  = await authFetch("/auth/me");
+      const res = await authFetch("/auth/me");
       if (!res.ok) throw new Error("Failed to fetch user");
       const data = await safeJson(res);
       setUser(data?.user ?? null);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error("Error getting current user:", e);
       logout();
     } finally {

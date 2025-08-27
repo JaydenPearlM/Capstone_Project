@@ -17,6 +17,12 @@ const apiRoutes = require("./routes/index"); // transactions, categories, etc.
 const budgetRoutes = require("./routes/budget");
 const cardRoutes = require("./routes/cardRoutes");
 
+// ✅ Add a canonical list of allowed frontend origins (local + production)
+const FRONTEND_ORIGINS = [
+  process.env.FRONTEND_URL || "http://localhost:3000",
+  "https://cache-budgeting.onrender.com", // your Render frontend
+];
+
 // Trust proxy if behind one
 app.set("trust proxy", 1);
 
@@ -26,15 +32,18 @@ app.use(express.json());
 // Security headers
 app.use(helmet());
 
-// CORS — single, consistent config
+// ✅ CORS — single, consistent config (now includes production origin + PATCH + preflight)
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL || "http://localhost:3000"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    origin: FRONTEND_ORIGINS,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: false 
+    credentials: false, // set true only if you use cookies/sessions + fetch(..., { credentials: 'include' })
   })
 );
+
+// ✅ Ensure preflight responses for any route
+app.options("*", cors({ origin: FRONTEND_ORIGINS }));
 
 // Basic rate limiter (optional)
 // app.use(rateLimit({
@@ -46,6 +55,11 @@ app.use(
 // HEALTH
 app.get("/", (req, res) => {
   res.send(" Cache Budget API is running! ");
+});
+
+// ✅ Add an explicit health route under the API prefix for quick client tests
+app.get("/api/v1/health", (req, res) => {
+  res.json({ ok: true, time: new Date().toISOString() });
 });
 
 // Swagger
