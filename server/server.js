@@ -20,7 +20,8 @@ const cardRoutes = require("./routes/cardRoutes");
 // ✅ Add a canonical list of allowed frontend origins (local + production)
 const FRONTEND_ORIGINS = [
   process.env.FRONTEND_URL || "http://localhost:3000",
-  "https://cache-budgeting.onrender.com", // your Render frontend
+  "https://cache-budgeting.onrender.com",     // your older frontend
+  "https://capstone-project-f.onrender.com",  // ✅ your current frontend
 ];
 
 // Trust proxy if behind one
@@ -29,10 +30,7 @@ app.set("trust proxy", 1);
 // JSON body parser
 app.use(express.json());
 
-// Security headers
-app.use(helmet());
-
-// ✅ CORS — single, consistent config (now includes production origin + PATCH + preflight)
+// ✅ CORS FIRST (before helmet and before routes)
 app.use(
   cors({
     origin: FRONTEND_ORIGINS,
@@ -44,6 +42,9 @@ app.use(
 
 // ✅ Ensure preflight responses for any route
 app.options("*", cors({ origin: FRONTEND_ORIGINS }));
+
+// Security headers (after CORS)
+app.use(helmet());
 
 // Basic rate limiter (optional)
 // app.use(rateLimit({
