@@ -53,12 +53,12 @@ app.use((req, res, next) => {
   if (req.method === "OPTIONS") return res.sendStatus(204); // preflight
   next();
 });
-  cors({
+  app.use(cors({
     origin: FRONTEND_ORIGINS,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: false, // set true only if you use cookies/sessions + fetch(..., { credentials: 'include' })
-  });
+  }));
   
 // ✅ Ensure preflight responses for any route
 app.options("*", cors({ origin: FRONTEND_ORIGINS }));
