@@ -208,7 +208,7 @@
 }
 
 .action-btn.secondary {
-  background-color: #D6CEC3 ;
+  background-color: #fcd249 ;
   color: #555;
   border: 1px solid #ddd;
 }
@@ -348,7 +348,7 @@
   width: 100%;
   padding: 0.75rem;
   background: #80cfa9;
-  color: white;
+  color: rgb(0, 0, 0);
   border: none;
   border-radius: 8px;
   font-weight: 500;
@@ -361,6 +361,7 @@
 .payment-btn:hover {
   transform: translateY(-1px);
   background: #66b68f;
+  color: white;
   box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 

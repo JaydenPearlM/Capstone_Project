@@ -46,12 +46,12 @@
 
 .action-btn.primary {
   background: linear-gradient(135deg, #80cfa9, #66bb6a);
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .action-btn.secondary {
-  background-color: #D6CEC3;
-  color: #555;
+  background-color:#fcd249;
+  color: #000000;
   border: 1px solid #ddd;
 }
 
