@@ -1,0 +1,136 @@
+:root {
+  /* Set page background to match your brand.
+     Use #e7edf0 for a cool grey-blue or #fffef5 for the paper look. */
+  --tutorial-bg: #dbc5e8;
+  --ink: #111;
+  --muted: #5a5a5a;
+  --line: #e6e2c8;
+  --card: #fff;
+  --shadow: 0 6px 24px rgba(0,0,0,0.08);
+}
+
+html { scroll-padding-top: 96px; }
+
+.tutorial-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--tutorial-bg);
+  color: var(--ink);
+}
+
+/* Shell places your SideBar on the left and content on the right */
+.tutorial-shell {
+  display: flex;
+  flex: 1;
+  gap: 16px;
+}
+
+/* Right-side main area */
+.tutorial-main {
+  flex: 1;
+  padding: 20px clamp(16px, 4vw, 48px);
+}
+
+/* Header */
+.tutorial-header {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+.tutorial-header h1 {
+  margin: 0 0 6px;
+  font-weight: 800;
+  font-size: clamp(1.05rem, 1.1vw + 0.6rem, 1.3rem); /* small so brand stays subtle */
+  letter-spacing: 0; /* prevents spread */
+}
+.tutorial-header .subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+/* Quick Facts */
+.facts ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+
+/* Table of Contents (after Quick Facts) */
+.toc h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+.toc nav ol {
+  margin: 0;
+  padding-left: 20px;
+}
+.toc a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px dashed transparent;
+}
+.toc a:hover { border-bottom-color: var(--ink); }
+
+/* Sections (subtle notebook lines) */
+.tutorial-section {
+  background-image: linear-gradient(transparent 31px, var(--line) 32px);
+  background-size: 100% 32px;
+}
+.tutorial-section h2 { margin-top: 0; }
+.tutorial-section .lead { color: var(--muted); margin-top: -6px; }
+
+/* Callouts */
+.callouts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 8px 0 12px;
+}
+@media (min-width: 800px) {
+  .callouts { grid-template-columns: 1fr 1fr; }
+}
+.good, .risky, .note {
+  border: 1px dashed var(--line);
+  background: #fffdfa;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.risky { background: #fff7f0; }
+.note  { background: #f8fff3; }
+
+/* Lists + back-to-top link */
+.checklist { padding-left: 18px; }
+.checklist li { margin: 8px 0; }
+
+.top-link {
+  display: inline-block;
+  margin-top: 12px;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+}
+.top-link:hover { border-bottom-color: var(--ink); }
+
+/* Code look for inline code */
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  background: #fffaf0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 4px;
+}
