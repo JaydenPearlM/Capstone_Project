@@ -309,7 +309,6 @@ export default function Budgeting() {
                             <RecentTransactions filteredTransactions={filteredTransactions} />
 
                             {/* Spending Trend: Last 2 Months + Current */}
-                            {/* Spending Trend: Last 2 Months + Current */}
                             <div className="spending-compare">
                                 <h3>Spending Trend (Last 3 Months)</h3>
                                 {(() => {
