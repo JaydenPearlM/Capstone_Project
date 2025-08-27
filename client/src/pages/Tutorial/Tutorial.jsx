@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import NavBar from "../../components/layout/NavBar";
 import SideBar from "../../components/layout/SideBar";
-import "./tutorial.css";
+import "./Tutorial.css";
 
 const sections = [
   { id: "dashboard", label: "Dashboard" },
