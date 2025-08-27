@@ -31,15 +31,35 @@ app.set("trust proxy", 1);
 app.use(express.json());
 
 // ✅ CORS FIRST (before helmet and before routes)
-app.use(
+// 🔧 FORCE CORS HEADERS FOR ALL RESPONSES
+const ALLOWED = new Set([
+  process.env.FRONTEND_URL || "http://localhost:3000",
+  "https://cache-budgeting.onrender.com",
+  "https://capstone-project-f.onrender.com", // your current frontend
+]);
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && ALLOWED.has(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+  }
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  // Debug log — see what’s hitting the server
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} Origin:${origin || "n/a"}`);
+
+  if (req.method === "OPTIONS") return res.sendStatus(204); // preflight
+  next();
+});
   cors({
     origin: FRONTEND_ORIGINS,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: false, // set true only if you use cookies/sessions + fetch(..., { credentials: 'include' })
-  })
-);
-
+  });
+  
 // ✅ Ensure preflight responses for any route
 app.options("*", cors({ origin: FRONTEND_ORIGINS }));
 
