@@ -28,6 +28,32 @@ Developed as part of the **TechWise Capstone Project**, this app helps users man
 
 ---
 
+## How to run:
+* Currently only available in dev mode. *
+Prerequisites:
+Make sure you have Node.js and npm installed.
+1. Install dependencies:
+  Backend:
+  cd server
+  npm install
+
+  Frontend:
+  cd client
+  npm install
+
+2. Run in development mode:
+  Frontend:
+  "npm run dev"
+  Backend:
+  "npm run dev"
+
+3. Access the application:
+   Open your browser and navigate to:
+   http://localhost:3000
+   Backend runs on http://localhost:5000 for api.
+
+---
+
 ## 📌 About
 This project was built collaboratively by a 4-person team for the **TechWise Capstone**.  
 
@@ -39,5 +65,5 @@ This project was built collaboratively by a 4-person team for the **TechWise Cap
 
 ---
 
-## 📜 License
-MIT License — see [LICENSE](LICENSE) for details.
+
+
