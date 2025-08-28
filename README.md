@@ -32,6 +32,8 @@ Developed as part of the **TechWise Capstone Project**, this app helps users man
 
 > **Note:** The project is currently only available in **development mode**.
 
+Visit our live website: https://cache-budgeting-be.onrender.com
+
 ### Prerequisites
 
 Make sure you have **Node.js** and **npm** installed on your machine.
